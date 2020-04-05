@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:salesmanagement/Find_Orders.dart';
 import 'package:salesmanagement/GetDeliveries.dart';
+import 'package:salesmanagement/GetStock.dart';
 import 'GetSalesOrder.dart';
 
 class HomePage extends StatefulWidget{
@@ -51,16 +52,16 @@ class _HomePageState extends State<HomePage>{
                     subtitle: Text("Get OnHand stock those have quantities more than zero"),
                     leading: Icon(FontAwesomeIcons.boxes,size: 40,),
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>GetDeliveries()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>GetStock(false)));
                     },
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Get OnHand stock of a customer"),
-                    subtitle: Text("Get OnHand stock those have quantities zero"),
+                    subtitle: Text("Get OnHand stock those have quantities equal to zero"),
                     leading: Icon(FontAwesomeIcons.boxes,size: 40,),
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>GetDeliveries()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>GetStock(true)));
                     },
                   ),
                   Divider(),

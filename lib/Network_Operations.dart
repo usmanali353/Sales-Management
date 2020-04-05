@@ -25,16 +25,16 @@ class Network_Operations {
     }else
       return null;
   }
-  static Future<String> GetCustomerOnHand(String CustomerId,String PageNo,String PageSize) async{
-    final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/SalesService.svc/GetCustomerOnHand/'+CustomerId+'/'+PageNo+'/'+PageSize);
+  static Future<String> GetCustomerOnHand(String CustomerId,int PageNo,int PageSize) async{
+    final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/SalesService.svc/GetCustomerOnHand/'+CustomerId+'/'+PageNo.toString()+'/'+PageSize.toString());
     debugPrint(response.body);
     if(response.statusCode==200) {
       return response.body;
     }else
       return null;
   }
-  static Future<String> GetCustomerOnHandNoStock(String CustomerId,String PageNo,String PageSize) async{
-    final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/SalesService.svc/GetCustomerOnHandNoStock/'+CustomerId+'/'+PageNo+'/'+PageSize);
+  static Future<String> GetCustomerOnHandNoStock(String CustomerId,int PageNo,int PageSize) async{
+    final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/SalesService.svc/GetCustomerOnHandNoStock/'+CustomerId+'/'+PageNo.toString()+'/'+PageSize.toString());
     debugPrint(response.body);
     if(response.statusCode==200) {
       return response.body;
