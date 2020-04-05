@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:salesmanagement/SearchedOrderDetail.dart';
 
 class FindOrders extends StatefulWidget{
@@ -22,55 +23,50 @@ class _FindOrdersState extends State<FindOrders>{
   Widget build(BuildContext context) {
             return Scaffold(
               appBar: AppBar(title: Text("Find Orders"),),
-              body: Container(
-                height: 1000,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [Colors.white, Color(0xFFa2ffff)])     ),
-                child: Column(
-                  children: <Widget>[
-                    Row(
+              body: Column(
+                children: <Widget>[
+                  FormBuilder(
+                    child: Column(
                       children: <Widget>[
-                        Expanded(
-                          flex: 2,
-                          child: Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: TextField(
-                              controller:order_number_controller,
-
+                        Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: FormBuilderTextField(
+                            controller: order_number_controller,
+                            attribute: "Order Number",
+                            validators: [FormBuilderValidators.required()],
+                            decoration: InputDecoration(labelText: "Order Number",
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(9.0),
+                                  borderSide: BorderSide(color: Colors.teal, width: 1.0)
+                              ),
                             ),
+
                           ),
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: MaterialButton(
-                              color: Colors.teal,
-                              onPressed: (){
-                                if(order_number_controller.text!=null) {
-                                  Navigator.push(context, MaterialPageRoute(
-                                      builder: (context) =>
-                                          SearchedOrderDetail(
-                                              order_number_controller.text)));
-                                }else{
-                                  Scaffold.of(context).showSnackBar(SnackBar(
-                                    content: Text("Enter Order Number"),
-                                    backgroundColor: Colors.red,
-                                  ));
-                                }
-                              },
+                        MaterialButton(
+                          color: Colors.teal,
+                          onPressed: (){
+                            if(order_number_controller.text!=null) {
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) =>
+                                      SearchedOrderDetail(
+                                          order_number_controller.text)));
+                            }else{
+                              Scaffold.of(context).showSnackBar(SnackBar(
+                                content: Text("Enter Order Number"),
+                                backgroundColor: Colors.red,
+                              ));
+                            }
+                          },
 
-                              child: Text("Search",style:TextStyle(color: Colors.white),),
-                            ),
-                          ),
+                          child: Text("Search",style:TextStyle(color: Colors.white),),
                         ),
                       ],
                     ),
+                  )
 
-                  ],
-                ),
+
+                ],
               ),
             );
   }

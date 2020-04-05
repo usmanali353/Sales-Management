@@ -41,55 +41,47 @@ pd.show();
     // TODO: implement build
    return Scaffold(
      appBar: AppBar(title: (Text("Details")),),
-     body: Container(
-       height: 1000,
-       decoration: BoxDecoration(
-           gradient: LinearGradient(begin: Alignment.topLeft,
-               end: Alignment.bottomRight,
-               colors: [Colors.white, Color(0xFFa2ffff)])
-       ),
-       child: Visibility(
-         visible: TableVisible,
-         child: SingleChildScrollView(
-           child: Column(
-             children: <Widget>[
-               ListTile(
-                 title: Text("Customer Name"),
-                 trailing: Text(orders_data['salesNameField']),
-               ),
-               Divider(),
-               ListTile(
-                 title: Text("Order id"),
-                 trailing: Text(orders_data['salesIdField']),
-               ),
-               Divider(),
-               ListTile(
-                 title: Text("Delivery Date"),
-                 trailing: Text(orders_data['deliveryDateField']),
-               ),
-               Divider(),
-               ListTile(
-                 title: Text("Delivery Name"),
-                 trailing: Text(orders_data['deliveryNameField']),
-               ),
-               Divider(),
-               ListTile(
-                 title: Text("Truck Number"),
-                 trailing: Text(orders_data['truckPlateField']),
-               ),
-               Divider(),
-               ListTile(
-                 title: Text("Start Load"),
-                 trailing: Text(orders_data['startLoadField']),
-               ),
-               Divider(),
-               ListTile(
-                 title: Text("Stop Load"),
-                 trailing: Text(orders_data['stopLoadField']),
-               ),
-               Divider(),
-             ],
-           ),
+     body: Visibility(
+       visible: TableVisible,
+       child: SingleChildScrollView(
+         child: Column(
+           children: <Widget>[
+             ListTile(
+               title: Text("Customer Name"),
+               trailing: Text(orders_data['salesNameField']),
+             ),
+             Divider(),
+             ListTile(
+               title: Text("Order id"),
+               trailing: Text(orders_data['salesIdField']),
+             ),
+             Divider(),
+             ListTile(
+               title: Text("Delivery Date"),
+               trailing: Text(orders_data['deliveryDateField']),
+             ),
+             Divider(),
+             ListTile(
+               title: Text("Delivery Name"),
+               trailing: Text(orders_data['deliveryNameField']),
+             ),
+             Divider(),
+             ListTile(
+               title: Text("Truck Number"),
+               trailing: Text(orders_data['truckPlateField']),
+             ),
+             Divider(),
+             ListTile(
+               title: Text("Start Load"),
+               trailing: Text(orders_data['startLoadField']),
+             ),
+             Divider(),
+             ListTile(
+               title: Text("Stop Load"),
+               trailing: Text(orders_data['stopLoadField']),
+             ),
+             Divider(),
+           ],
          ),
        ),
      ),

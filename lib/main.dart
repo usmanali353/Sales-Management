@@ -7,7 +7,8 @@ void main(){
     title: "Sales Management",
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
-      primarySwatch: Colors.teal
+      primarySwatch: Colors.teal,
+      brightness: Brightness.dark
     ),
     home: HomePage(),
   ));

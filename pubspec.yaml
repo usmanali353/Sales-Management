@@ -29,6 +29,7 @@ dependencies:
   progress_dialog:
   data_connection_checker:
   intl:
+  font_awesome_flutter:
 dev_dependencies:
   flutter_test:
     sdk: flutter
