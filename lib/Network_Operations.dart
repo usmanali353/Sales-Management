@@ -41,4 +41,20 @@ class Network_Operations {
     }else
       return null;
   }
+  static Future<String> GetOnHandByItem(String itemNumber) async {
+    final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/SalesService.svc/GetOnHandByItem/'+itemNumber);
+    print(response.body);
+    if(response.statusCode==200) {
+      return response.body;
+    }else
+      return null;
+  }
+  static Future<String> GetCustomerInvoices(String CustomerId,int PageNo,int PageSize) async{
+    final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/SalesService.svc/GetInvoices/'+CustomerId+'/'+PageNo.toString()+'/'+PageSize.toString());
+    debugPrint(response.body);
+    if(response.statusCode==200) {
+      return response.body;
+    }else
+      return null;
+  }
 }
