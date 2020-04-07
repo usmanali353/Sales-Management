@@ -34,14 +34,13 @@ class _InvoicesList extends State<InvoicesList>{
          });
        }
      });
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Invoices"),
+        title: Text("Sales_Services.Invoices"),
       ),
       body: Visibility(
         visible: isVisible,

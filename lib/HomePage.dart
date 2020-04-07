@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'Deliveries/GetDeliveries.dart';
-import 'Invoices/GetInVoices.dart';
-import 'Products/GetProductBySizeOrModel.dart';
-import 'Products/GetProductInfo.dart';
-import 'SalesOrders/Find_Orders.dart';
-import 'SalesOrders/GetSalesOrder.dart';
-import 'Stocks/GetItemStock.dart';
-import 'Stocks/GetStock.dart';
-
-
+import 'Sales_Services/Deliveries/GetDeliveries.dart';
+import 'Sales_Services/Invoices/GetInVoices.dart';
+import 'Sales_Services/Products/GetProductBySizeOrModel.dart';
+import 'Sales_Services/Products/GetProductInfo.dart';
+import 'Sales_Services/SalesOrders/Find_Orders.dart';
+import 'Sales_Services/SalesOrders/GetSalesOrder.dart';
+import 'Sales_Services/Stocks/GetItemStock.dart';
+import 'Sales_Services/Stocks/GetStock.dart';
 class HomePage extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
@@ -44,7 +42,7 @@ class _HomePageState extends State<HomePage>{
                   ),
                   Divider(),
                   ListTile(
-                    title: Text("Deliveries"),
+                    title: Text("Sales_Services.Deliveries"),
                     subtitle: Text("Gets all the deliveries for a specific customer on a given date"),
                     leading: Icon(Icons.local_shipping,size: 40,),
                     onTap: (){
@@ -89,7 +87,7 @@ class _HomePageState extends State<HomePage>{
                   ),
                   Divider(),
                   ListTile(
-                    title: Text("Customer Invoices"),
+                    title: Text("Customer Sales_Services.Invoices"),
                     subtitle: Text("Get all specific customer’s sales invoices by Customer Id"),
                     leading: Icon(FontAwesomeIcons.fileInvoice,size: 40,),
                     onTap: (){

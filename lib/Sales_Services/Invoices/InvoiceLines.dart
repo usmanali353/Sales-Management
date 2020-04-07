@@ -33,7 +33,6 @@ class _InvoiceLines extends State<InvoiceLines>{
         });
       }
     });
-    super.initState();
   }
   @override
   Widget build(BuildContext context) {

@@ -12,7 +12,6 @@ class SalesOrdersList extends StatefulWidget{
 
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _SalesOrdersList(this.startDate, this.endDate,this.CustomerId);
   }
 
@@ -34,11 +33,9 @@ class _SalesOrdersList extends State<SalesOrdersList>{
         });
       }
     });
-
   }
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(title: Text("Sales Orders"),),
       body: Visibility(

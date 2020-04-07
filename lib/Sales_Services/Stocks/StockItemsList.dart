@@ -69,7 +69,6 @@ class _StockItemsList extends State<StockItemsList>{
         }
       });
     }
-    super.initState();
   }
   @override
   Widget build(BuildContext context) {
