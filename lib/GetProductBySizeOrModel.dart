@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/Network_Operations.dart';
 import 'package:salesmanagement/ProductDetails.dart';
 import 'package:salesmanagement/ProductsList.dart';
@@ -87,13 +88,19 @@ class _GetProductBySizeOrModel extends State<GetProductBySizeOrModel>{
                       onPressed: (){
                         if(_fbKey.currentState.validate()){
                           if(sizeOrModel){
+                            ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
+                            pd.show();
                            Network_Operations.GetProductsBySize(customerId.text, selectedValue,'ItemSize', 1, 10).then((response){
+                             pd.dismiss();
                              if(response!=null){
                                Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductsList(json.decode(response))));
                              }
                            });
                           }else{
+                            ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
+                            pd.show();
                             Network_Operations.GetProductsByModel(customerId.text, selectedValue,'ItemSize', 1, 10).then((response){
+                              pd.dismiss();
                               if(response!=null){
                                 Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductsList(jsonDecode(response))));
                               }

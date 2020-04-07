@@ -12,6 +12,7 @@ class GetInVoices extends StatefulWidget{
 }
 class _GetInVoices extends State<GetInVoices>{
   TextEditingController CustomerId;
+  final GlobalKey<FormBuilderState> _fbKey = GlobalKey();
   @override
   void initState() {
     CustomerId=TextEditingController();
@@ -24,6 +25,7 @@ class _GetInVoices extends State<GetInVoices>{
       body: Column(
         children: <Widget>[
           FormBuilder(
+            key: _fbKey,
             child: Column(
               children: <Widget>[
                 Padding(
@@ -44,7 +46,11 @@ class _GetInVoices extends State<GetInVoices>{
                 MaterialButton(
                   color: Colors.teal,
                   onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoicesList(CustomerId.text)));
+                    if(_fbKey.currentState.validate()) {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) =>
+                              InvoicesList(CustomerId.text)));
+                    }
                   },
                   child: Text("Get Invoice",style:TextStyle(color: Colors.white),),
                 ),

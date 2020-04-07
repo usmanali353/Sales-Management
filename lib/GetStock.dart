@@ -16,7 +16,7 @@ class GetStock extends StatefulWidget{
 }
 class _GetStock extends State<GetStock>{
   var customerId,zero;
-
+  final GlobalKey<FormBuilderState> _fbKey = GlobalKey();
   _GetStock(this.zero);
 
   @override
@@ -26,12 +26,12 @@ class _GetStock extends State<GetStock>{
   }
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(title: Text("Find Stock"),),
       body: Column(
         children: <Widget>[
           FormBuilder(
+            key: _fbKey,
             child: Column(
               children: <Widget>[
                 Padding(
@@ -51,7 +51,11 @@ class _GetStock extends State<GetStock>{
                 MaterialButton(
                   color: Colors.teal,
                   onPressed: (){
-                     Navigator.push(context, MaterialPageRoute(builder: (context)=>StockItemsList(zero,customerId.text)));
+                    if(_fbKey.currentState.validate()) {
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) =>
+                              StockItemsList(zero, customerId.text)));
+                    }
                   },
 
                   child: Text("Find Stock",style:TextStyle(color: Colors.white),),

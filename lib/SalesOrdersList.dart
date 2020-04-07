@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/Network_Operations.dart';
 import 'package:salesmanagement/SalesOrderDetails.dart';
 
@@ -22,7 +23,10 @@ class _SalesOrdersList extends State<SalesOrdersList>{
   _SalesOrdersList(this.startDate, this.endDate,this.CustomerId);
  @override
   void initState() {
+   ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
+   pd.show();
     Network_Operations.GetSalesOrders(startDate, endDate,CustomerId).then((response){
+      pd.dismiss();
       if(response!=null){
         setState(() {
           this.order_data=json.decode(response);

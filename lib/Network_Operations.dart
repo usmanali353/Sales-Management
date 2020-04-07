@@ -85,4 +85,12 @@ class Network_Operations {
     }else
       return null;
   }
+  static Future<String> GetCustomerOlderStock(String CustomerId,int PageNo,int PageSize) async{
+    final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/SalesService.svc/GetCustomerOlderStock/'+CustomerId+'/'+PageNo.toString()+'/'+PageSize.toString());
+    print(response.body);
+    if(response.statusCode==200) {
+      return response.body;
+    }else
+      return null;
+  }
 }

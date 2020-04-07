@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/Network_Operations.dart';
 
 class ItemStockDetail extends StatefulWidget{
@@ -19,7 +20,10 @@ class _ItemStockDetail extends State<ItemStockDetail>{
   _ItemStockDetail(this.itemNumber);
   @override
   void initState() {
+    ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
+    pd.show();
     Network_Operations.GetOnHandByItem(itemNumber).then((response){
+      pd.dismiss();
        if(response!=null){
          setState(() {
            this.itemStockData=json.decode(response);

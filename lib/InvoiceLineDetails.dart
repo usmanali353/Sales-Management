@@ -1,8 +1,7 @@
-import 'dart:convert';
+
 
 import 'package:flutter/material.dart';
-import 'package:salesmanagement/InvoiceLines.dart';
-import 'package:salesmanagement/Network_Operations.dart';
+
 
 class invoiceLineDetails extends StatefulWidget{
   var InvoiceData;
@@ -11,7 +10,6 @@ class invoiceLineDetails extends StatefulWidget{
 
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _invoiceLineDetails(InvoiceData);
   }
 

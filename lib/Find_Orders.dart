@@ -15,6 +15,7 @@ class _FindOrdersState extends State<FindOrders>{
   TextEditingController order_number_controller;
   var OrderData;
   bool TableVisible=false;
+  final GlobalKey<FormBuilderState> _fbKey = GlobalKey();
   @override
   void initState() {
        order_number_controller=TextEditingController();
@@ -26,6 +27,7 @@ class _FindOrdersState extends State<FindOrders>{
               body: Column(
                 children: <Widget>[
                   FormBuilder(
+                    key: _fbKey,
                     child: Column(
                       children: <Widget>[
                         Padding(
@@ -46,17 +48,20 @@ class _FindOrdersState extends State<FindOrders>{
                         MaterialButton(
                           color: Colors.teal,
                           onPressed: (){
-                            if(order_number_controller.text!=null) {
-                              Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) =>
-                                      SearchedOrderDetail(
-                                          order_number_controller.text)));
-                            }else{
-                              Scaffold.of(context).showSnackBar(SnackBar(
-                                content: Text("Enter Order Number"),
-                                backgroundColor: Colors.red,
-                              ));
+                            if(_fbKey.currentState.validate()){
+                              if(order_number_controller.text!=null) {
+                                Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) =>
+                                        SearchedOrderDetail(
+                                            order_number_controller.text)));
+                              }else{
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                  content: Text("Enter Order Number"),
+                                  backgroundColor: Colors.red,
+                                ));
+                              }
                             }
+
                           },
 
                           child: Text("Search",style:TextStyle(color: Colors.white),),

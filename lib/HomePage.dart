@@ -53,19 +53,28 @@ class _HomePageState extends State<HomePage>{
                   Divider(),
                   ListTile(
                     title: Text("Available stock of a customer"),
-                    subtitle: Text("Get OnHand stock those have quantities more than zero"),
+                    subtitle: Text("Get OnHand stock of specific customer those have quantities more than zero"),
                     leading: Icon(FontAwesomeIcons.pallet,size: 40,),
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>GetStock(false)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>GetStock("Remaining Stock")));
                     },
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Finished stock of a customer"),
-                    subtitle: Text("Get OnHand stock those have quantities equal to zero"),
+                    subtitle: Text("Get OnHand stock of specific customer those have quantities equal to zero"),
                     leading: Icon(FontAwesomeIcons.boxOpen,size: 40,),
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>GetStock(true)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>GetStock("Finished Stock")));
+                    },
+                  ),
+                  Divider(),
+                  ListTile(
+                    title: Text("Older stock of a customer"),
+                    subtitle: Text("Get OnHand stock of specific customer that is atleast one month old"),
+                    leading: Icon(FontAwesomeIcons.history,size: 40,),
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>GetStock("Old Stock")));
                     },
                   ),
                   Divider(),
@@ -108,7 +117,7 @@ class _HomePageState extends State<HomePage>{
                   ListTile(
                     title: Text("Product Info"),
                     subtitle: Text("Get single product information "),
-                    leading: Icon(FontAwesomeIcons.productHunt,size: 40,),
+                    leading: Icon(FontAwesomeIcons.infoCircle,size: 40,),
                     onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>GetProductInfo()));
                     },

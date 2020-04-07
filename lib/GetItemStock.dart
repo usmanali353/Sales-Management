@@ -10,6 +10,7 @@ class GetItemStock extends StatefulWidget{
 }
 class _GetItemStock extends State<GetItemStock>{
   TextEditingController itemNumber;
+  final GlobalKey<FormBuilderState> _fbKey = GlobalKey();
   @override
   void initState() {
     setState(() {
@@ -24,6 +25,7 @@ class _GetItemStock extends State<GetItemStock>{
       body: Column(
         children: <Widget>[
           FormBuilder(
+            key: _fbKey,
             child: Column(
               children: <Widget>[
                 Padding(
@@ -44,7 +46,11 @@ class _GetItemStock extends State<GetItemStock>{
                 MaterialButton(
                   color: Colors.teal,
                   onPressed: (){
-                     Navigator.push(context, MaterialPageRoute(builder: (context)=>ItemStockDetail(itemNumber.text)));
+                    if(_fbKey.currentState.validate()) {
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) =>
+                              ItemStockDetail(itemNumber.text)));
+                    }
                   },
                   child: Text("Get Stock",style:TextStyle(color: Colors.white),),
                 ),

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/DeliveryDetails.dart';
 
 import 'Network_Operations.dart';
@@ -26,7 +27,10 @@ class _DeliveryList extends State<DeliveryList>{
 
   @override
   void initState() {
+    ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
+    pd.show();
     Network_Operations.get_deliveries(date,CustomerId).then((response){
+      pd.dismiss();
       if(response!=null){
         setState(() {
           orders_list=json.decode(response);
@@ -41,7 +45,6 @@ class _DeliveryList extends State<DeliveryList>{
   }
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(title: Text('Deliveries'),),
       body: Visibility(

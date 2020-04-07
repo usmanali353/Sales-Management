@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/InvoiceDetail.dart';
 import 'package:salesmanagement/InvoiceLines.dart';
 import 'package:salesmanagement/Network_Operations.dart';
@@ -24,7 +25,10 @@ class _InvoicesList extends State<InvoicesList>{
   _InvoicesList(this.CustomerId);
   @override
   void initState() {
+    ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
+    pd.show();
      Network_Operations.GetCustomerInvoices(CustomerId, 1, 10).then((response){
+       pd.dismiss();
        if(response!=null){
          setState(() {
            this.InvoiceList=json.decode(response);

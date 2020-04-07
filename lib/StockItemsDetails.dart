@@ -19,7 +19,7 @@ class _StockItemDetail extends State<StockItemDetail>{
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+
     return Scaffold(
       appBar: AppBar(title: Text("Stock Item Detail"),),
       body: ListView(
@@ -34,16 +34,25 @@ class _StockItemDetail extends State<StockItemDetail>{
             trailing: Text(itemData['ItemNumber']!=null?itemData['ItemNumber']:''),
           ),
           Divider(),
-          ListTile(
+        itemData['Grade']!=null ? ListTile(
             title: Text("Grade"),
             trailing: Text(itemData['Grade']!=null?itemData['Grade']:''),
+          ):
+        ListTile(
+            title: Text("Total Quantity Produced"),
+           trailing: Text(itemData['QtyinSQM']!=null?itemData['QtyinSQM'].toString():''),
           ),
           Divider(),
           ListTile(
-            title: Text("Item Quantity"),
-            trailing: Text(itemData['OnHandQty']!=null?itemData['OnHandQty'].toString():''),
+            title: Text("Remaining Quantity"),
+            trailing: Text(itemData['OnHandQty']!=null?itemData['OnHandQty'].toString():itemData['QtyAvailablePhysical'].toString()),
           ),
           Divider(),
+          itemData['ProductionId']!=null?
+              ListTile(
+                title: Text("Production Id"),
+                trailing: Text(itemData['ProductionId']!=null?itemData['ProductionId'].toString():''),
+              ):Container(),
         ],
       ),
     );
