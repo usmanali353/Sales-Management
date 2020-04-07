@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:salesmanagement/InvoiceLines.dart';
+import 'package:salesmanagement/Network_Operations.dart';
 
 class InvoiceDetails extends StatefulWidget{
   var InvoiceData;
@@ -16,12 +20,28 @@ class _InvoiceDetails extends State<InvoiceDetails>{
   var InvoiceData;
 
   _InvoiceDetails(this.InvoiceData);
-
+ @override
+  void initState() {
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: AppBar(title: Text("Invoice Detail"),),
+      appBar: AppBar(
+        title: Text("Invoice Detail"),
+        actions: <Widget>[
+          InkWell(
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoiceLines(InvoiceData['InvoiceId'])));
+            },
+            child: Center(child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text("View Invoice Lines",style: TextStyle(color: Colors.white),),
+            )),
+          )
+        ],
+      ),
       body: ListView(
         children: <Widget>[
           Column(

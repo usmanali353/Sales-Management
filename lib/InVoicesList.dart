@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:salesmanagement/InvoiceDetail.dart';
+import 'package:salesmanagement/InvoiceLines.dart';
 import 'package:salesmanagement/Network_Operations.dart';
 
 class InvoicesList extends StatefulWidget{
@@ -37,7 +38,9 @@ class _InvoicesList extends State<InvoicesList>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Invoices"),),
+      appBar: AppBar(
+        title: Text("Invoices"),
+      ),
       body: Visibility(
         visible: isVisible,
         child: ListView.builder(

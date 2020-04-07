@@ -4,6 +4,8 @@ import 'package:salesmanagement/Find_Orders.dart';
 import 'package:salesmanagement/GetDeliveries.dart';
 import 'package:salesmanagement/GetInVoices.dart';
 import 'package:salesmanagement/GetItemStock.dart';
+import 'package:salesmanagement/GetProductBySizeOrModel.dart';
+import 'package:salesmanagement/GetProductInfo.dart';
 import 'package:salesmanagement/GetStock.dart';
 import 'GetSalesOrder.dart';
 
@@ -52,7 +54,7 @@ class _HomePageState extends State<HomePage>{
                   ListTile(
                     title: Text("Available stock of a customer"),
                     subtitle: Text("Get OnHand stock those have quantities more than zero"),
-                    leading: Icon(FontAwesomeIcons.boxes,size: 40,),
+                    leading: Icon(FontAwesomeIcons.pallet,size: 40,),
                     onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>GetStock(false)));
                     },
@@ -61,7 +63,7 @@ class _HomePageState extends State<HomePage>{
                   ListTile(
                     title: Text("Finished stock of a customer"),
                     subtitle: Text("Get OnHand stock those have quantities equal to zero"),
-                    leading: Icon(FontAwesomeIcons.boxes,size: 40,),
+                    leading: Icon(FontAwesomeIcons.boxOpen,size: 40,),
                     onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>GetStock(true)));
                     },
@@ -70,7 +72,7 @@ class _HomePageState extends State<HomePage>{
                   ListTile(
                     title: Text("Stock of Specific Item"),
                     subtitle: Text("Get onHand quantities for a specific Item by item number"),
-                    leading: Icon(FontAwesomeIcons.boxOpen,size: 40,),
+                    leading: Icon(FontAwesomeIcons.box,size: 40,),
                     onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>GetItemStock()));
                     },
@@ -78,10 +80,37 @@ class _HomePageState extends State<HomePage>{
                   Divider(),
                   ListTile(
                     title: Text("Customer Invoices"),
-                    subtitle: Text("Gets all specific customer’s sales invoices by Customer Id"),
+                    subtitle: Text("Get all specific customer’s sales invoices by Customer Id"),
                     leading: Icon(FontAwesomeIcons.fileInvoice,size: 40,),
                     onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>GetInVoices()));
+                    },
+                  ),
+                  Divider(),
+                  ListTile(
+                    title: Text("Product By Size"),
+                    subtitle: Text("Get all the customer’s exclusive products by size "),
+                    leading: Icon(FontAwesomeIcons.rulerHorizontal,size: 40,),
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>GetProductBySizeOrModel(true)));
+                    },
+                  ),
+                  Divider(),
+                  ListTile(
+                    title: Text("Product By Model"),
+                    subtitle: Text("Get all the customer’s exclusive products by Model "),
+                    leading: Icon(FontAwesomeIcons.productHunt,size: 40,),
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>GetProductBySizeOrModel(false)));
+                    },
+                  ),
+                  Divider(),
+                  ListTile(
+                    title: Text("Product Info"),
+                    subtitle: Text("Get single product information "),
+                    leading: Icon(FontAwesomeIcons.productHunt,size: 40,),
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>GetProductInfo()));
                     },
                   ),
                   Divider(),

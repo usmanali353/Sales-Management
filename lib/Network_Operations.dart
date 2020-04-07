@@ -51,7 +51,35 @@ class Network_Operations {
   }
   static Future<String> GetCustomerInvoices(String CustomerId,int PageNo,int PageSize) async{
     final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/SalesService.svc/GetInvoices/'+CustomerId+'/'+PageNo.toString()+'/'+PageSize.toString());
+    if(response.statusCode==200) {
+      return response.body;
+    }else
+      return null;
+  }
+  static Future<String> GetInvoice(String InvoiceId) async {
+    final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/SalesService.svc/GetInvoice/'+InvoiceId);
     debugPrint(response.body);
+    if(response.statusCode==200) {
+      return response.body;
+    }else
+      return null;
+  }
+  static Future<String> GetProductInfo(String itemNumber) async {
+    final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/SalesService.svc/GetProductInfo/'+itemNumber);
+    if(response.statusCode==200) {
+      return response.body;
+    }else
+      return null;
+  }
+  static Future<String> GetProductsByModel(String CustomerId,String model,String sort,int PageNo,int PageSize) async{
+    final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/SalesService.svc/GetProductsByModel/'+CustomerId+'/'+model+'/'+sort+'/'+PageNo.toString()+'/'+PageSize.toString());
+    if(response.statusCode==200) {
+      return response.body;
+    }else
+      return null;
+  }
+  static Future<String> GetProductsBySize(String CustomerId,String size,String sort,int PageNo,int PageSize) async{
+    final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/SalesService.svc/GetProductsBySize/'+CustomerId+'/'+size+'/'+sort+'/'+PageNo.toString()+'/'+PageSize.toString());
     if(response.statusCode==200) {
       return response.body;
     }else
