@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:salesmanagement/InVoicesList.dart';
+import 'InVoicesList.dart';
 
 class GetInVoices extends StatefulWidget{
   @override

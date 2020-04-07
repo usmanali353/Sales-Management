@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:salesmanagement/Find_Orders.dart';
-import 'package:salesmanagement/GetDeliveries.dart';
-import 'package:salesmanagement/GetInVoices.dart';
-import 'package:salesmanagement/GetItemStock.dart';
-import 'package:salesmanagement/GetProductBySizeOrModel.dart';
-import 'package:salesmanagement/GetProductInfo.dart';
-import 'package:salesmanagement/GetStock.dart';
-import 'GetSalesOrder.dart';
+
+import 'Deliveries/GetDeliveries.dart';
+import 'Invoices/GetInVoices.dart';
+import 'Products/GetProductBySizeOrModel.dart';
+import 'Products/GetProductInfo.dart';
+import 'SalesOrders/Find_Orders.dart';
+import 'SalesOrders/GetSalesOrder.dart';
+import 'Stocks/GetItemStock.dart';
+import 'Stocks/GetStock.dart';
+
 
 class HomePage extends StatefulWidget{
   @override
@@ -19,7 +21,6 @@ class HomePage extends StatefulWidget{
 class _HomePageState extends State<HomePage>{
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(title: Text("Home"),),
       body: ListView(

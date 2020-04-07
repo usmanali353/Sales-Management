@@ -1,10 +1,8 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:salesmanagement/DeliveryDetails.dart';
-
-import 'Network_Operations.dart';
+import 'DeliveryDetails.dart';
+import '../Network_Operations.dart';
 
 class DeliveryList extends StatefulWidget{
   String date;

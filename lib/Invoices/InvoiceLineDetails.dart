@@ -1,8 +1,4 @@
-
-
 import 'package:flutter/material.dart';
-
-
 class invoiceLineDetails extends StatefulWidget{
   var InvoiceData;
 

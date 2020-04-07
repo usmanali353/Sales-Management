@@ -1,8 +1,7 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:salesmanagement/InvoiceLines.dart';
-import 'package:salesmanagement/Network_Operations.dart';
+import 'InvoiceLines.dart';
+
 
 class InvoiceDetails extends StatefulWidget{
   var InvoiceData;
@@ -26,7 +25,6 @@ class _InvoiceDetails extends State<InvoiceDetails>{
   }
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Invoice Detail"),

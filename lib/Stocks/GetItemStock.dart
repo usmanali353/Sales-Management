@@ -1,32 +1,28 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:progress_dialog/progress_dialog.dart';
-import 'package:salesmanagement/Network_Operations.dart';
-import 'package:salesmanagement/ProductDetails.dart';
+import 'ItemStockDetail.dart';
 
-class GetProductInfo extends StatefulWidget{
+class GetItemStock extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
-
-    return _GetProductInfo();
+    // TODO: implement createState
+    return _GetItemStock();
   }
-
 }
-class _GetProductInfo extends State<GetProductInfo>{
+class _GetItemStock extends State<GetItemStock>{
   TextEditingController itemNumber;
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey();
   @override
   void initState() {
-    itemNumber=TextEditingController();
+    setState(() {
+      this.itemNumber=TextEditingController();
+    });
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      appBar: AppBar(title: Text("View Product Info"),),
+      appBar: AppBar(title: Text("View Item Stock"),),
       body: Column(
         children: <Widget>[
           FormBuilder(
@@ -51,18 +47,13 @@ class _GetProductInfo extends State<GetProductInfo>{
                 MaterialButton(
                   color: Colors.teal,
                   onPressed: (){
-                    if(_fbKey.currentState.validate()){
-                      ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
-                      pd.show();
-                      Network_Operations.GetProductInfo(itemNumber.text).then((response){
-                        pd.dismiss();
-                        if(response!=null){
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductDetails(jsonDecode(response))));
-                        }
-                      });
+                    if(_fbKey.currentState.validate()) {
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) =>
+                              ItemStockDetail(itemNumber.text)));
                     }
                   },
-                  child: Text("Get Product Info",style:TextStyle(color: Colors.white),),
+                  child: Text("Get Stock",style:TextStyle(color: Colors.white),),
                 ),
               ],
             ),
@@ -71,5 +62,4 @@ class _GetProductInfo extends State<GetProductInfo>{
       ),
     );
   }
-
 }

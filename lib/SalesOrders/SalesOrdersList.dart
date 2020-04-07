@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/Network_Operations.dart';
-import 'package:salesmanagement/SalesOrderDetails.dart';
+import 'SalesOrderDetails.dart';
 
 class SalesOrdersList extends StatefulWidget{
   var startDate,endDate,CustomerId;
