@@ -30,6 +30,7 @@ dependencies:
   data_connection_checker:
   intl:
   font_awesome_flutter:
+  flutter_slidable:
 dev_dependencies:
   flutter_test:
     sdk: flutter

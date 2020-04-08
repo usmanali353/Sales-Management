@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:salesmanagement/Utils.dart';
 class Network_Operations {
   static Future<String> find_orders(String order_number) async {
     final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/SalesService.svc/FindSalesOrder/'+order_number);
@@ -87,6 +90,87 @@ class Network_Operations {
   }
   static Future<String> GetCustomerOlderStock(String CustomerId,int PageNo,int PageSize) async{
     final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/SalesService.svc/GetCustomerOlderStock/'+CustomerId+'/'+PageNo.toString()+'/'+PageSize.toString());
+    print(response.body);
+    if(response.statusCode==200) {
+      return response.body;
+    }else
+      return null;
+  }
+  //Customer Cases
+  static Future<String> GetCustomerCase(String caseId) async{
+    final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/CustomerCaseService.svc/GetCase/'+caseId);
+    print(response.body);
+    if(response.statusCode==200) {
+      return response.body;
+    }else
+      return null;
+  }
+  static Future<String> FindCustomerCases(String search) async{
+    final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/CustomerCaseService.svc/FindCases/'+search);
+    print(response.body);
+    if(response.statusCode==200) {
+      return response.body;
+    }else
+      return null;
+  }
+  static Future<String> DeleteCustomerCase(int recordId) async{
+    final response = await http.delete('http://sales.arabianceramics.com/AcmcMobileServices/CustomerCaseService.svc/DeleteCase/'+recordId.toString());
+    print(response.body);
+    if(response.statusCode==200) {
+      return response.body;
+    }else
+      return null;
+  }
+  static Future<String> CreateCustomerCase(String classField,String description,int statusField,int partyField,String caseCategoryField,int categoryTypeField,String priorityField) async{
+//    Map<String,dynamic> bodyJson={
+//      'classField':classField,
+//      'descriptionField':description,
+//      'statusField':statusField,
+//      'partyField':partyField,
+//      'priorityField':priorityField,
+//      'categoryRecIdField':{'PropertyChanged':null,'caseCategoryField':caseCategoryField,'categoryTypeField':categoryTypeField},
+//    };
+    final body = jsonEncode({'classField':classField,
+      'descriptionField':description,
+      'statusField':statusField,
+      'partyField':partyField,
+      'priorityField':priorityField,
+      'categoryRecIdField':{'PropertyChanged':null,'caseCategoryField':caseCategoryField,'categoryTypeField':categoryTypeField}},toEncodable: Utils.myEncode);
+    final response = await http.post('http://sales.arabianceramics.com/AcmcMobileServices/CustomerCaseService.svc/CreateCase?caseDetail='+body);
+    print(response.statusCode.toString());
+    if(response.statusCode==200) {
+      return response.body;
+    }else
+      return null;
+  }
+  //Production Plan
+  static Future<String> GetItemSizes()async{
+    final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/ProdPlanService.svc/GetItemSizes');
+    print(response.body);
+    if(response.statusCode==200) {
+      return response.body;
+    }else
+      return null;
+  }
+  //Production Request
+  static Future<String> GetProdRequestList(String CustomerId,int PageNo,int PageSize) async{
+    final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/ProdRequestService.svc/GetProdRequestList/'+CustomerId+'/'+PageNo.toString()+'/'+PageSize.toString());
+    print(response.body);
+    if(response.statusCode==200) {
+      return response.body;
+    }else
+      return null;
+  }
+  static Future<String> GetProdRequestListBySize(String CustomerId,String size,int PageNo,int PageSize) async{
+    final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/ProdRequestService.svc/GetProdRequestListBySize/'+CustomerId+'/'+size+'/'+PageNo.toString()+'/'+PageSize.toString());
+    print(response.body);
+    if(response.statusCode==200) {
+      return response.body;
+    }else
+      return null;
+  }
+  static Future<String> GetProdRequestListByItem(String CustomerId,String itemNumber,int PageNo,int PageSize) async{
+    final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/ProdRequestService.svc/GetProdRequestListByItem/'+CustomerId+'/'+itemNumber+'/'+PageNo.toString()+'/'+PageSize.toString());
     print(response.body);
     if(response.statusCode==200) {
       return response.body;
