@@ -130,14 +130,14 @@ class Network_Operations {
 //      'priorityField':priorityField,
 //      'categoryRecIdField':{'PropertyChanged':null,'caseCategoryField':caseCategoryField,'categoryTypeField':categoryTypeField},
 //    };
-    final body = jsonEncode({'classField':classField,
+    final body = jsonEncode({'caseDetail':{'classField':classField,
       'descriptionField':description,
       'statusField':statusField,
       'partyField':partyField,
       'priorityField':priorityField,
-      'categoryRecIdField':{'PropertyChanged':null,'caseCategoryField':caseCategoryField,'categoryTypeField':categoryTypeField}},toEncodable: Utils.myEncode);
+      'categoryRecIdField':{'PropertyChanged':null,'caseCategoryField':caseCategoryField,'categoryTypeField':categoryTypeField}}},toEncodable: Utils.myEncode);
     final response = await http.post('http://sales.arabianceramics.com/AcmcMobileServices/CustomerCaseService.svc/CreateCase?caseDetail='+body);
-    print(response.statusCode.toString());
+    print(body);
     if(response.statusCode==200) {
       return response.body;
     }else
@@ -146,7 +146,30 @@ class Network_Operations {
   //Production Plan
   static Future<String> GetItemSizes()async{
     final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/ProdPlanService.svc/GetItemSizes');
+    if(response.statusCode==200) {
+      return response.body;
+    }else
+      return null;
+  }
+  static Future<String> GetCustomerPlan(String customerId,String year)async{
+    final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/ProdPlanService.svc/GetCustomerPlan/'+customerId+'/'+year);
     print(response.body);
+    if(response.statusCode==200) {
+      return response.body;
+    }else
+      return null;
+  }
+  static Future<String> GetCustomerPlanBySize(String customerId,String size,String year)async{
+    final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/ProdPlanService.svc/GetCustomerPlanBySize/'+customerId+'/'+year+'/'+size);
+    print(response.body);
+    if(response.statusCode==200) {
+      return response.body;
+    }else
+      return null;
+  }
+  static Future<String> GetCustomerPlanByMonthSize(String customerId,String size,String year,int month)async{
+    final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/ProdPlanService.svc/GetCustomerPlanByMonthSize/'+customerId+'/'+year+'/'+month.toString()+'/'+size);
+    print('http://sales.arabianceramics.com/AcmcMobileServices/ProdPlanService.svc/GetCustomerPlanByMonthSize/'+customerId+'/'+year+'/'+month.toString()+'/'+size);
     if(response.statusCode==200) {
       return response.body;
     }else
@@ -202,8 +225,8 @@ class Network_Operations {
     }else
       return null;
   }
-  static Future<String> GetProductionScheduleByRequest(String CustomerId,String requestId,int PageNo,int PageSize) async{
-    final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/ProdRequestService.svc/GetProdScheduleByRequest/'+CustomerId+'/'+requestId+'/'+PageNo.toString()+'/'+PageSize.toString());
+  static Future<String> GetProductionScheduleByRequest(String requestId) async{
+    final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/ProdRequestService.svc/GetProdScheduleByRequest/'+requestId);
     print(response.body);
     if(response.statusCode==200) {
       return response.body;

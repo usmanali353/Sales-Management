@@ -5,6 +5,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/Network_Operations.dart';
 import 'package:salesmanagement/Production_Request/RequestList.dart';
+import 'package:salesmanagement/Production_Schedule/ScheduleDetails.dart';
 
 import 'ScheduleList.dart';
 
@@ -36,20 +37,6 @@ class _ProductionScheduleByRequest extends State<ProductionScheduleByRequest>{
                 Padding(
                   padding: EdgeInsets.all(16),
                   child:  FormBuilderTextField(
-                    controller: customerId,
-                    attribute: "Customer Id",
-                    validators: [FormBuilderValidators.required()],
-                    decoration: InputDecoration(labelText: "Customer Id",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(9.0),
-                          borderSide: BorderSide(color: Colors.teal, width: 1.0)
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 16,right: 16),
-                  child:  FormBuilderTextField(
                     controller: requestId,
                     attribute: "Request Id",
                     validators: [FormBuilderValidators.required()],
@@ -71,10 +58,15 @@ class _ProductionScheduleByRequest extends State<ProductionScheduleByRequest>{
                         onPressed: (){
                           ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
                           pd.show();
-                          Network_Operations.GetProductionScheduleByRequest(customerId.text, requestId.text, 1, 10).then((response){
+                          Network_Operations.GetProductionScheduleByRequest(requestId.text).then((response){
                             pd.dismiss();
                             if(response!=null&&response!=''&&response!='[]'){
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>SchedulesList(jsonDecode(response))));
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>ScheduleDetails(jsonDecode(response))));
+                            }else{
+                              Scaffold.of(context).showSnackBar(SnackBar(
+                                backgroundColor: Colors.red,
+                                content: Text("No Schedules Found",),
+                              ));
                             }
                           });
                         },

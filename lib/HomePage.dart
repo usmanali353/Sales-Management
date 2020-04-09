@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:salesmanagement/Customer_Cases/findCases.dart';
 import 'package:salesmanagement/Production_Request/ViewProductionRequests.dart';
 import 'package:salesmanagement/Production_Schedule/ViewProductionSchedule.dart';
+import 'Production_Plan/GetPlanByYear.dart';
 import 'Sales_Services/Deliveries/GetDeliveries.dart';
 import 'Sales_Services/Invoices/GetInVoices.dart';
 import 'Sales_Services/Products/GetProductBySizeOrModel.dart';
@@ -26,20 +27,11 @@ class _HomePageState extends State<HomePage>{
       body: ListView(
                 children: <Widget>[
                   ListTile(
-                    title: Text("Sales Orders"),
-                    subtitle: Text("Get Sales Order(s) for a specific customer between two dates"),
-                    leading: Icon(Icons.developer_board,size: 30,),
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>GetSalesOrders()));
-                    },
-                  ),
-                  Divider(),
-                  ListTile(
                     title: Text("Find Sales Orders"),
-                    subtitle: Text("Get a single Sales order by specifying a Sales Id number"),
+                    subtitle: Text("Get Sales Order(s) for a specific customer between two dates"),
                     leading: Icon(Icons.search,size: 30,),
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>FindOrders()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>GetSalesOrders()));
                     },
                   ),
                   Divider(),
@@ -53,38 +45,11 @@ class _HomePageState extends State<HomePage>{
                   ),
                   Divider(),
                   ListTile(
-                    title: Text("Available stock"),
-                   subtitle: Text("Get OnHand stock of specific customer those have quantities more than zero"),
+                    title: Text("Items stock"),
+                   subtitle: Text("Get OnHand stock of specific customer Which is Finished Available or Older then One Month"),
                     leading: Icon(FontAwesomeIcons.pallet,size: 30,),
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>GetStock("Remaining Stock")));
-                    },
-                  ),
-                  Divider(),
-                  ListTile(
-                    title: Text("Finished stock"),
-                   subtitle: Text("Get OnHand stock of specific customer those have quantities equal to zero"),
-                    leading: Icon(FontAwesomeIcons.boxOpen,size: 30,),
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>GetStock("Finished Stock")));
-                    },
-                  ),
-                  Divider(),
-                  ListTile(
-                    title: Text("Older stock"),
-                   subtitle: Text("Get OnHand stock of specific customer that is atleast one month old"),
-                    leading: Icon(FontAwesomeIcons.history,size: 30,),
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>GetStock("Old Stock")));
-                    },
-                  ),
-                  Divider(),
-                  ListTile(
-                    title: Text("Stock of Specific Item"),
-                   subtitle: Text("Get onHand quantities for a specific Item by item number"),
-                    leading: Icon(FontAwesomeIcons.box,size: 30,),
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>GetItemStock()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>GetStock()));
                     },
                   ),
                   Divider(),
@@ -138,7 +103,7 @@ class _HomePageState extends State<HomePage>{
                    subtitle: Text("Get Yearly and Monthly customer plans for specified Item Sizes"),
                     leading: Icon(FontAwesomeIcons.tasks,size: 30,),
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>FindCases()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>GetPlanByYear()));
                     },
                   ),
                   Divider(),

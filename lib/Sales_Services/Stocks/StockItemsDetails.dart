@@ -26,32 +26,32 @@ class _StockItemDetail extends State<StockItemDetail>{
         children: <Widget>[
           ListTile(
             title: Text("Item Name"),
-            trailing: Text(itemData['ItemDescription']!=null?itemData['ItemDescription']:''),
+            subtitle: Text(itemData['ItemDescription']!=null?itemData['ItemDescription']:''),
           ),
           Divider(),
           ListTile(
             title: Text("Item Number"),
-            trailing: Text(itemData['ItemNumber']!=null?itemData['ItemNumber']:''),
+            subtitle: Text(itemData['ItemNumber']!=null?itemData['ItemNumber']:''),
           ),
           Divider(),
         itemData['Grade']!=null ? ListTile(
             title: Text("Grade"),
-            trailing: Text(itemData['Grade']!=null?itemData['Grade']:''),
+            subtitle: Text(itemData['Grade']!=null?itemData['Grade']:''),
           ):
         ListTile(
             title: Text("Total Quantity Produced"),
-           trailing: Text(itemData['QtyinSQM']!=null?itemData['QtyinSQM'].toString():''),
+           subtitle: Text(itemData['QtyinSQM']!=null?itemData['QtyinSQM'].toString():''),
           ),
           Divider(),
           ListTile(
             title: Text("Remaining Quantity"),
-            trailing: Text(itemData['OnHandQty']!=null?itemData['OnHandQty'].toString():itemData['QtyAvailablePhysical'].toString()),
+            subtitle: Text(itemData['OnHandQty']!=null?itemData['OnHandQty'].toString():itemData['QtyAvailablePhysical'].toString()),
           ),
           Divider(),
           itemData['ProductionId']!=null?
               ListTile(
                 title: Text("Production Id"),
-                trailing: Text(itemData['ProductionId']!=null?itemData['ProductionId'].toString():''),
+                subtitle: Text(itemData['ProductionId']!=null?itemData['ProductionId'].toString():''),
               ):Container(),
         ],
       ),

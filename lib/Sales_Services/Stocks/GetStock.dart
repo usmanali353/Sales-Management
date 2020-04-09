@@ -1,23 +1,24 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:progress_dialog/progress_dialog.dart';
+import '../../Network_Operations.dart';
+import 'GetItemStock.dart';
 import 'StockItemsList.dart';
 
 class GetStock extends StatefulWidget{
-  var zero;
-
-  GetStock(this.zero);
-
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _GetStock(zero);
+    return _GetStock();
   }
 
 }
 class _GetStock extends State<GetStock>{
-  var customerId,zero;
+  var customerId,selectedValue;
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey();
-  _GetStock(this.zero);
+  _GetStock();
 
   @override
   void initState() {
@@ -27,7 +28,26 @@ class _GetStock extends State<GetStock>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Find Stock"),),
+      appBar: AppBar(
+        title: Text("Find Stock"),
+        actions: <Widget>[
+          PopupMenuButton<String>(
+            onSelected: (choice){
+              if(choice=='Stock of Specific Item'){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>GetItemStock()));
+              }
+            },
+            itemBuilder: (BuildContext context){
+              return ['Stock of Specific Item'].map((String choice){
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(choice),
+                );
+              }).toList();
+            },
+          )
+        ],
+      ),
       body: Column(
         children: <Widget>[
           FormBuilder(
@@ -36,6 +56,31 @@ class _GetStock extends State<GetStock>{
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(16),
+                  child: FormBuilderDropdown(
+                    attribute: "Find by",
+                    validators: [FormBuilderValidators.required()],
+                    hint: Text("Find by"),
+                    items: ['Available Stock','Finished Stock','Older Stock'].map((trainer)=>DropdownMenuItem(
+                      child: Text(trainer),
+                      value: trainer,
+                    )).toList(),
+                    style: Theme.of(context).textTheme.body1,
+                    decoration: InputDecoration(labelText: "Find by",
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(9.0),
+                          borderSide: BorderSide(color: Colors.teal, width: 1.0)
+                      ),
+                    ),
+                    onChanged: (value){
+                      setState(() {
+                        this.selectedValue=value;
+                        customerId.text="";
+                      });
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 16,left: 16),
                   child: FormBuilderTextField(
                     controller: customerId,
                     attribute: "Customer Id",
@@ -48,17 +93,62 @@ class _GetStock extends State<GetStock>{
                     ),
                   ),
                 ),
-                MaterialButton(
-                  color: Colors.teal,
-                  onPressed: (){
-                    if(_fbKey.currentState.validate()) {
-                      Navigator.push(context, MaterialPageRoute(
-                          builder: (context) =>
-                              StockItemsList(zero, customerId.text)));
-                    }
+                Builder(
+                  builder: (BuildContext context){
+                    return Padding(
+                      padding: EdgeInsets.only(top: 16),
+                      child: MaterialButton(
+                        color: Colors.teal,
+                        onPressed: (){
+                          if(_fbKey.currentState.validate()) {
+                            ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
+                            pd.show();
+                            if(selectedValue=='Available Stock'){
+                              Network_Operations.GetCustomerOnHand(customerId.text, 1, 10).then((response){
+                                pd.dismiss();
+                                if(response!=null&&response!=''&&response!='[]'){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => StockItemsList(selectedValue, jsonDecode(response))));
+                                }else{
+                                  Scaffold.of(context).showSnackBar(SnackBar(
+                                    backgroundColor: Colors.red,
+                                    content: Text("Stock Not Found"),
+                                  ));
+                                }
+                              });
+                            }else if(selectedValue=='Finished Stock'){
+                              Network_Operations.GetCustomerOnHandNoStock(customerId.text, 1, 10).then((response){
+                                pd.dismiss();
+                                if(response!=null&&response!=''&&response!='[]'){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => StockItemsList(selectedValue, jsonDecode(response))));
+                                }else{
+                                  Scaffold.of(context).showSnackBar(SnackBar(
+                                    backgroundColor: Colors.red,
+                                    content: Text("Stock Not Found"),
+                                  ));
+                                }
+                              });
+                            }else{
+                              Network_Operations.GetCustomerOlderStock(customerId.text, 1, 10).then((response){
+                                pd.dismiss();
+                                if(response!=null&&response!=''&&response!='[]'){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => StockItemsList(selectedValue, jsonDecode(response))));
+                                }else{
+                                  Scaffold.of(context).showSnackBar(SnackBar(
+                                    backgroundColor: Colors.red,
+                                    content: Text("Stock Not Found"),
+                                  ));
+                                }
+                              });
+                            }
+
+                          }
+                        },
+
+                        child: Text("Find Stock",style:TextStyle(color: Colors.white),),
+                      ),
+                    );
                   },
 
-                  child: Text("Find Stock",style:TextStyle(color: Colors.white),),
                 ),
               ],
             ),

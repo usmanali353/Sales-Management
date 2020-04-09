@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:intl/intl.dart';
+import 'package:salesmanagement/Sales_Services/SalesOrders/Find_Orders.dart';
 import 'SalesOrdersList.dart';
 
 class GetSalesOrders extends StatefulWidget{
@@ -22,9 +23,27 @@ class _GetSalesOrders extends State<GetSalesOrders>{
   }
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
-      appBar: AppBar(title: Text("Get Sales Orders"),),
+      appBar: AppBar(
+        title: Text("Get Sales Orders"),
+        actions: <Widget>[
+          PopupMenuButton<String>(
+            onSelected: (choice){
+              if(choice=='Find Order By Sales Id Number'){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>FindOrders()));
+              }
+            },
+            itemBuilder: (BuildContext context){
+              return ['Find Order By Sales Id Number'].map((String choice){
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(choice),
+                );
+              }).toList();
+            },
+          )
+        ],
+      ),
       body:  Column(
         children: <Widget>[
           FormBuilder(
