@@ -31,32 +31,42 @@ class _DeliveryDetails extends State<DeliveryDetails>{
         children: <Widget>[
           ListTile(
             title: Text("Order id"),
-            trailing: Text(orders_data['salesIdField']!=null?orders_data['salesIdField']:''),
+            subtitle: Text(orders_data['salesIdField']!=null?orders_data['salesIdField']:''),
           ),
           Divider(),
           ListTile(
             title: Text("Delivery Date"),
-            trailing: Text(orders_data['deliveryDateField']!=null?orders_data['deliveryDateField']:''),
+            subtitle: Text(orders_data['deliveryDateField']!=null?orders_data['deliveryDateField']:''),
           ),
           Divider(),
           ListTile(
             title: Text("Truck Number"),
-            trailing: Text(orders_data['truckPlateNumField']!=null?orders_data['truckPlateNumField']:''),
+            subtitle: Text(orders_data['truckPlateNumField']!=null?orders_data['truckPlateNumField']:''),
           ),
           Divider(),
           ListTile(
             title: Text("Truck Driver"),
-            trailing: Text(orders_data['truckDriverField']!=null?orders_data['truckDriverField']:''),
+            subtitle: Text(orders_data['truckDriverField']!=null?orders_data['truckDriverField']:''),
           ),
           Divider(),
           ListTile(
             title: Text("Packing Slip #"),
-            trailing: Text(orders_data['packingSlipNumField']!=null?orders_data['packingSlipNumField']:''),
+            subtitle: Text(orders_data['packingSlipNumField']!=null?orders_data['packingSlipNumField']:''),
           ),
           Divider(),
           ListTile(
             title: Text("Pallet Quantity"),
-            trailing: Text(orders_data['quantityInPalletsField']!=null?orders_data['quantityInPalletsField'].toString():''),
+            subtitle: Text(orders_data['quantityInPalletsField']!=null?orders_data['quantityInPalletsField'].toString():''),
+          ),
+          Divider(),
+          ListTile(
+            title: Text("Quantity in SQM"),
+            subtitle: Text(orders_data['quantityInSQMField']!=null?orders_data['quantityInSQMField'].toString():''),
+          ),
+          Divider(),
+          ListTile(
+            title: Text("Line Number"),
+            subtitle: Text(orders_data['lineNumField']!=null?orders_data['lineNumField'].toString():''),
           ),
           Divider(),
         ],

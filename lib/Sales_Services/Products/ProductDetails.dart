@@ -32,27 +32,27 @@ class _ProductDetails extends State<ProductDetails>{
             children: <Widget>[
               ListTile(
                 title: Text("Customer Ac #"),
-                trailing: Text(productData['CustomerAccount']!=null?productData['CustomerAccount']:''),
+                subtitle: Text(productData['CustomerAccount']!=null?productData['CustomerAccount']:''),
               ),
               Divider(),
               ListTile(
                 title: Text("Product Id"),
-                trailing: Text(productData['ItemNumber']!=null?productData['ItemNumber']:''),
+                subtitle: Text(productData['ItemNumber']!=null?productData['ItemNumber']:''),
               ),
               Divider(),
               ListTile(
                 title: Text("Product Name"),
-                trailing: Text(productData['ProductName']!=null?productData['ProductName']:''),
+                subtitle: Text(productData['ProductName']!=null?productData['ProductName']:''),
               ),
               Divider(),
               ListTile(
                 title: Text("Product Size"),
-                trailing: Text(productData['ItemSize']!=null?productData['ItemSize']:''),
+                subtitle: Text(productData['ItemSize']!=null?productData['ItemSize']:''),
               ),
               Divider(),
               ListTile(
                 title: Text("Product Short Name"),
-                trailing: Text(productData['ShortDescription']!=null?productData['ShortDescription']:''),
+                subtitle: Text(productData['ShortDescription']!=null?productData['ShortDescription']:''),
               ),
               Divider(),
             ],

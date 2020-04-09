@@ -26,37 +26,37 @@ class _CaseDetail extends State<CaseDetail>{
             children: <Widget>[
               ListTile(
                 title: Text("Case Id"),
-                trailing: Text(caseData['caseIdField']!=null?caseData['caseIdField']:''),
+                subtitle: Text(caseData['caseIdField']!=null?caseData['caseIdField']:''),
               ),
               Divider(),
               ListTile(
                 title: Text("Case type"),
-                trailing: Text(caseData['categoryRecIdField']['caseCategoryField']!=null?caseData['categoryRecIdField']['caseCategoryField']:''),
+                subtitle: Text(caseData['categoryRecIdField']['caseCategoryField']!=null?caseData['categoryRecIdField']['caseCategoryField']:''),
               ),
               Divider(),
               ListTile(
                 title: Text("Case Description"),
-                trailing: Text(caseData['descriptionField']!=null?caseData['descriptionField']:''),
+                subtitle: Text(caseData['descriptionField']!=null?caseData['descriptionField']:''),
               ),
               Divider(),
               ListTile(
                 title: Text("Department"),
-                trailing: Text(caseData['departmentField']!=null?caseData['departmentField']:''),
+                subtitle: Text(caseData['departmentField']!=null?caseData['departmentField']:''),
               ),
               Divider(),
               ListTile(
                 title: Text("Case Priority"),
-                trailing: Text(caseData['priorityField']!=null?caseData['priorityField']:''),
+                subtitle: Text(caseData['priorityField']!=null?caseData['priorityField']:''),
               ),
               Divider(),
               ListTile(
                 title: Text("Ower/Worker"),
-                trailing: Text(caseData['ownerWorkerField']!=null?caseData['ownerWorkerField']:''),
+                subtitle: Text(caseData['ownerWorkerField']!=null?caseData['ownerWorkerField']:''),
               ),
               Divider(),
               ListTile(
                 title: Text("Party"),
-                trailing: Text(caseData['partyField']!=null?caseData['partyField']:''),
+                subtitle: Text(caseData['partyField']!=null?caseData['partyField']:''),
               ),
               Divider(),
             ],

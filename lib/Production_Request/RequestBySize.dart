@@ -99,13 +99,12 @@ class _RequestBySize extends State<RequestBySize>{
                       child: MaterialButton(
                         color: Colors.teal,
                         onPressed: (){
-
                           if(_fbKey.currentState.validate()){
                             ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
                             pd.show();
                              Network_Operations.GetProdRequestListBySize(customerId.text, selectedValue, 1, 10).then((response){
                                pd.dismiss();
-                               if(response!=null&&response!=''){
+                               if(response!=null&&response!='[]'){
                                  Navigator.push(context,MaterialPageRoute(builder:(context)=>RequestList(jsonDecode(response))));
                                }else{
                                  Scaffold.of(context).showSnackBar(SnackBar(

@@ -1,21 +1,21 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/Network_Operations.dart';
-import 'package:salesmanagement/Production_Request/RequestByItem.dart';
-import 'package:salesmanagement/Production_Request/RequestBySize.dart';
 import 'package:salesmanagement/Production_Request/RequestList.dart';
+import 'ProductionScheduleByItem.dart';
+import 'ProductionScheduleByRequest.dart';
+import 'ScheduleList.dart';
 
-class ViewProductionRequests extends StatefulWidget{
+class ViewProductionSchedule extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
-    return _ViewProductionRequests();
+    return _ViewProductionSchedule();
   }
 
 }
-class _ViewProductionRequests extends State<ViewProductionRequests>{
+class _ViewProductionSchedule extends State<ViewProductionSchedule>{
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey();
   TextEditingController customerId;
   @override
@@ -26,18 +26,18 @@ class _ViewProductionRequests extends State<ViewProductionRequests>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("View Production Requests"),
+        title: Text("View Production Schedule"),
         actions: <Widget>[
           PopupMenuButton<String>(
             onSelected: (choice){
-              if(choice=='By Size'){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestBySize()));
+              if(choice=='By Request'){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductionScheduleByRequest()));
               }else if(choice=='By Item'){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestByItem()));
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductionScheduleByItem()));
               }
             },
             itemBuilder: (BuildContext context){
-              return ['By Size','By Item'].map((String choice){
+              return ['By Item','By Request'].map((String choice){
                 return PopupMenuItem<String>(
                   value: choice,
                   child: Text(choice),
@@ -75,16 +75,16 @@ class _ViewProductionRequests extends State<ViewProductionRequests>{
                         if(_fbKey.currentState.validate()) {
                           ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
                           pd.show();
-                          Network_Operations.GetProdRequestList(customerId.text, 1, 10).then((response){
+                          Network_Operations.GetProductionSchedules(customerId.text, 1, 10).then((response){
                             pd.dismiss();
-                             if(response!=null&&response!=''){
-                               Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList(jsonDecode(response))));
-                             }
+                            if(response!=null&&response!=''){
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>SchedulesList(jsonDecode(response))));
+                            }
                           });
                         }
 
                       },
-                      child: Text("Find Production Requests",style:TextStyle(color: Colors.white),),
+                      child: Text("Find Production Schedule",style:TextStyle(color: Colors.white),),
                     );
                   },
                 )

@@ -46,37 +46,37 @@ pd.show();
            children: <Widget>[
              ListTile(
                title: Text("Customer Name"),
-               trailing: Text(orders_data['salesNameField']),
+               subtitle: Text(orders_data['salesNameField']),
              ),
              Divider(),
              ListTile(
                title: Text("Order id"),
-               trailing: Text(orders_data['salesIdField']),
+               subtitle: Text(orders_data['salesIdField']),
              ),
              Divider(),
              ListTile(
                title: Text("Delivery Date"),
-               trailing: Text(orders_data['deliveryDateField']),
+               subtitle: Text(orders_data['deliveryDateField']),
              ),
              Divider(),
              ListTile(
                title: Text("Delivery Name"),
-               trailing: Text(orders_data['deliveryNameField']),
+               subtitle: Text(orders_data['deliveryNameField']),
              ),
              Divider(),
              ListTile(
                title: Text("Truck Number"),
-               trailing: Text(orders_data['truckPlateField']),
+               subtitle: Text(orders_data['truckPlateField']),
              ),
              Divider(),
              ListTile(
                title: Text("Start Load"),
-               trailing: Text(orders_data['startLoadField']),
+               subtitle: Text(orders_data['startLoadField']),
              ),
              Divider(),
              ListTile(
                title: Text("Stop Load"),
-               trailing: Text(orders_data['stopLoadField']),
+               subtitle: Text(orders_data['stopLoadField']),
              ),
              Divider(),
            ],

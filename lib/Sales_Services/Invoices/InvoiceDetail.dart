@@ -1,5 +1,9 @@
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:progress_dialog/progress_dialog.dart';
+import '../../Network_Operations.dart';
 import 'InvoiceLines.dart';
 
 
@@ -31,7 +35,16 @@ class _InvoiceDetails extends State<InvoiceDetails>{
         actions: <Widget>[
           InkWell(
             onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoiceLines(InvoiceData['InvoiceId'])));
+              ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
+              pd.show();
+              Network_Operations.GetInvoice(InvoiceData['InvoiceId']).then((response){
+                pd.dismiss();
+                if(response!=null&&response!=''&&response!='[]'){
+                  setState(() {
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoiceLines(jsonDecode(response))));
+                  });
+                }
+              });
             },
             child: Center(child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -46,32 +59,32 @@ class _InvoiceDetails extends State<InvoiceDetails>{
             children: <Widget>[
               ListTile(
                 title: Text("Invoice Id"),
-                trailing: Text(InvoiceData['InvoiceId']),
+                subtitle: Text(InvoiceData['InvoiceId']),
               ),
               Divider(),
               ListTile(
                 title: Text("Invoice Date"),
-                trailing: Text(InvoiceData['InvoiceDate']),
+                subtitle: Text(InvoiceData['InvoiceDate']),
               ),
               Divider(),
               ListTile(
                 title: Text("Order Id"),
-                trailing: Text(InvoiceData['SalesOrderId']),
+                subtitle: Text(InvoiceData['SalesOrderId']),
               ),
               Divider(),
               ListTile(
                 title: Text("Delivery Name"),
-                trailing: Text(InvoiceData['DeliveryName']),
+                subtitle: Text(InvoiceData['DeliveryName']),
               ),
               Divider(),
               ListTile(
                 title: Text("Sales Tax"),
-                trailing: Text(InvoiceData['SalesTaxAmount'].toString()),
+                subtitle: Text(InvoiceData['SalesTaxAmount'].toString()),
               ),
               Divider(),
               ListTile(
                 title: Text("Total Amount"),
-                trailing: Text(InvoiceData['InvoiceAmount'].toString()),
+                subtitle: Text(InvoiceData['InvoiceAmount'].toString()),
               ),
               Divider(),
 

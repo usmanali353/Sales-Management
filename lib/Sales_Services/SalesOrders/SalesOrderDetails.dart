@@ -28,27 +28,27 @@ class _salesOrdersDetails extends State<salesOrdersDetails>{
           Divider(),
           ListTile(
             title: Text("Order id"),
-            trailing: Text(order_data['salesIdField']!=null?order_data['salesIdField']:''),
+            subtitle: Text(order_data['salesIdField']!=null?order_data['salesIdField']:''),
           ),
           Divider(),
           ListTile(
             title: Text("Delivery Date"),
-            trailing: Text(order_data['deliveryDateField']!=null?order_data['deliveryDateField']:''),
+            subtitle: Text(order_data['deliveryDateField']!=null?order_data['deliveryDateField']:''),
           ),
           Divider(),
           ListTile(
             title: Text("Delivery Name"),
-            trailing: Text(order_data['deliveryNameField']!=null?order_data['deliveryNameField']:''),
+            subtitle: Text(order_data['deliveryNameField']!=null?order_data['deliveryNameField']:''),
           ),
           Divider(),
           ListTile(
             title: Text("Delivery Mode"),
-            trailing: Text(order_data['deliveryModeField']!=null?order_data['deliveryModeField']:''),
+            subtitle: Text(order_data['deliveryModeField']!=null?order_data['deliveryModeField']:''),
           ),
           Divider(),
           ListTile(
             title: Text("Sales Status"),
-            trailing: Text(order_data['salesStatusField']!=null?get_order_status(order_data['salesStatusField']):''),
+            subtitle: Text(order_data['salesStatusField']!=null?get_order_status(order_data['salesStatusField']):''),
           ),
           Divider(),
         ],

@@ -40,7 +40,7 @@ class _InvoicesList extends State<InvoicesList>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Sales_Services.Invoices"),
+        title: Text("Invoices"),
       ),
       body: Visibility(
         visible: isVisible,

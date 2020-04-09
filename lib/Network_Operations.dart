@@ -177,4 +177,38 @@ class Network_Operations {
     }else
       return null;
   }
+  static Future<String> DeleteProdRequest(String requestId) async{
+    final response=await http.delete('http://sales.arabianceramics.com/AcmcMobileServices/DeleteProdRequest/'+requestId);
+    print(response.body);
+    if(response.statusCode==200) {
+      return response.body;
+    }else
+      return null;
+  }
+  //Production Schedule
+  static Future<String> GetProductionSchedules(String CustomerId,int PageNo,int PageSize) async{
+    final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/ProdRequestService.svc/GetProductionSchedules/'+CustomerId+'/'+PageNo.toString()+'/'+PageSize.toString());
+    print(response.body);
+    if(response.statusCode==200) {
+      return response.body;
+    }else
+      return null;
+  }
+  static Future<String> GetProductionSchedulesByItem(String CustomerId,String itemNumber,int PageNo,int PageSize) async{
+    final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/ProdRequestService.svc/GetProductionSchedulesByItem/'+CustomerId+'/'+itemNumber+'/'+PageNo.toString()+'/'+PageSize.toString());
+    print(response.body);
+    if(response.statusCode==200) {
+      return response.body;
+    }else
+      return null;
+  }
+  static Future<String> GetProductionScheduleByRequest(String CustomerId,String requestId,int PageNo,int PageSize) async{
+    final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/ProdRequestService.svc/GetProdScheduleByRequest/'+CustomerId+'/'+requestId+'/'+PageNo.toString()+'/'+PageSize.toString());
+    print(response.body);
+    if(response.statusCode==200) {
+      return response.body;
+    }else
+      return null;
+  }
+
 }
