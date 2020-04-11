@@ -73,6 +73,11 @@ class _RequestByItem extends State<RequestByItem>{
                             pd.dismiss();
                              if(response!=null&&response!=''&&response!='[]'){
                                Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList(jsonDecode(response))));
+                             }else{
+                               Scaffold.of(context).showSnackBar(SnackBar(
+                                 backgroundColor: Colors.red,
+                                 content: Text("Requests Not Found"),
+                               ));
                              }
                           });
                         },

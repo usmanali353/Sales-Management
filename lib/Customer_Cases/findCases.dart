@@ -33,7 +33,10 @@ class _FindCases extends State<FindCases>{
               Navigator.push(context, MaterialPageRoute(builder: (context)=>CreateCase()));
             },
             child: Center(
-              child: Text("Create Case"),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text("Create Case"),
+              ),
             ),
           )
         ],

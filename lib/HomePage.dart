@@ -63,26 +63,8 @@ class _HomePageState extends State<HomePage>{
                   ),
                   Divider(),
                   ListTile(
-                    title: Text("Product By Size"),
-                    subtitle: Text("Get all the customer’s exclusive products by size "),
-                    leading: Icon(FontAwesomeIcons.rulerHorizontal,size: 30,),
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>GetProductBySizeOrModel(true)));
-                    },
-                  ),
-                  Divider(),
-                  ListTile(
-                    title: Text("Product By Model"),
-                   subtitle: Text("Get all the customer’s exclusive products by Model "),
-                    leading: Icon(FontAwesomeIcons.productHunt,size: 30,),
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>GetProductBySizeOrModel(false)));
-                    },
-                  ),
-                  Divider(),
-                  ListTile(
                     title: Text("Product Info"),
-                   subtitle: Text("Get single product information "),
+                   subtitle: Text("Get product information searched by Model Size or Item Number"),
                     leading: Icon(FontAwesomeIcons.infoCircle,size: 30,),
                     onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>GetProductInfo()));

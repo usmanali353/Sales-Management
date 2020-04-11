@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/Network_Operations.dart';
+import 'package:salesmanagement/Sales_Services/Products/GetProductBySizeOrModel.dart';
 import 'ProductDetails.dart';
 
 class GetProductInfo extends StatefulWidget{
@@ -26,7 +27,28 @@ class _GetProductInfo extends State<GetProductInfo>{
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: AppBar(title: Text("View Product Info"),),
+      appBar: AppBar(
+        title: Text("View Product Info"),
+        actions: <Widget>[
+          PopupMenuButton<String>(
+            onSelected: (choice){
+              if(choice=='View Product Info by Size'){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>GetProductBySizeOrModel(true)));
+              }else if(choice=='View Product Info by Model'){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>GetProductBySizeOrModel(false)));
+              }
+            },
+            itemBuilder: (BuildContext context){
+              return ['View Product Info by Size','View Product Info by Model'].map((String choice){
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(choice),
+                );
+              }).toList();
+            },
+          )
+        ],
+      ),
       body: Column(
         children: <Widget>[
           FormBuilder(
