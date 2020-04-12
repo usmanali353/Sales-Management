@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage>{
                   Divider(),
                   ListTile(
                     title: Text("Items stock"),
-                   subtitle: Text("Get OnHand stock of specific customer Which is Finished Available or Older then One Month"),
+                   subtitle: Text("Get OnHand stock of specific customer Which is Finished Available or Old"),
                     leading: Icon(FontAwesomeIcons.pallet,size: 30,),
                     onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>GetStock()));
