@@ -130,12 +130,12 @@ class Network_Operations {
 //      'priorityField':priorityField,
 //      'categoryRecIdField':{'PropertyChanged':null,'caseCategoryField':caseCategoryField,'categoryTypeField':categoryTypeField},
 //    };
-    final body = jsonEncode({'caseDetail':{'classField':classField,
+    final body = jsonEncode({'classField':classField,
       'descriptionField':description,
       'statusField':statusField,
       'partyField':partyField,
       'priorityField':priorityField,
-      'categoryRecIdField':{'PropertyChanged':null,'caseCategoryField':caseCategoryField,'categoryTypeField':categoryTypeField}}},toEncodable: Utils.myEncode);
+      'categoryRecIdField':{'PropertyChanged':null,'caseCategoryField':caseCategoryField,'categoryTypeField':categoryTypeField}},toEncodable: Utils.myEncode);
     final response = await http.post('http://sales.arabianceramics.com/AcmcMobileServices/CustomerCaseService.svc/CreateCase?caseDetail='+body);
     print(body);
     if(response.statusCode==200) {

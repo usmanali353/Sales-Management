@@ -21,10 +21,26 @@ class _GetProductBySizeOrModel extends State<GetProductBySizeOrModel>{
   TextEditingController customerId;
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey();
   _GetProductBySizeOrModel(this.sizeOrModel);
+  var itemSizesJson,isVisible=false;
+  List<String> itemSizes=[];
  @override
   void initState() {
      this.customerId=TextEditingController();
-    super.initState();
+     ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
+     pd.show();
+     Network_Operations.GetItemSizes().then((response){
+       pd.dismiss();
+       if(response!=null){
+         setState(() {
+           itemSizesJson=json.decode(response);
+           for(int i=0;i<itemSizesJson.length;i++){
+             itemSizes.add(itemSizesJson[i]['ItemSize']);
+             isVisible=true;
+           }
+
+         });
+       }
+     });
   }
   @override
   Widget build(BuildContext context) {
@@ -57,7 +73,7 @@ class _GetProductBySizeOrModel extends State<GetProductBySizeOrModel>{
                     attribute: "Select Size or Model",
                     validators: [FormBuilderValidators.required()],
                     hint: Text(sizeOrModel?"Select Size":"Select Model"),
-                    items: sizeOrModel?['600x600','450x450'].map((trainer)=>DropdownMenuItem(
+                    items: sizeOrModel?itemSizes.map((trainer)=>DropdownMenuItem(
                       child: Text(trainer),
                       value: trainer,
                     )).toList():['Alma','Decor'].map((name) => DropdownMenuItem(

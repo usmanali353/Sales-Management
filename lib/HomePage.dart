@@ -81,8 +81,8 @@ class _HomePageState extends State<HomePage>{
                   ),
                   Divider(),
                   ListTile(
-                    title: Text("Customer Plans"),
-                   subtitle: Text("Get Yearly and Monthly customer plans for specified Item Sizes"),
+                    title: Text("Production Plans"),
+                   subtitle: Text("Get Yearly and Monthly Production plans for specified Item Sizes"),
                     leading: Icon(FontAwesomeIcons.tasks,size: 30,),
                     onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>GetPlanByYear()));
