@@ -1,27 +1,28 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-
 import '../Network_Operations.dart';
-import 'PlanList.dart';
+class UpdateProductionPlan extends StatefulWidget {
+  var planData;
 
-class GetPlanByMonth extends StatefulWidget{
+  UpdateProductionPlan(this.planData);
+
   @override
-  State<StatefulWidget> createState() {
-    return _GetPlanByMonth();
-  }
-
+  _UpdateProductionPlanState createState() => _UpdateProductionPlanState(planData);
 }
-class _GetPlanByMonth extends State<GetPlanByMonth>{
+class _UpdateProductionPlanState extends State<UpdateProductionPlan> {
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey();
-  TextEditingController customerId,year;
-  var itemSizesJson,selectedValue,selectedYear,selectedMonth,isVisible=false;
-  List<String> itemSizes=[],months=['January','Febuary','March','April','May','June','July','August','September','October','November','December'];
+  TextEditingController customerId,quantity;
+  var itemSizesJson,selectedValue,selectedYear,selectedMonth,isVisible=false,planData;
+
+  _UpdateProductionPlanState(this.planData);
+
+  List<String> itemSizes=[],months=['January','Febuary','March','April','May','June','July','August','September','October','November','December'],years=['2020','2021','2022','2023','2024','2025'];
   @override
   void initState() {
     customerId=TextEditingController();
+    quantity=TextEditingController();
     ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
     pd.show();
     Network_Operations.GetItemSizes().then((response){
@@ -33,15 +34,16 @@ class _GetPlanByMonth extends State<GetPlanByMonth>{
             itemSizes.add(itemSizesJson[i]['ItemSize']);
             isVisible=true;
           }
-
         });
       }
     });
+    customerId.text=planData['CustomerAccount'];
+    quantity.text=planData['EstimatedQuantity'].toString();
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Plans by Month"),),
+      appBar: AppBar(title: Text("Update Production Plan"),),
       body: ListView(
         children: <Widget>[
           FormBuilder(
@@ -69,6 +71,7 @@ class _GetPlanByMonth extends State<GetPlanByMonth>{
                     child: FormBuilderDropdown(
                       attribute: "Select ItemSize",
                       hint: Text("Select Item Size"),
+                      initialValue: planData['ItemSize'],
                       items: itemSizes!=null?itemSizes.map((plans)=>DropdownMenuItem(
                         child: Text(plans),
                         value: plans,
@@ -76,6 +79,11 @@ class _GetPlanByMonth extends State<GetPlanByMonth>{
                           value: name, child: Text("$name")))
                           .toList(),
                       onChanged: (value){
+                        setState(() {
+                          this.selectedValue=value;
+                        });
+                      },
+                      onSaved: (value){
                         setState(() {
                           this.selectedValue=value;
                         });
@@ -97,7 +105,8 @@ class _GetPlanByMonth extends State<GetPlanByMonth>{
                     attribute: "Select Year",
                     validators: [FormBuilderValidators.required()],
                     hint: Text("Select Year"),
-                    items: ['2015','2016','2017','2018','2019','2020'].map((trainer)=>DropdownMenuItem(
+                    initialValue:planData['WhichYear'].toString(),
+                    items: years.map((trainer)=>DropdownMenuItem(
                       child: Text(trainer),
                       value: trainer,
                     )).toList(),
@@ -113,6 +122,11 @@ class _GetPlanByMonth extends State<GetPlanByMonth>{
                         this.selectedYear=value;
                       });
                     },
+                    onSaved: (value){
+                      setState(() {
+                        this.selectedYear=value;
+                      });
+                    },
                   ),
                 ),
                 Padding(
@@ -120,6 +134,7 @@ class _GetPlanByMonth extends State<GetPlanByMonth>{
                   child: FormBuilderDropdown(
                     attribute: "Select Month",
                     hint: Text("Select Month"),
+                    initialValue: planData['MonthOfYear'],
                     items: months!=null?months.map((plans)=>DropdownMenuItem(
                       child: Text(plans),
                       value: plans,
@@ -127,6 +142,11 @@ class _GetPlanByMonth extends State<GetPlanByMonth>{
                         value: name, child: Text("$name")))
                         .toList(),
                     onChanged: (value){
+                      setState(() {
+                        this.selectedMonth=months.indexOf(value)+1;
+                      });
+                    },
+                    onSaved: (value){
                       setState(() {
                         this.selectedMonth=months.indexOf(value)+1;
                       });
@@ -141,40 +161,58 @@ class _GetPlanByMonth extends State<GetPlanByMonth>{
 
                   ),
                 ),
+                Padding(
+                  padding: EdgeInsets.all(16),
+                  child:  FormBuilderTextField(
+                    controller: quantity,
+                    attribute: "Quantity",
+                    keyboardType: TextInputType.number,
+                    validators: [FormBuilderValidators.required()],
+                    decoration: InputDecoration(labelText: "Quantity",
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(9.0),
+                          borderSide: BorderSide(color: Colors.teal, width: 1.0)
+                      ),
+                    ),
+                  ),
+                ),
                 Builder(
                   builder: (BuildContext context){
                     return Padding(
-                      padding: EdgeInsets.only(top: 16),
+                      padding: const EdgeInsets.only(top: 16),
                       child: MaterialButton(
                         color: Colors.teal,
                         onPressed: (){
                           if(_fbKey.currentState.validate()){
+                            _fbKey.currentState.save();
                             ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
                             pd.show();
-                            Network_Operations.GetCustomerPlanByMonthSize(customerId.text, selectedValue, selectedYear, selectedMonth).then((response){
+                            Network_Operations.UpdateCustomerPlan(customerId.text, selectedValue, selectedMonth, int.parse(selectedYear),int.parse(quantity.text),planData['RecordId']).then((response){
                               pd.dismiss();
-                              if(response!=null&&response!='[]'&&response!=''){
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=>PlanList(jsonDecode(response),'Month and Size',selectedYear,selectedMonth,selectedValue,customerId.text)));
+                              if(response!=null){
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                  backgroundColor: Colors.green,
+                                  content: Text("Customer Plan Updated Sucessfully"),
+                                ));
                               }else{
                                 Scaffold.of(context).showSnackBar(SnackBar(
                                   backgroundColor: Colors.red,
-                                  content: Text("Plans Not Found"),
+                                  content: Text("Customer Plan not Updated"),
                                 ));
                               }
                             });
                           }
                         },
-                        child: Text("Find Production Plan by Month",style: TextStyle(color: Colors.white),),
+                        child: Text("Update Production Plan",style: TextStyle(color: Colors.white),),
                       ),
                     );
                   },
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
   }
-
 }

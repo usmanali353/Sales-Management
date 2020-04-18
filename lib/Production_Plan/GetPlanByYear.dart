@@ -1,11 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/Network_Operations.dart';
+import 'package:salesmanagement/Production_Plan/CreateProductionPlan.dart';
 
 import 'GetPlanByMonth.dart';
 import 'GetPlanByYearAndSize.dart';
+import 'PlanList.dart';
 
 class GetPlanByYear extends StatefulWidget{
   @override
@@ -25,19 +29,25 @@ class _GetPlanByYear extends State<GetPlanByYear>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+       onPressed: (){
+         Navigator.push(context, MaterialPageRoute(builder: (context)=>CreateProductionPlan()));
+       },
+      ),
       appBar: AppBar(
         title: Text("View Production Plan"),
         actions: <Widget>[
           PopupMenuButton<String>(
             onSelected: (choice){
-              if(choice=='Plan By Size and Month'){
+              if(choice=='By Size and Month'){
                 Navigator.push(context, MaterialPageRoute(builder: (context)=>GetPlanByMonth()));
-              }else if(choice=='Plan By Size and Year'){
+              }else if(choice=='By Size and Year'){
                 Navigator.push(context, MaterialPageRoute(builder: (context)=>GetPlanByYearAndSize()));
               }
             },
             itemBuilder: (BuildContext context){
-              return ['Plan By Size and Month','Plan By Size and Year'].map((String choice){
+              return ['By Size and Month','By Size and Year'].map((String choice){
                 return PopupMenuItem<String>(
                   value: choice,
                   child: Text(choice),
@@ -105,7 +115,7 @@ class _GetPlanByYear extends State<GetPlanByYear>{
                                   Network_Operations.GetCustomerPlan(customerId.text,selectedYear).then((response){
                                     pd.dismiss();
                                     if(response!=null&&response!=''&&response!='[]'){
-
+                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>PlanList(jsonDecode(response),'All',selectedYear,null,null,customerId.text)));
                                     }else{
                                       Scaffold.of(context).showSnackBar(SnackBar(
                                         content: Text("Production Plan Not Found"),

@@ -72,7 +72,7 @@ class _RequestByItem extends State<RequestByItem>{
                           Network_Operations.GetProdRequestListByItem(customerId.text, itemNumber.text, 1, 10).then((response){
                             pd.dismiss();
                              if(response!=null&&response!=''&&response!='[]'){
-                               Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList(jsonDecode(response))));
+                               Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList(jsonDecode(response),'Item',customerId.text,null,itemNumber.text)));
                              }else{
                                Scaffold.of(context).showSnackBar(SnackBar(
                                  backgroundColor: Colors.red,

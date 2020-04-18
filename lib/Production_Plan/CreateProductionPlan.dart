@@ -1,27 +1,22 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-
 import '../Network_Operations.dart';
-import 'PlanList.dart';
-
-class GetPlanByMonth extends StatefulWidget{
+class CreateProductionPlan extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    return _GetPlanByMonth();
-  }
-
+  _CreateProductionPlanState createState() => _CreateProductionPlanState();
 }
-class _GetPlanByMonth extends State<GetPlanByMonth>{
+
+class _CreateProductionPlanState extends State<CreateProductionPlan> {
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey();
-  TextEditingController customerId,year;
+  TextEditingController customerId,quantity;
   var itemSizesJson,selectedValue,selectedYear,selectedMonth,isVisible=false;
   List<String> itemSizes=[],months=['January','Febuary','March','April','May','June','July','August','September','October','November','December'];
   @override
   void initState() {
     customerId=TextEditingController();
+    quantity=TextEditingController();
     ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
     pd.show();
     Network_Operations.GetItemSizes().then((response){
@@ -33,7 +28,6 @@ class _GetPlanByMonth extends State<GetPlanByMonth>{
             itemSizes.add(itemSizesJson[i]['ItemSize']);
             isVisible=true;
           }
-
         });
       }
     });
@@ -41,7 +35,7 @@ class _GetPlanByMonth extends State<GetPlanByMonth>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Plans by Month"),),
+      appBar: AppBar(title: Text("Create Production Plan"),),
       body: ListView(
         children: <Widget>[
           FormBuilder(
@@ -97,7 +91,7 @@ class _GetPlanByMonth extends State<GetPlanByMonth>{
                     attribute: "Select Year",
                     validators: [FormBuilderValidators.required()],
                     hint: Text("Select Year"),
-                    items: ['2015','2016','2017','2018','2019','2020'].map((trainer)=>DropdownMenuItem(
+                    items: ['2020','2021','2022','2023','2024','2025'].map((trainer)=>DropdownMenuItem(
                       child: Text(trainer),
                       value: trainer,
                     )).toList(),
@@ -141,40 +135,57 @@ class _GetPlanByMonth extends State<GetPlanByMonth>{
 
                   ),
                 ),
+                Padding(
+                  padding: EdgeInsets.all(16),
+                  child:  FormBuilderTextField(
+                    controller: quantity,
+                    attribute: "Quantity",
+                    keyboardType: TextInputType.number,
+                    validators: [FormBuilderValidators.required()],
+                    decoration: InputDecoration(labelText: "Quantity",
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(9.0),
+                          borderSide: BorderSide(color: Colors.teal, width: 1.0)
+                      ),
+                    ),
+                  ),
+                ),
                 Builder(
                   builder: (BuildContext context){
                     return Padding(
-                      padding: EdgeInsets.only(top: 16),
+                      padding: const EdgeInsets.only(top:16),
                       child: MaterialButton(
                         color: Colors.teal,
                         onPressed: (){
                           if(_fbKey.currentState.validate()){
                             ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
                             pd.show();
-                            Network_Operations.GetCustomerPlanByMonthSize(customerId.text, selectedValue, selectedYear, selectedMonth).then((response){
+                            Network_Operations.CreateCustomerPlan(customerId.text, selectedValue, selectedMonth, int.parse(selectedYear),int.parse(quantity.text)).then((response){
                               pd.dismiss();
-                              if(response!=null&&response!='[]'&&response!=''){
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=>PlanList(jsonDecode(response),'Month and Size',selectedYear,selectedMonth,selectedValue,customerId.text)));
+                              if(response!=null){
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                  backgroundColor: Colors.green,
+                                  content: Text("Customer Plan Created Sucessfully"),
+                                ));
                               }else{
                                 Scaffold.of(context).showSnackBar(SnackBar(
                                   backgroundColor: Colors.red,
-                                  content: Text("Plans Not Found"),
+                                  content: Text("Customer Plan not Created"),
                                 ));
                               }
                             });
                           }
                         },
-                        child: Text("Find Production Plan by Month",style: TextStyle(color: Colors.white),),
+                        child: Text("Add Production Plan",style: TextStyle(color: Colors.white),),
                       ),
                     );
                   },
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
   }
-
 }

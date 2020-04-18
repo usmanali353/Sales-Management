@@ -1,41 +1,62 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/Customer_Cases/CaseDetail.dart';
 import 'package:salesmanagement/Network_Operations.dart';
+import 'package:salesmanagement/Production_Plan/UpdateProductionPlan.dart';
+
+import 'PlanDetails.dart';
 
 class PlanList extends StatefulWidget{
-  var planList;
+  var planList,type,month,year,size,customerId;
 
-  PlanList(this.planList);
+  PlanList(this.planList,this.type,this.year,this.month,this.size,this.customerId);
 
   @override
   State<StatefulWidget> createState() {
-    return _PlanList(planList);
+    return _PlanList(planList,type,month,year,size,customerId);
   }
 
 }
 class _PlanList extends State<PlanList>{
-  var planList,temp=['',''],isVisible=false;
-
-  _PlanList(this.planList);
-  @override
-  void initState() {
-    if(planList!=''){
-      setState(() {
-        isVisible=true;
-      });
-    }
-  }
-
+  var planList,temp=['',''],type,month,year,size,customerId;
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+  _PlanList(this.planList,this.type,this.year,this.month,this.size,this.customerId);
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      appBar: AppBar(title: Text("Cases"),),
-      body: Visibility(
-        visible:isVisible,
+      appBar: AppBar(title: Text("Plans"),),
+      body: RefreshIndicator(
+        key: _refreshIndicatorKey,
+        onRefresh: (){
+          if(type=="All"){
+            return Network_Operations.GetCustomerPlan(customerId, year).then((response){
+              if(response!=null&&response!=''&&response!='[]'){
+                setState(() {
+                  this.planList=jsonDecode(response);
+                });
+              }
+            });
+          }else if(type=="Size and Year"){
+            return Network_Operations.GetCustomerPlanBySize(customerId, size, year).then((response){
+              if(response!=null&&response!=''&&response!='[]'){
+                setState(() {
+                  this.planList=jsonDecode(response);
+                });
+              }
+            });
+          }else
+            return Network_Operations.GetCustomerPlanByMonthSize(customerId, size, year, month).then((response){
+              if(response!=null&&response!=''&&response!='[]'){
+                setState(() {
+                  this.planList=jsonDecode(response);
+                });
+              }
+            });
+        },
         child: ListView.builder(itemCount: planList!=null?planList.length:temp.length,itemBuilder: (context,int index){
           return Column(
             children: <Widget>[
@@ -50,12 +71,21 @@ class _PlanList extends State<PlanList>{
                       onTap: (){
                         ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
                         pd.show();
-                        Network_Operations.DeleteCustomerCase(planList[index]['recIdField']).then((response){
+                        Network_Operations.DeleteCustomerPlan(planList[index]['RecordId']).then((response){
                           pd.dismiss();
                           if(response!=null){
+                            WidgetsBinding.instance
+                                .addPostFrameCallback((_) =>
+                                _refreshIndicatorKey.currentState
+                                    .show());
                             Scaffold.of(context).showSnackBar(SnackBar(
                               backgroundColor: Colors.green,
                               content: Text("Plan Deleted Sucessfully"),
+                            ));
+                          }else{
+                            Scaffold.of(context).showSnackBar(SnackBar(
+                              backgroundColor: Colors.red,
+                              content: Text("Plan not Deleted"),
                             ));
                           }
                         });
@@ -66,21 +96,19 @@ class _PlanList extends State<PlanList>{
                       color: Colors.blue,
                       caption: 'Update',
                       onTap: (){
-
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>UpdateProductionPlan(planList[index])));
                       },
                     ),
                   ],
                   child: ListTile(
-                    title: Text(planList[index]['caseIdField']!=null?planList[index]['caseIdField']:''),
-                    subtitle: Text(planList[index]['categoryRecIdField']['caseCategoryField']!=null?planList[index]['categoryRecIdField']['caseCategoryField']:''),
-                    leading: Icon(FontAwesomeIcons.angry,size: 30,),
+                    title: Text(planList[index]['ItemSize']!=null?planList[index]['ItemSize']:''),
+                    subtitle: Text(planList[index]['EstimatedQuantity']!=null?"Requested Quantity "+planList[index]['EstimatedQuantity'].toString():''),
+                    leading: Icon(FontAwesomeIcons.tasks,size: 30,),
                     onTap: (){
-                      Navigator.push(context,MaterialPageRoute(builder: (context)=>CaseDetail(planList[index])));
+                      Navigator.push(context,MaterialPageRoute(builder: (context)=>PlanDetail(planList[index])));
                     },
                   )
               ),
-
-
               Divider(),
             ],
           ) ;

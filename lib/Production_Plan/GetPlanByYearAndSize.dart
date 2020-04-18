@@ -1,12 +1,9 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-
+import 'package:salesmanagement/Production_Plan/PlanList.dart';
 import '../Network_Operations.dart';
-import 'GetPlanByMonth.dart';
 
 class GetPlanByYearAndSize extends StatefulWidget{
   @override
@@ -132,7 +129,7 @@ class _GetPlanByYearAndSize extends State<GetPlanByYearAndSize>{
                                 Network_Operations.GetCustomerPlanBySize(customerId.text,selectedValue,selectedYear).then((response){
                                   pd.dismiss();
                                   if(response!=null&&response!=''&&response!='[]'){
-
+                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>PlanList(jsonDecode(response),'Size and Year',selectedYear,null,selectedValue,customerId.text)));
                                   }else{
                                     Scaffold.of(context).showSnackBar(SnackBar(
                                       content: Text("Production Plan Not Found"),

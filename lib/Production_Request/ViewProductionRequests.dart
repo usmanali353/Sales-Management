@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/Network_Operations.dart';
+import 'package:salesmanagement/Production_Request/CreateProductionRequest.dart';
 import 'package:salesmanagement/Production_Request/RequestByItem.dart';
 import 'package:salesmanagement/Production_Request/RequestBySize.dart';
 import 'package:salesmanagement/Production_Request/RequestList.dart';
@@ -47,6 +48,12 @@ class _ViewProductionRequests extends State<ViewProductionRequests>{
           )
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>CreateProductionRequest()));
+        },
+        child: Icon(Icons.add),
+      ),
       body: ListView(
         children: <Widget>[
           FormBuilder(
@@ -78,7 +85,7 @@ class _ViewProductionRequests extends State<ViewProductionRequests>{
                           Network_Operations.GetProdRequestList(customerId.text, 1, 10).then((response){
                             pd.dismiss();
                              if(response!=null&&response!=''){
-                               Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList(jsonDecode(response))));
+                               Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList(jsonDecode(response),'All',customerId.text,null,null)));
                              }
                           });
                         }
