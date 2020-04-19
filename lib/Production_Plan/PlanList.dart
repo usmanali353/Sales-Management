@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:need_resume/need_resume.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/Customer_Cases/CaseDetail.dart';
 import 'package:salesmanagement/Network_Operations.dart';
@@ -21,10 +22,20 @@ class PlanList extends StatefulWidget{
   }
 
 }
-class _PlanList extends State<PlanList>{
+class _PlanList extends ResumableState<PlanList>{
   var planList,temp=['',''],type,month,year,size,customerId;
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
   _PlanList(this.planList,this.type,this.year,this.month,this.size,this.customerId);
+  @override
+  void onResume() {
+    print("Data "+resume.data.toString());
+    if(resume.data.toString()=='Refresh') {
+      WidgetsBinding.instance
+          .addPostFrameCallback((_) =>
+          _refreshIndicatorKey.currentState
+              .show());
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,7 +107,7 @@ class _PlanList extends State<PlanList>{
                       color: Colors.blue,
                       caption: 'Update',
                       onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>UpdateProductionPlan(planList[index])));
+                        push(context, MaterialPageRoute(builder: (context)=>UpdateProductionPlan(planList[index])));
                       },
                     ),
                   ],
@@ -105,7 +116,7 @@ class _PlanList extends State<PlanList>{
                     subtitle: Text(planList[index]['EstimatedQuantity']!=null?"Requested Quantity "+planList[index]['EstimatedQuantity'].toString():''),
                     leading: Icon(FontAwesomeIcons.tasks,size: 30,),
                     onTap: (){
-                      Navigator.push(context,MaterialPageRoute(builder: (context)=>PlanDetail(planList[index])));
+                      push(context,MaterialPageRoute(builder: (context)=>PlanDetail(planList[index])));
                     },
                   )
               ),

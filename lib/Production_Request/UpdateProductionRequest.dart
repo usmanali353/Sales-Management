@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:need_resume/need_resume.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/Network_Operations.dart';
 
@@ -148,6 +149,7 @@ class _UpdateProductionRequestState extends State<UpdateProductionRequest> {
                                   backgroundColor: Colors.green,
                                   content: Text("Production Request Updated"),
                                 ));
+                                Navigator.pop(context,'Refresh');
                               }else{
                                 Scaffold.of(context).showSnackBar(SnackBar(
                                   backgroundColor: Colors.red,

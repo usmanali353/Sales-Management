@@ -194,6 +194,7 @@ class _UpdateProductionPlanState extends State<UpdateProductionPlan> {
                                   backgroundColor: Colors.green,
                                   content: Text("Customer Plan Updated Sucessfully"),
                                 ));
+                                Navigator.pop(context,'Refresh');
                               }else{
                                 Scaffold.of(context).showSnackBar(SnackBar(
                                   backgroundColor: Colors.red,

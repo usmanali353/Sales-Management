@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:need_resume/need_resume.dart';
 import 'package:salesmanagement/Network_Operations.dart';
 import 'package:salesmanagement/Production_Request/RequestDetails.dart';
 import 'package:salesmanagement/Production_Request/UpdateProductionRequest.dart';
@@ -17,10 +18,22 @@ class RequestList extends StatefulWidget {
     return _RequestsList(requests,type,customerId,size,itemNumber);
   }
 }
-class _RequestsList extends State<RequestList>{
+class _RequestsList extends ResumableState<RequestList>{
   var requests,temp=['',''],type,customerId,size,itemNumber;
   _RequestsList(this.requests,this.type,this.customerId,this.size,this.itemNumber);
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+
+  @override
+  void onResume() {
+    print("Data "+resume.data.toString());
+    if(resume.data.toString()=='Refresh') {
+      WidgetsBinding.instance
+          .addPostFrameCallback((_) =>
+          _refreshIndicatorKey.currentState
+              .show());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,7 +106,7 @@ class _RequestsList extends State<RequestList>{
                       caption: "Update",
                       closeOnTap: true,
                       onTap: (){
-                         Navigator.push(context, MaterialPageRoute(builder: (context)=>UpdateProductionRequest(requests[index])));
+                         push(context, MaterialPageRoute(builder: (context)=>UpdateProductionRequest(requests[index])));
                       },
                     ),
                   ],
@@ -102,7 +115,7 @@ class _RequestsList extends State<RequestList>{
                     subtitle: Text(requests[index]['ItemSize']),
                     leading: Icon(FontAwesomeIcons.industry,size: 30,),
                     onTap: (){
-                      Navigator.push(context,MaterialPageRoute(builder: (context)=>RequestDetails(requests[index])));
+                      push(context,MaterialPageRoute(builder: (context)=>RequestDetails(requests[index])));
                     },
                   ),
                 ),
