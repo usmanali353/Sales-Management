@@ -33,7 +33,7 @@ class _salesOrdersDetails extends State<salesOrdersDetails>{
           Divider(),
           ListTile(
             title: Text("Delivery Date"),
-            subtitle: Text(order_data['deliveryDateField']!=null?order_data['deliveryDateField']:''),
+            subtitle: Text(order_data['deliveryDateField']!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(order_data['deliveryDateField'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
           ),
           Divider(),
           ListTile(

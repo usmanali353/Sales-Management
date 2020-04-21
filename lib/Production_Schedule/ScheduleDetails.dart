@@ -24,7 +24,7 @@ class _ScheduleDetails extends State<ScheduleDetails>{
         children: <Widget>[
           ListTile(
             title: Text("Planned Production Date"),
-            subtitle: Text(scheduleData['PlannedProdDate']!=null?scheduleData['PlannedProdDate']:''),
+            subtitle: Text(scheduleData['PlannedProdDate']!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(scheduleData['PlannedProdDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
           ),
           Divider(),
           ListTile(

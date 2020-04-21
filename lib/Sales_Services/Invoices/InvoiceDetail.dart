@@ -64,7 +64,7 @@ class _InvoiceDetails extends State<InvoiceDetails>{
               Divider(),
               ListTile(
                 title: Text("Invoice Date"),
-                subtitle: Text(InvoiceData['InvoiceDate']),
+                subtitle: Text(DateTime.fromMillisecondsSinceEpoch(int.parse(InvoiceData['InvoiceDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]),
               ),
               Divider(),
               ListTile(
@@ -87,7 +87,6 @@ class _InvoiceDetails extends State<InvoiceDetails>{
                 subtitle: Text(InvoiceData['InvoiceAmount'].toString()),
               ),
               Divider(),
-
             ],
           )
         ],

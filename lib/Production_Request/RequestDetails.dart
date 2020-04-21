@@ -27,7 +27,7 @@ class _RequestDetails extends State<RequestDetails>{
 
               ListTile(
                 title: Text("Request Date"),
-                subtitle: Text(requestData['RequestedDate']!=null?requestData['RequestedDate']:''),
+                subtitle: Text(requestData['RequestedDate']!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(requestData['RequestedDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
               ),
               Divider(),
               ListTile(

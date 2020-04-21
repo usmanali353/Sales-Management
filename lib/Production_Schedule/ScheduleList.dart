@@ -29,7 +29,7 @@ class _SchedulesList extends State<SchedulesList>{
               children: <Widget>[
                 ListTile(
                   title: Text(schedules[index]['ItemDescription']!=null?schedules[index]['ItemDescription']:''),
-                  subtitle: Text(schedules[index]['ActualProdDate']!=null?schedules[index]['ActualProdDate']:''),
+                  subtitle: Text(schedules[index]['PlannedProdDate']!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(schedules[index]['PlannedProdDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
                   leading: Icon(FontAwesomeIcons.calendar),
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>ScheduleDetails(schedules[index])));

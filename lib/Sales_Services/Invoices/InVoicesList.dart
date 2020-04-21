@@ -51,7 +51,7 @@ class _InvoicesList extends State<InvoicesList>{
                 children: <Widget>[
                  ListTile(
                    title: Text(InvoiceList[index]['InvoiceId']!=null?InvoiceList[index]['InvoiceId']:''),
-                   subtitle: Text(InvoiceList[index]['InvoiceDate']!=null?InvoiceList[index]['InvoiceDate']:''),
+                   subtitle: Text(InvoiceList[index]['InvoiceDate']!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(InvoiceList[index]['InvoiceDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
                    trailing: Text(InvoiceList[index]['InvoiceAmount']!=null?InvoiceList[index]['InvoiceAmount'].toString():''),
                    leading: Icon(FontAwesomeIcons.fileInvoice,size: 40,),
                    onTap: (){
