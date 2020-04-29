@@ -111,6 +111,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.8.2"
+  flutter_gradient_colors:
+    dependency: "direct main"
+    description:
+      name: flutter_gradient_colors
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   flutter_keyboard_visibility:
     dependency: transitive
     description:

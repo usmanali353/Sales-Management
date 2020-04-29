@@ -11,6 +11,6 @@ void main(){
       primarySwatch: Colors.teal,
       brightness: Brightness.dark
     ),
-    home: HomePage(),
+    home: Dashboard(),
   ));
 }
