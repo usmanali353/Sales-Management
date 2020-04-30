@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:salesmanagement/Dashboard.dart';
+import 'package:salesmanagement/LoginScreen/ui/login_page.dart';
 
 import 'HomePage.dart';
 
@@ -11,6 +12,6 @@ void main(){
       primarySwatch: Colors.teal,
       brightness: Brightness.dark
     ),
-    home: Dashboard(),
+    home: LoginPage(),
   ));
 }
