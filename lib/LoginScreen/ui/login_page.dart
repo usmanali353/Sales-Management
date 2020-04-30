@@ -71,7 +71,7 @@ class _LoginPageState extends State<LoginPage>
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.only(top: 75.0),
+                      padding: EdgeInsets.only(top: 50.0),
                       child: new Image(
                           width: 250.0,
                           height: 191.0,
@@ -245,7 +245,7 @@ class _LoginPageState extends State<LoginPage>
                             ),
                             hintText: "Email Address",
                             hintStyle: TextStyle(
-                                fontSize: 17.0),
+                                fontSize: 17.0,color: Colors.grey),
                           ),
                         ),
                       ),
@@ -274,7 +274,7 @@ class _LoginPageState extends State<LoginPage>
                             ),
                             hintText: "Password",
                             hintStyle: TextStyle(
-                                fontSize: 17.0),
+                                fontSize: 17.0,color: Colors.grey),
                             suffixIcon: GestureDetector(
                               onTap: _toggleLogin,
                               child: Icon(
@@ -398,7 +398,7 @@ class _LoginPageState extends State<LoginPage>
                             ),
                             hintText: "Name",
                             hintStyle: TextStyle(
-                                fontFamily: "WorkSansSemiBold", fontSize: 16.0),
+                                fontFamily: "WorkSansSemiBold", fontSize: 16.0,color: Colors.grey),
                           ),
                         ),
                       ),
@@ -426,7 +426,7 @@ class _LoginPageState extends State<LoginPage>
                             ),
                             hintText: "Email Address",
                             hintStyle: TextStyle(
-                                fontFamily: "WorkSansSemiBold", fontSize: 16.0),
+                                fontFamily: "WorkSansSemiBold", fontSize: 16.0,color: Colors.grey),
                           ),
                         ),
                       ),
@@ -454,7 +454,7 @@ class _LoginPageState extends State<LoginPage>
                             ),
                             hintText: "Password",
                             hintStyle: TextStyle(
-                                fontFamily: "WorkSansSemiBold", fontSize: 16.0),
+                                fontFamily: "WorkSansSemiBold", fontSize: 16.0,color: Colors.grey),
                             suffixIcon: GestureDetector(
                               onTap: _toggleSignup,
                               child: Icon(
@@ -491,7 +491,7 @@ class _LoginPageState extends State<LoginPage>
                             ),
                             hintText: "Confirmation",
                             hintStyle: TextStyle(
-                                fontFamily: "WorkSansSemiBold", fontSize: 16.0),
+                                fontFamily: "WorkSansSemiBold", fontSize: 16.0,color: Colors.grey),
                             suffixIcon: GestureDetector(
                               onTap: _toggleSignupConfirm,
                               child: Icon(
