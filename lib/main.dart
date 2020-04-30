@@ -10,7 +10,7 @@ void main(){
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
       primarySwatch: Colors.teal,
-      brightness: Brightness.light
+      brightness: Brightness.dark
     ),
     home: LoginPage(),
   ));

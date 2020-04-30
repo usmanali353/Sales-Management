@@ -71,7 +71,7 @@ class _LoginPageState extends State<LoginPage>
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.only(top: 50.0),
+                      padding: EdgeInsets.only(top: 25.0),
                       child: new Image(
                           width: 250.0,
                           height: 191.0,
