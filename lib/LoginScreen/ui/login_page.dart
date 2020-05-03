@@ -71,7 +71,7 @@ class _LoginPageState extends State<LoginPage>
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.only(top: 25.0),
+                      padding: EdgeInsets.only(top: 60.0, bottom: 20.0),
                       child: new Image(
                           width: 250.0,
                           height: 191.0,
@@ -79,7 +79,7 @@ class _LoginPageState extends State<LoginPage>
                           image: new AssetImage('assets/img/AC.png')),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 20.0),
+                      padding: EdgeInsets.only(top: 30.0),
                       child: _buildMenuBar(context),
                     ),
                     Expanded(
@@ -318,7 +318,12 @@ class _LoginPageState extends State<LoginPage>
                       stops: [0.0, 1.0],
                       tileMode: TileMode.clamp),
                 ),
-                child: MaterialButton(
+                child: OutlineButton(
+                  borderSide: BorderSide(
+                    color: Colors.black,
+                    style: BorderStyle.solid,
+                      width: 0.8
+                  ),
                     highlightColor: Colors.transparent,
                     splashColor: Theme.Colors.loginGradientEnd,
                     //shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
@@ -347,6 +352,7 @@ class _LoginPageState extends State<LoginPage>
                 child: Text(
                   "Forgot Password?",
                   style: TextStyle(
+                    fontWeight: FontWeight.bold,
                       decoration: TextDecoration.underline,
                       color: Colors.white,
                       fontSize: 16.0,
@@ -535,7 +541,12 @@ class _LoginPageState extends State<LoginPage>
                       stops: [0.0, 1.0],
                       tileMode: TileMode.clamp),
                 ),
-                child: MaterialButton(
+                child: OutlineButton(
+                    borderSide: BorderSide(
+                        color: Colors.black,
+                        style: BorderStyle.solid,
+                        width: 0.8
+                    ),
                     highlightColor: Colors.transparent,
                     splashColor: Theme.Colors.loginGradientEnd,
                     //shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
