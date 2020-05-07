@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:salesmanagement/Dashboard.dart';
 import 'package:salesmanagement/LoginScreen/ui/login_page.dart';
+import 'package:salesmanagement/NewDashboard.dart';
+import 'package:salesmanagement/TruckLogo.dart';
 
 import 'HomePage.dart';
 
@@ -12,6 +14,6 @@ void main(){
       primarySwatch: Colors.teal,
       brightness: Brightness.dark
     ),
-    home: LoginPage(),
+    home: TruckLogo(),
   ));
 }
