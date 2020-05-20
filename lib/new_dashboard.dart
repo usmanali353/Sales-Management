@@ -812,7 +812,7 @@ class _newdashboard extends State<newdashboard>{
                               style: TextStyle(
                                   color:Color(0xFF9B3340),
                                   //Color(0xFF004c4c),
-                                  fontSize: 17.5,
+                                  fontSize: 15,
                                   fontWeight: FontWeight.bold
                               ),
 
@@ -875,7 +875,7 @@ class _newdashboard extends State<newdashboard>{
                               style: TextStyle(
                                   color:Color(0xFF004c4c),
                                   //Color(0xFF004c4c),
-                                  fontSize: 17.5,
+                                  fontSize: 15,
                                   fontWeight: FontWeight.bold
                               ),
 
