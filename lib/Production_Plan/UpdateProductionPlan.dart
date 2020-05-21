@@ -13,7 +13,7 @@ class UpdateProductionPlan extends StatefulWidget {
 }
 class _UpdateProductionPlanState extends State<UpdateProductionPlan> {
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey();
-  TextEditingController customerId,quantity;
+  TextEditingController quantity;
   var itemSizesJson,selectedValue,selectedYear,selectedMonth,isVisible=false,planData;
 
   _UpdateProductionPlanState(this.planData);
@@ -21,7 +21,6 @@ class _UpdateProductionPlanState extends State<UpdateProductionPlan> {
   List<String> itemSizes=[],months=['January','Febuary','March','April','May','June','July','August','September','October','November','December'],years=['2020','2021','2022','2023','2024','2025'];
   @override
   void initState() {
-    customerId=TextEditingController();
     quantity=TextEditingController();
     ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
     pd.show();
@@ -37,7 +36,7 @@ class _UpdateProductionPlanState extends State<UpdateProductionPlan> {
         });
       }
     });
-    customerId.text=planData['CustomerAccount'];
+   // customerId.text=planData['CustomerAccount'];
     quantity.text=planData['EstimatedQuantity'].toString();
   }
   @override
@@ -51,21 +50,7 @@ class _UpdateProductionPlanState extends State<UpdateProductionPlan> {
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.all(16),
-                  child:  FormBuilderTextField(
-                    controller: customerId,
-                    attribute: "Customer Id",
-                    validators: [FormBuilderValidators.required()],
-                    decoration: InputDecoration(labelText: "Customer Id",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(9.0),
-                          borderSide: BorderSide(color: Colors.teal, width: 1.0)
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 16,right: 16),
+                  padding: EdgeInsets.only(top:16,left: 16,right: 16),
                   child: Visibility(
                     visible: isVisible,
                     child: FormBuilderDropdown(
@@ -187,7 +172,7 @@ class _UpdateProductionPlanState extends State<UpdateProductionPlan> {
                             _fbKey.currentState.save();
                             ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
                             pd.show();
-                            Network_Operations.UpdateCustomerPlan(customerId.text, selectedValue, selectedMonth, int.parse(selectedYear),int.parse(quantity.text),planData['RecordId']).then((response){
+                            Network_Operations.UpdateCustomerPlan(planData['CustomerAccount'], selectedValue, selectedMonth, int.parse(selectedYear),int.parse(quantity.text),planData['RecordId']).then((response){
                               pd.dismiss();
                               if(response!=null){
                                 Scaffold.of(context).showSnackBar(SnackBar(

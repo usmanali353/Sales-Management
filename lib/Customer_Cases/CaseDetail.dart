@@ -26,37 +26,27 @@ class _CaseDetail extends State<CaseDetail>{
             children: <Widget>[
               ListTile(
                 title: Text("Case Id"),
-                subtitle: Text(caseData['caseIdField']!=null?caseData['caseIdField']:''),
+                subtitle: Text(caseData['CaseNum']!=null?caseData['CaseNum']:''),
               ),
               Divider(),
               ListTile(
                 title: Text("Case type"),
-                subtitle: Text(caseData['categoryRecIdField']['caseCategoryField']!=null?caseData['categoryRecIdField']['caseCategoryField']:''),
+                subtitle: Text(caseData['CategoryTypeId']!=null?getCaseType(caseData['CategoryTypeId']):''),
               ),
               Divider(),
               ListTile(
                 title: Text("Case Description"),
-                subtitle: Text(caseData['descriptionField']!=null?caseData['descriptionField']:''),
-              ),
-              Divider(),
-              ListTile(
-                title: Text("Department"),
-                subtitle: Text(caseData['departmentField']!=null?caseData['departmentField']:''),
+                subtitle: Text(caseData['CaseDescription']!=null?caseData['CaseDescription']:''),
               ),
               Divider(),
               ListTile(
                 title: Text("Case Priority"),
-                subtitle: Text(caseData['priorityField']!=null?caseData['priorityField']:''),
+                subtitle: Text(caseData['Priority']!=null?caseData['Priority']:''),
               ),
               Divider(),
               ListTile(
-                title: Text("Ower/Worker"),
-                subtitle: Text(caseData['ownerWorkerField']!=null?caseData['ownerWorkerField']:''),
-              ),
-              Divider(),
-              ListTile(
-                title: Text("Party"),
-                subtitle: Text(caseData['partyField']!=null?caseData['partyField']:''),
+                title: Text("Resolution Type"),
+                subtitle: Text(caseData['ResolutionType']!=null?getResolutionType(caseData['ResolutionType']):''),
               ),
               Divider(),
             ],
@@ -66,5 +56,25 @@ class _CaseDetail extends State<CaseDetail>{
       ),
     );
   }
-
+String getCaseType(int CategoryTypeId){
+    String type;
+    if(CategoryTypeId==5637145326){
+      type="Inquiry";
+    }
+    if(CategoryTypeId==5637144576){
+      type="Complaint";
+    }
+    return type;
+}
+String getResolutionType(int resolutionType){
+   String  restype;
+    if(resolutionType==0){
+      restype='None';
+    }else if(resolutionType==1){
+      restype='Accept';
+    }else if(resolutionType==2){
+      restype='Reject';
+    }
+    return restype;
+}
 }
