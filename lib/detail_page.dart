@@ -258,7 +258,7 @@ class _DetailPageState extends State<DetailPage>{
                       height: 85,
                       decoration: BoxDecoration(
                         color: Color(0xFF004c4c),
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(8.5),
                       ),
                       child: ListTile(
                         leading: Icon(Icons.date_range, color: Colors.white,size:45),
