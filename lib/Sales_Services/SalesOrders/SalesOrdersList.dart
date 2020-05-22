@@ -1,43 +1,59 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/Network_Operations.dart';
+import '../../Utils.dart';
 import 'SalesOrderDetails.dart';
 
 class SalesOrdersList extends StatefulWidget{
-  var startDate,endDate,CustomerId;
+  var startDate,endDate,CustomerId,title;
 
-  SalesOrdersList(this.startDate, this.endDate,this.CustomerId);
+  SalesOrdersList(this.startDate, this.endDate,this.CustomerId,this.title);
 
   @override
   State<StatefulWidget> createState() {
-    return _SalesOrdersList(this.startDate, this.endDate,this.CustomerId);
+    return _SalesOrdersList(this.startDate, this.endDate,this.CustomerId,this.title);
   }
 
 }
 class _SalesOrdersList extends State<SalesOrdersList>{
-  var startDate,endDate,order_data,temp=['',''],CustomerId;
+  var startDate,endDate,order_data,temp=['',''],CustomerId,title,_isSearching=false;
   bool isVisible=false;
-  _SalesOrdersList(this.startDate, this.endDate,this.CustomerId);
+ String searchQuery = "Search query";
+  TextEditingController _searchQuery;
+  static final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  _SalesOrdersList(this.startDate, this.endDate,this.CustomerId,this.title);
  @override
   void initState() {
-   ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
-   pd.show();
-    Network_Operations.GetSalesOrders(startDate, endDate,CustomerId).then((response){
-      pd.dismiss();
-      if(response!=null){
-        setState(() {
-          this.order_data=json.decode(response);
-          this.isVisible=true;
-        });
-      }
-    });
+   _searchQuery=TextEditingController();
+   Utils.check_connectivity().then((connected){
+     if(connected){
+       ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
+       pd.show();
+       Network_Operations.GetSalesOrders(startDate,endDate,CustomerId).then((response){
+         pd.hide();
+         if(response!=null){
+           setState(() {
+             this.order_data=json.decode(response);
+             this.isVisible=true;
+           });
+         }
+       });
+     }
+   });
+
+    super.initState();
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Sales Orders"),),
+      appBar: AppBar(
+        leading: _isSearching ? const BackButton() : null,
+        title: _isSearching ? _buildSearchField() : _buildTitle(context),
+        actions: _buildActions(),
+      ),
       body: Visibility(
         visible: isVisible,
         child: ListView.builder(
@@ -76,6 +92,93 @@ class _SalesOrdersList extends State<SalesOrdersList>{
         status="Canceled";
     }
     return status;
+  }
+  void _startSearch() {
+    ModalRoute
+        .of(context)
+        .addLocalHistoryEntry(new LocalHistoryEntry(onRemove: _stopSearching));
+
+    setState(() {
+      _isSearching = true;
+    });
+  }
+
+  void _stopSearching() {
+    _clearSearchQuery();
+    setState(() {
+      _isSearching = false;
+    });
+  }
+
+  void _clearSearchQuery() {
+    setState(() {
+      _searchQuery.clear();
+      updateSearchQuery("Search query");
+    });
+  }
+
+  Widget _buildTitle(BuildContext context) {
+    var horizontalTitleAlignment =
+    Platform.isIOS ? CrossAxisAlignment.center : CrossAxisAlignment.start;
+
+    return new InkWell(
+      onTap: () => scaffoldKey.currentState.openDrawer(),
+      child: new Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+        child: new Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: horizontalTitleAlignment,
+          children: <Widget>[
+             Text(title),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSearchField() {
+    return new TextField(
+      controller: _searchQuery,
+      autofocus: true,
+      decoration: const InputDecoration(
+        hintText: 'Search...',
+        border: InputBorder.none,
+        hintStyle: const TextStyle(color: Colors.white30),
+      ),
+      style: const TextStyle(color: Colors.white, fontSize: 16.0),
+      onChanged: updateSearchQuery,
+    );
+  }
+
+  void updateSearchQuery(String newQuery) {
+    setState(() {
+      searchQuery = newQuery;
+    });
+  }
+
+  List<Widget> _buildActions() {
+
+    if (_isSearching) {
+      return <Widget>[
+        new IconButton(
+          icon: const Icon(Icons.clear),
+          onPressed: () {
+            if (_searchQuery == null || _searchQuery.text.isEmpty) {
+              Navigator.pop(context);
+              return;
+            }
+            _clearSearchQuery();
+          },
+        ),
+      ];
+    }
+
+    return <Widget>[
+      new IconButton(
+        icon: const Icon(Icons.search),
+        onPressed: _startSearch,
+      ),
+    ];
   }
 
 }

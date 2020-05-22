@@ -43,21 +43,7 @@ class _CreateProductionPlanState extends State<CreateProductionPlan> {
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.all(16),
-                  child:  FormBuilderTextField(
-                    controller: customerId,
-                    attribute: "Customer Id",
-                    validators: [FormBuilderValidators.required()],
-                    decoration: InputDecoration(labelText: "Customer Id",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(9.0),
-                          borderSide: BorderSide(color: Colors.teal, width: 1.0)
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 16,right: 16),
+                  padding: EdgeInsets.only(top:16,left: 16,right: 16),
                   child: Visibility(
                     visible: isVisible,
                     child: FormBuilderDropdown(
@@ -160,13 +146,14 @@ class _CreateProductionPlanState extends State<CreateProductionPlan> {
                           if(_fbKey.currentState.validate()){
                             ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
                             pd.show();
-                            Network_Operations.CreateCustomerPlan(customerId.text, selectedValue, selectedMonth, int.parse(selectedYear),int.parse(quantity.text)).then((response){
+                            Network_Operations.CreateCustomerPlan('LC0001', selectedValue, selectedMonth, int.parse(selectedYear),int.parse(quantity.text)).then((response){
                               pd.dismiss();
                               if(response!=null){
                                 Scaffold.of(context).showSnackBar(SnackBar(
                                   backgroundColor: Colors.green,
                                   content: Text("Customer Plan Created Sucessfully"),
                                 ));
+                                Navigator.pop(context,'Refresh');
                               }else{
                                 Scaffold.of(context).showSnackBar(SnackBar(
                                   backgroundColor: Colors.red,

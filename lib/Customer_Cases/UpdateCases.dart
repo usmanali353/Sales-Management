@@ -1,28 +1,38 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:salesmanagement/Network_Operations.dart';
 
-class CreateCase extends StatefulWidget{
+import '../Network_Operations.dart';
+class UpdateCases extends StatefulWidget {
+  var caseData;
+
+  UpdateCases(this.caseData);
+
   @override
-  State<StatefulWidget> createState() {
-    return _CreateCase();
-  }
-
+  _UpdateCasesState createState() => _UpdateCasesState(caseData);
 }
-class _CreateCase extends State<CreateCase>{
-  final GlobalKey<FormBuilderState> _fbKey = GlobalKey();
+
+class _UpdateCasesState extends State<UpdateCases> {
   TextEditingController description;
   var selectedValue,caseType;
-  @override
+  final GlobalKey<FormBuilderState> _fbKey = GlobalKey();
+  var caseData;
+  _UpdateCasesState(this.caseData);
+@override
   void initState() {
-    description=TextEditingController();
+  description=TextEditingController();
+  if(caseData['CaseDescription']!=null){
+    setState(() {
+      description.text=caseData['CaseDescription'];
+    });
+  }
+
+    super.initState();
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Create Case"),),
+    return  Scaffold(
+      appBar: AppBar(title: Text("Update Case"),),
       body: ListView(
         children: <Widget>[
           FormBuilder(
@@ -49,6 +59,7 @@ class _CreateCase extends State<CreateCase>{
                     attribute: "Priority",
                     validators: [FormBuilderValidators.required()],
                     hint: Text("Priority"),
+                    initialValue: caseData['Priority'],
                     items: ['High','Medium','Low'].map((trainer)=>DropdownMenuItem(
                       child: Text(trainer),
                       value: trainer,
@@ -73,6 +84,7 @@ class _CreateCase extends State<CreateCase>{
                     attribute: "Case Type",
                     validators: [FormBuilderValidators.required()],
                     hint: Text("Case Type"),
+                    initialValue: getCaseType(caseData['CategoryTypeId']),
                     items: ['Inquiry','Complaint'].map((trainer)=>DropdownMenuItem(
                       child: Text(trainer),
                       value: trainer,
@@ -93,6 +105,15 @@ class _CreateCase extends State<CreateCase>{
                         }
                       });
                     },
+                    onSaved: (value){
+                      setState(() {
+                        if(value=='Inquiry'){
+                          caseType=5637145326;
+                        }else if(value=='Complaint'){
+                          caseType=5637144576;
+                        }
+                      });
+                    },
                   ),
                 ),
                 Builder(
@@ -102,26 +123,27 @@ class _CreateCase extends State<CreateCase>{
                       child: MaterialButton(
                         onPressed: (){
                           if(_fbKey.currentState.validate()){
+                            _fbKey.currentState.save();
                             ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
                             pd.show();
-                            Network_Operations.CreateCustomerCase('LC0001', description.text, 1, caseType, selectedValue, 'some customer', 0, 'caseMemo').then((response){
+                            Network_Operations.UpdateCustomerCase(caseData['CaseNum'],'LC0001', description.text, 1, caseType, selectedValue, caseData['CustomerName'], 0, 'caseMemo').then((response){
                               pd.hide();
                               if(response!=null){
                                 Scaffold.of(context).showSnackBar(SnackBar(
                                   backgroundColor: Colors.green,
-                                  content: Text("Case Added Sucessfully"),
+                                  content: Text("Case Updated Sucessfully"),
                                 ));
                               }else{
                                 Scaffold.of(context).showSnackBar(SnackBar(
                                   backgroundColor: Colors.red,
-                                  content: Text("Case not Added"),
+                                  content: Text("Case not Updated"),
                                 ));
                               }
                             });
                           }
                         },
                         color: Colors.teal,
-                        child: Text("Add Case"),
+                        child: Text("Update Case"),
                       ),
                     );
                   },
@@ -133,5 +155,14 @@ class _CreateCase extends State<CreateCase>{
       ),
     );
   }
-
+  String getCaseType(int CategoryTypeId){
+    String type;
+    if(CategoryTypeId==5637145326){
+      type="Inquiry";
+    }
+    if(CategoryTypeId==5637144576){
+      type="Complaint";
+    }
+    return type;
+  }
 }

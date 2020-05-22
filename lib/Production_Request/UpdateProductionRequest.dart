@@ -1,6 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:need_resume/need_resume.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/Network_Operations.dart';
 
@@ -15,19 +16,17 @@ class UpdateProductionRequest extends StatefulWidget {
 
 class _UpdateProductionRequestState extends State<UpdateProductionRequest> {
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey();
-  TextEditingController customerId,itemNumber,customerItemCode,quantity;
-  var selectedMonth,requestData;
+  TextEditingController customerItemCode,quantity;
+  var selectedMonth,requestData,isVisible=false,itemNumber;
 
   _UpdateProductionRequestState(this.requestData);
 
   List<String> months=['January','Febuary','March','April','May','June','July','August','September','October','November','December'];
   @override
   void initState() {
-    customerId=TextEditingController();
-    itemNumber=TextEditingController();
     customerItemCode=TextEditingController();
     quantity=TextEditingController();
-    customerId.text=requestData['CustomerAccount'];
+    itemNumber=TextEditingController();
     itemNumber.text=requestData['ItemNumber'];
     customerItemCode.text=requestData['CustomerItemCode'];
     quantity.text=requestData['QuantityRequested'].toString();
@@ -43,23 +42,11 @@ class _UpdateProductionRequestState extends State<UpdateProductionRequest> {
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.all(16),
-                  child:  FormBuilderTextField(
-                    controller: customerId,
-                    attribute: "Customer Id",
-                    validators: [FormBuilderValidators.required()],
-                    decoration: InputDecoration(labelText: "Customer Id",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(9.0),
-                          borderSide: BorderSide(color: Colors.teal, width: 1.0)
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 16,right: 16),
+                  padding: EdgeInsets.only(top:16,left: 16,right: 16),
                   child:  FormBuilderTextField(
                     controller: itemNumber,
+                    readOnly: true,
+                    enabled: false,
                     attribute: "Item Number",
                     validators: [FormBuilderValidators.required()],
                     decoration: InputDecoration(labelText: "Item Number",
@@ -142,7 +129,7 @@ class _UpdateProductionRequestState extends State<UpdateProductionRequest> {
                             _fbKey.currentState.save();
                             ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
                             pd.show();
-                            Network_Operations.UpdateProductionRequest(customerId.text, itemNumber.text, customerItemCode.text, selectedMonth, int.parse(quantity.text), requestData['RequestedDate'],requestData['CustomerPONum'],requestData['ProductionRequestId']).then((response){
+                            Network_Operations.UpdateProductionRequest(requestData['CustomerAccount'], itemNumber.text, customerItemCode.text, selectedMonth, int.parse(quantity.text), requestData['RequestedDate'],requestData['CustomerPONum'],requestData['ProductionRequestId']).then((response){
                               pd.dismiss();
                               if(response!=null){
                                 Scaffold.of(context).showSnackBar(SnackBar(
@@ -170,4 +157,5 @@ class _UpdateProductionRequestState extends State<UpdateProductionRequest> {
       ),
     );
   }
+
 }

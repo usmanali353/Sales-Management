@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:salesmanagement/Dashboard.dart';
 import 'package:salesmanagement/LoginScreen/style/theme.dart' as Theme;
 import 'package:salesmanagement/LoginScreen/utils/bubble_indication_painter.dart';
+import 'package:salesmanagement/new_dashboard.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -340,7 +341,7 @@ class _LoginPageState extends State<LoginPage>
                     ),
                    onPressed: (){
                      //Navigator.push(context, MaterialPageRoute(builder: (context) => breeding_control_details_page(control_list[index], get_check_method_by_id(control_list[index]['check_Method']))));
-                     Navigator.push(context, MaterialPageRoute(builder: (context)=>Dashboard()));
+                     Navigator.push(context, MaterialPageRoute(builder: (context)=>newdashboard()));
                    }),
               ),
             ],
