@@ -47,12 +47,13 @@ class _RequestsList extends ResumableState<RequestList>{
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        backgroundColor:  Color(0xFF004c4c),
         onPressed: (){
           push(context, MaterialPageRoute(builder: (context)=>CreateProductionRequest()));
         },
         child: Icon(Icons.add),
       ),
-      appBar: AppBar(title: Text("Production Requests"),),
+      appBar: AppBar(title: Text("Production Requests")),
       body:
         RefreshIndicator(
           onRefresh: (){
@@ -85,62 +86,83 @@ class _RequestsList extends ResumableState<RequestList>{
           key: _refreshIndicatorKey,
           child: Visibility(
             visible: isVisible,
-            child: ListView.builder(itemCount: requests!=null?requests.length:temp.length,itemBuilder: (context,int index){
-              return Column(
-                children: <Widget>[
-                  Slidable(
-                    actionPane: SlidableDrawerActionPane(),
-                    actionExtentRatio: 0.20,
-                    closeOnScroll: true,
-                    actions: <Widget>[
-                      IconSlideAction(
-                        color: Colors.red,
-                        icon: Icons.delete,
-                        caption: "Delete",
-                        closeOnTap: true,
-                        onTap: (){
-                          Network_Operations.DeleteProdRequest(requests[index]['ProductionRequestId']).then((response){
-                            if(response!=null&&response!=''&&response!='[]'){
-                              WidgetsBinding.instance
-                                  .addPostFrameCallback((_) =>
-                                  _refreshIndicatorKey.currentState
-                                      .show());
-                              Scaffold.of(context).showSnackBar(SnackBar(
-                                backgroundColor: Colors.green,
-                                content: Text("Request Deleted"),
-                              ));
-                            }else{
-                              Scaffold.of(context).showSnackBar(SnackBar(
-                                backgroundColor: Colors.red,
-                                content: Text("Request not Deleted"),
-                              ));
-                            }
-                          });
-                        },
-                      ),
-                      IconSlideAction(
-                        color: Colors.blue,
-                        icon: Icons.edit,
-                        caption: "Update",
-                        closeOnTap: true,
-                        onTap: (){
-                           push(context, MaterialPageRoute(builder: (context)=>UpdateProductionRequest(requests[index])));
-                        },
-                      ),
-                    ],
-                    child: ListTile(
-                      title: Text(requests[index]['ItemDescription']),
-                      subtitle: Text(requests[index]['ItemSize']),
-                      leading: Icon(FontAwesomeIcons.industry,size: 30,),
-                      onTap: (){
-                        push(context,MaterialPageRoute(builder: (context)=>RequestDetails(requests[index])));
-                      },
-                    ),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+                elevation: 10,
+                child: ListView.builder(itemCount: requests!=null?requests.length:temp.length,itemBuilder: (context,int index){
+                  return Column(
+                    children: <Widget>[
+                      Slidable(
+                        actionPane: SlidableDrawerActionPane(),
+                        actionExtentRatio: 0.20,
+                        closeOnScroll: true,
+                        actions: <Widget>[
+                          IconSlideAction(
+                            color: Colors.red,
+                            icon: Icons.delete,
+                            caption: "Delete",
+                            closeOnTap: true,
+                            onTap: (){
+                              Network_Operations.DeleteProdRequest(requests[index]['ProductionRequestId']).then((response){
+                                if(response!=null&&response!=''&&response!='[]'){
+                                  WidgetsBinding.instance
+                                      .addPostFrameCallback((_) =>
+                                      _refreshIndicatorKey.currentState
+                                          .show());
+                                  Scaffold.of(context).showSnackBar(SnackBar(
+                                    backgroundColor: Colors.green,
+                                    content: Text("Request Deleted"),
+                                  ));
+                                }else{
+                                  Scaffold.of(context).showSnackBar(SnackBar(
+                                    backgroundColor: Colors.red,
+                                    content: Text("Request not Deleted"),
+                                  ));
+                                }
+                              });
+                            },
+                          ),
+                          IconSlideAction(
+                            color: Colors.blue,
+                            icon: Icons.edit,
+                            caption: "Update",
+                            closeOnTap: true,
+                            onTap: (){
+                               push(context, MaterialPageRoute(builder: (context)=>UpdateProductionRequest(requests[index])));
+                            },
+                          ),
+                        ],
+                        child: ListTile(
+                          title: Text(requests[index]['ItemDescription']),
+                          subtitle: Text((() {
+                            if(!requests[index]['PlannedDate'].contains("-22089564")){
+                              return 'Quantity:'+requests[index]['QuantityRequested'].toString()+'\n'+'Planned Production Date:'+DateTime.fromMillisecondsSinceEpoch(int.parse(requests[index]['PlannedDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0];
+                            }else
+                            return 'Quantity:'+requests[index]['QuantityRequested'].toString();
+                          })()),
+                          leading:  Material(
+                  borderRadius: BorderRadius.circular(24),
+                  color: Colors.teal.shade100,
+                  child: Padding(
+                  padding: const EdgeInsets.only(top:10,bottom: 15,right: 10,left: 10),
+                  child: Icon(FontAwesomeIcons.industry,size: 30,color: Color(0xFF004c4c),),
+                  )
                   ),
-                  Divider(),
-                ],
-              ) ;
-            }),
+                          onTap: (){
+                            push(context,MaterialPageRoute(builder: (context)=>RequestDetails(requests[index])));
+                          },
+                        ),
+                      ),
+                      Divider(),
+                    ],
+                  ) ;
+                }),
+              ),
+            ),
           ),
         ),
       );

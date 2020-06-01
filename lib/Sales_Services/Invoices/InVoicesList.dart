@@ -49,24 +49,40 @@ class _InvoicesList extends State<InvoicesList>{
       ),
       body: Visibility(
         visible: isVisible,
-        child: ListView.builder(
-          itemCount: InvoiceList!=null?InvoiceList.length:temp.length,
-            itemBuilder: (context,int index){
-              return Column(
-                children: <Widget>[
-                 ListTile(
-                   title: Text(InvoiceList[index]['InvoiceId']!=null?InvoiceList[index]['InvoiceId']:''),
-                   subtitle: Text(InvoiceList[index]['InvoiceDate']!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(InvoiceList[index]['InvoiceDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
-                   trailing: Text(InvoiceList[index]['InvoiceAmount']!=null?InvoiceList[index]['InvoiceAmount'].toString():''),
-                   leading: Icon(FontAwesomeIcons.fileInvoice,size: 40,),
-                   onTap: (){
-                     Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoiceDetails(InvoiceList[index])));
-                   },
-                 ),
-                  Divider(),
-                ],
-              );
-            }),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+            elevation: 10,
+            child: ListView.builder(
+              itemCount: InvoiceList!=null?InvoiceList.length:temp.length,
+                itemBuilder: (context,int index){
+                  return Column(
+                    children: <Widget>[
+                     ListTile(
+                       title: Text(InvoiceList[index]['InvoiceId']!=null?InvoiceList[index]['InvoiceId']:''),
+                       subtitle: Text(InvoiceList[index]['InvoiceDate']!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(InvoiceList[index]['InvoiceDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
+                       trailing: Text(InvoiceList[index]['InvoiceAmount']!=null?'Total:'+InvoiceList[index]['InvoiceAmount'].toString():''),
+                       leading: Material(
+                           borderRadius: BorderRadius.circular(24),
+                           color: Colors.teal.shade100,
+                           child: Padding(
+                             padding: const EdgeInsets.only(top: 10,bottom: 16,right: 10,left: 10),
+                             child: Icon(FontAwesomeIcons.fileInvoice,size: 30,color: Color(0xFF004c4c),),
+                           )
+                       ),
+                       onTap: (){
+                         Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoiceDetails(InvoiceList[index])));
+                       },
+                     ),
+                      Divider(),
+                    ],
+                  );
+                }),
+          ),
+        ),
       ),
     );
   }

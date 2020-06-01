@@ -38,7 +38,7 @@ pd.show();
   Widget build(BuildContext context) {
     // TODO: implement build
    return Scaffold(
-     appBar: AppBar(title: (Text("Details")),),
+     appBar: AppBar(title: (Text("Details"))),
      body: Visibility(
        visible: TableVisible,
        child: SingleChildScrollView(

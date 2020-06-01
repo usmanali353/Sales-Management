@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:salesmanagement/Sales_Services/Deliveries/detail_page.dart';
 import '../../Network_Operations.dart';
 import '../../Utils.dart';
 import 'DeliveryDetails.dart';
@@ -60,20 +61,43 @@ class _DeliveryList extends State<DeliveryList>{
       ),
       body: Visibility(
         visible: isVisible,
-        child: ListView.builder(itemCount: orders_list!=null?orders_list.length:temp.length,itemBuilder: (context,int index){
-          return Column(
-            children: <Widget>[
-              ListTile(
-                title: Text(orders_list[index]['salesIdField']),
-                leading: Icon(Icons.local_shipping,size: 30,),
-                onTap: (){
-                  Navigator.push(context,MaterialPageRoute(builder: (context)=>DeliveryDetails(orders_list[index])));
-                },
-              ),
-              Divider(),
-            ],
-          ) ;
-        }),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+            elevation: 10,
+            child: ListView.builder(itemCount: orders_list!=null?orders_list.length:temp.length,itemBuilder: (context,int index){
+              return Column(
+                children: <Widget>[
+                  ListTile(
+                    title: Text(orders_list[index]['salesIdField']),
+                    trailing:  Text(orders_list[index]['deliveryDateField']!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(orders_list[index]['deliveryDateField'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
+                    subtitle:  Text((() {
+                      if(orders_list[index]['packingSlipNumField']!=null){
+                        return 'Quantity:'+orders_list[index]['quantityInSQMField'].toString()+' SQM'+'\n'+'Packing Slip:'+orders_list[index]['packingSlipNumField'];
+                      }else
+                        return 'Quantity:'+orders_list[index]['quantityInSQMField'].toString()+' SQM';
+                    })()),
+                    leading: Material(
+                        borderRadius: BorderRadius.circular(24),
+                        color: Colors.teal.shade100,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Icon(Icons.local_shipping,size: 30,color: Color(0xFF004c4c),),
+                        )
+                    ),
+                    onTap: (){
+                      Navigator.push(context,MaterialPageRoute(builder: (context)=>DeliveryDetails(orders_list[index])));
+                    },
+                  ),
+                  Divider(),
+                ],
+              ) ;
+            }),
+          ),
+        ),
       ),
     );
   }

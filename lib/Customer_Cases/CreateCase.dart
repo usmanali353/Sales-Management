@@ -22,7 +22,7 @@ class _CreateCase extends State<CreateCase>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Create Case"),),
+      appBar: AppBar(title: Text("Create Case")),
       body: ListView(
         children: <Widget>[
           FormBuilder(
@@ -31,68 +31,78 @@ class _CreateCase extends State<CreateCase>{
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(16),
-                  child: FormBuilderTextField(
-                    controller: description,
-                    attribute: "description",
-                    validators: [FormBuilderValidators.required()],
-                    decoration: InputDecoration(labelText: "Description",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(9.0),
-                          borderSide: BorderSide(color: Colors.teal, width: 1.0)
+                  child: Card(
+                    elevation: 10,
+                    child: FormBuilderTextField(
+                      controller: description,
+                      attribute: "description",
+                      validators: [FormBuilderValidators.required()],
+                      decoration: InputDecoration(hintText: "Description",
+                        contentPadding: EdgeInsets.all(16),border: InputBorder.none
+//                        border: OutlineInputBorder(
+//                            borderRadius: BorderRadius.circular(9.0),
+//                            borderSide: BorderSide(color: Colors.teal, width: 1.0)
+//                        ),
                       ),
                     ),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 16,right: 16),
-                  child: FormBuilderDropdown(
-                    attribute: "Priority",
-                    validators: [FormBuilderValidators.required()],
-                    hint: Text("Priority"),
-                    items: ['High','Medium','Low'].map((trainer)=>DropdownMenuItem(
-                      child: Text(trainer),
-                      value: trainer,
-                    )).toList(),
-                    style: Theme.of(context).textTheme.body1,
-                    decoration: InputDecoration(labelText: "Priority",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(9.0),
-                          borderSide: BorderSide(color: Colors.teal, width: 1.0)
+                  child: Card(
+                    elevation: 10,
+                    child: FormBuilderDropdown(
+                      attribute: "Priority",
+                      validators: [FormBuilderValidators.required()],
+                      hint: Text("Priority"),
+                      items: ['High','Medium','Low'].map((trainer)=>DropdownMenuItem(
+                        child: Text(trainer),
+                        value: trainer,
+                      )).toList(),
+                      style: Theme.of(context).textTheme.body1,
+                      decoration: InputDecoration(contentPadding: EdgeInsets.all(16),
+//                        border: OutlineInputBorder(
+//                            borderRadius: BorderRadius.circular(9.0),
+//                            borderSide: BorderSide(color: Colors.teal, width: 1.0)
+//                        ),
                       ),
+                      onChanged: (value){
+                        setState(() {
+                          this.selectedValue=value;
+                        });
+                      },
                     ),
-                    onChanged: (value){
-                      setState(() {
-                        this.selectedValue=value;
-                      });
-                    },
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top:16,left: 16,right: 16),
-                  child: FormBuilderDropdown(
-                    attribute: "Case Type",
-                    validators: [FormBuilderValidators.required()],
-                    hint: Text("Case Type"),
-                    items: ['Inquiry','Complaint'].map((trainer)=>DropdownMenuItem(
-                      child: Text(trainer),
-                      value: trainer,
-                    )).toList(),
-                    style: Theme.of(context).textTheme.body1,
-                    decoration: InputDecoration(labelText: "Case Type",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(9.0),
-                          borderSide: BorderSide(color: Colors.teal, width: 1.0)
+                  child: Card(
+                    elevation: 10,
+                    child: FormBuilderDropdown(
+                      attribute: "Case Type",
+                      validators: [FormBuilderValidators.required()],
+                      hint: Text("Case Type"),
+                      items: ['Inquiry','Complaint'].map((trainer)=>DropdownMenuItem(
+                        child: Text(trainer),
+                        value: trainer,
+                      )).toList(),
+                      style: Theme.of(context).textTheme.body1,
+                      decoration: InputDecoration(contentPadding: EdgeInsets.all(16),
+//                        border: OutlineInputBorder(
+//                            borderRadius: BorderRadius.circular(9.0),
+//                            borderSide: BorderSide(color: Colors.teal, width: 1.0)
+//                        ),
                       ),
+                      onChanged: (value){
+                        setState(() {
+                          if(value=='Inquiry'){
+                            caseType=5637145326;
+                          }else if(value=='Complaint'){
+                            caseType=5637144576;
+                          }
+                        });
+                      },
                     ),
-                    onChanged: (value){
-                      setState(() {
-                        if(value=='Inquiry'){
-                          caseType=5637145326;
-                        }else if(value=='Complaint'){
-                          caseType=5637144576;
-                        }
-                      });
-                    },
                   ),
                 ),
                 Builder(
@@ -120,8 +130,8 @@ class _CreateCase extends State<CreateCase>{
                             });
                           }
                         },
-                        color: Colors.teal,
-                        child: Text("Add Case"),
+                        color:  Color(0xFF004c4c),
+                        child: Text("Add Case",style: TextStyle(color: Colors.white),),
                       ),
                     );
                   },

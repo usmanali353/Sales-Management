@@ -74,6 +74,7 @@ class _casesList extends State<casesList>{
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xFF004c4c),
         onPressed: (){
           Navigator.push(context, MaterialPageRoute(builder: (context)=>CreateCase()));
         },
@@ -86,55 +87,71 @@ class _casesList extends State<casesList>{
       ),
       body: Visibility(
         visible:isVisible,
-        child: ListView.builder(itemCount: caseList!=null?caseList.length:temp.length,itemBuilder: (context,int index){
-          return Column(
-            children: <Widget>[
-              Slidable(
-          actionPane: SlidableDrawerActionPane(),
-          actionExtentRatio: 0.20,
-            actions: <Widget>[
-              IconSlideAction(
-                icon: Icons.delete,
-                color: Colors.red,
-                caption: 'Delete',
-                onTap: (){
-                  ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-                  pd.show();
-                  Network_Operations.DeleteCustomerCase(caseList[index]['CaseNum']).then((response){
-                    pd.dismiss();
-                     if(response!=null){
-                       Scaffold.of(context).showSnackBar(SnackBar(
-                         backgroundColor: Colors.green,
-                         content: Text("Case Deleted Sucessfully"),
-                       ));
-                     }
-                  });
-                },
-              ),
-              IconSlideAction(
-                icon: Icons.edit,
-                color: Colors.blue,
-                caption: 'Update',
-                onTap: (){
-                 Navigator.push(context, MaterialPageRoute(builder: (context)=>UpdateCases(caseList[index])));
-                },
-              ),
-            ],
-            child: ListTile(
-                title: Text(caseList[index]['CaseNum']!=null?caseList[index]['CaseNum']:''),
-                subtitle: Text(caseList[index]['Status']!=null?getCaseType(caseList[index]['CategoryTypeId']):''),
-                leading: Icon(FontAwesomeIcons.angry,size: 30,),
-                onTap: (){
-                  Navigator.push(context,MaterialPageRoute(builder: (context)=>CaseDetail(caseList[index])));
-                },
-          )
-              ),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+            elevation: 10,
+            child: ListView.builder(itemCount: caseList!=null?caseList.length:temp.length,itemBuilder: (context,int index){
+              return Column(
+                children: <Widget>[
+                  Slidable(
+              actionPane: SlidableDrawerActionPane(),
+              actionExtentRatio: 0.20,
+                actions: <Widget>[
+                  IconSlideAction(
+                    icon: Icons.delete,
+                    color: Colors.red,
+                    caption: 'Delete',
+                    onTap: (){
+                      ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
+                      pd.show();
+                      Network_Operations.DeleteCustomerCase(caseList[index]['CaseNum']).then((response){
+                        pd.dismiss();
+                         if(response!=null){
+                           Scaffold.of(context).showSnackBar(SnackBar(
+                             backgroundColor: Colors.green,
+                             content: Text("Case Deleted Sucessfully"),
+                           ));
+                         }
+                      });
+                    },
+                  ),
+                  IconSlideAction(
+                    icon: Icons.edit,
+                    color: Colors.blue,
+                    caption: 'Update',
+                    onTap: (){
+                     Navigator.push(context, MaterialPageRoute(builder: (context)=>UpdateCases(caseList[index])));
+                    },
+                  ),
+                ],
+                child: ListTile(
+                    title: Text(caseList[index]['CaseNum']!=null?caseList[index]['CaseNum']:''),
+                    subtitle: Text(caseList[index]['Status']!=null?getCaseType(caseList[index]['CategoryTypeId']):''),
+                    leading: Material(
+                        borderRadius: BorderRadius.circular(24),
+                        color: Colors.teal.shade100,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top:10,bottom: 15,right: 10,left: 10),
+                          child: Icon(FontAwesomeIcons.angry,size: 30,color: Color(0xFF004c4c),),
+                        )
+                    ),
+                    onTap: (){
+                      Navigator.push(context,MaterialPageRoute(builder: (context)=>CaseDetail(caseList[index])));
+                    },
+              )
+                  ),
 
 
-              Divider(),
-            ],
-          ) ;
-        }),
+                  Divider(),
+                ],
+              ) ;
+            }),
+          ),
+        ),
       ),
     );
 

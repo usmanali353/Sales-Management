@@ -44,6 +44,7 @@ class _PrePickingListState extends ResumableState<PrePickingList> {
         title: Text("PrePicking"),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor:  Color(0xFF004c4c),
         onPressed: (){
          Navigator.push(context, MaterialPageRoute(builder: (context)=>AddPrePicking()));
         },
@@ -74,63 +75,79 @@ class _PrePickingListState extends ResumableState<PrePickingList> {
         },
         child: Visibility(
           visible: isVisible,
-          child: ListView.builder(itemCount:prePicking!=null?prePicking.length:0,itemBuilder: (BuildContext context,int index){
-            return Column(
-              children: <Widget>[
-                Slidable(
-                  actionPane: SlidableDrawerActionPane(),
-                  actionExtentRatio: 0.20,
-                  closeOnScroll: true,
-                  actions: <Widget>[
-                    IconSlideAction(
-                      color: Colors.red,
-                      icon: Icons.delete,
-                      caption: "Delete",
-                      closeOnTap: true,
-                      onTap: (){
-                        Network_Operations.DeletePrePicking(prePicking[index]['PickingId']).then((response){
-                          if(response!=null&&response!=''&&response!='[]'){
-                            WidgetsBinding.instance
-                                .addPostFrameCallback((_) =>
-                                _refreshIndicatorKey.currentState
-                                    .show());
-                            Scaffold.of(context).showSnackBar(SnackBar(
-                              backgroundColor: Colors.green,
-                              content: Text("PrePicking Deleted"),
-                            ));
-                          }else{
-                            Scaffold.of(context).showSnackBar(SnackBar(
-                              backgroundColor: Colors.red,
-                              content: Text("PrePicking not Deleted"),
-                            ));
-                          }
-                        });
-                      },
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Card(
+              elevation: 10,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              child: ListView.builder(itemCount:prePicking!=null?prePicking.length:0,itemBuilder: (BuildContext context,int index){
+                return Column(
+                  children: <Widget>[
+                    Slidable(
+                      actionPane: SlidableDrawerActionPane(),
+                      actionExtentRatio: 0.20,
+                      closeOnScroll: true,
+                      actions: <Widget>[
+                        IconSlideAction(
+                          color: Colors.red,
+                          icon: Icons.delete,
+                          caption: "Delete",
+                          closeOnTap: true,
+                          onTap: (){
+                            Network_Operations.DeletePrePicking(prePicking[index]['PickingId']).then((response){
+                              if(response!=null&&response!=''&&response!='[]'){
+                                WidgetsBinding.instance
+                                    .addPostFrameCallback((_) =>
+                                    _refreshIndicatorKey.currentState
+                                        .show());
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                  backgroundColor: Colors.green,
+                                  content: Text("PrePicking Deleted"),
+                                ));
+                              }else{
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                  backgroundColor: Colors.red,
+                                  content: Text("PrePicking not Deleted"),
+                                ));
+                              }
+                            });
+                          },
+                        ),
+                        IconSlideAction(
+                          color: Colors.blue,
+                          icon: Icons.edit,
+                          caption: "Update",
+                          closeOnTap: true,
+                          onTap: (){
+                            push(context, MaterialPageRoute(builder: (context)=>UpdatePrePicking(prePicking[index])));
+                          },
+                        ),
+                      ],
+                      child: ListTile(
+                        title: Text(prePicking!=null?prePicking[index]['PickingId']:''),
+                        subtitle: Text(prePicking!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(prePicking[index]['DeliveryDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
+                        trailing: Text(prePicking!=null?getStatus(prePicking[index]['Status']):''),
+                        leading:  Material(
+                            borderRadius: BorderRadius.circular(24),
+                            color: Colors.teal.shade100,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top:10,bottom: 15,right: 18,left: 10),
+                              child: Icon(FontAwesomeIcons.truckLoading,size: 30,color: Color(0xFF004c4c),),
+                            )
+                        ),
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>PrePickingDetails(prePicking[index])));
+                        },
+                      ),
                     ),
-                    IconSlideAction(
-                      color: Colors.blue,
-                      icon: Icons.edit,
-                      caption: "Update",
-                      closeOnTap: true,
-                      onTap: (){
-                        push(context, MaterialPageRoute(builder: (context)=>UpdatePrePicking(prePicking[index])));
-                      },
-                    ),
+                    Divider(),
                   ],
-                  child: ListTile(
-                    title: Text(prePicking!=null?prePicking[index]['PickingId']:''),
-                    subtitle: Text(prePicking!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(prePicking[index]['DeliveryDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
-                    trailing: Text(prePicking!=null?getStatus(prePicking[index]['Status']):''),
-                    leading: Icon(FontAwesomeIcons.truckLoading),
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>PrePickingDetails(prePicking[index])));
-                    },
-                  ),
-                ),
-                Divider(),
-              ],
-            );
-          }),
+                );
+              }),
+            ),
+          ),
         ),
       ),
     );

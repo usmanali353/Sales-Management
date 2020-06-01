@@ -3,30 +3,26 @@ import 'package:flutter/material.dart';
 
 
 class DetailPage extends StatefulWidget {
+  var orders_data;
+
+  DetailPage(this.orders_data);
+
   @override
-  _DetailPageState createState() => _DetailPageState();
+  _DetailPageState createState() => _DetailPageState(orders_data);
 }
 
 class _DetailPageState extends State<DetailPage>{
-  @override
+ var orders_data;
+
+ _DetailPageState(this.orders_data);
+
+ @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        leading:  IconButton(
-          icon: Icon(Icons.menu, color: Colors.white,size:32),
-//                            onPressed: (){
-//                              Navigator.pop(context);
-//                            },
+        title: Text("Delivery Details"),
         ),
-        backgroundColor:  Color(0xFF004c4c),
-        titleSpacing: 90,
-        title: Text("Delivery Details", style: TextStyle(
-            color: Colors.white
-        ),
-        ),
-
-      ),
       body: Stack(
         children: <Widget>[
           Container(
@@ -41,7 +37,6 @@ class _DetailPageState extends State<DetailPage>{
           Center(
             child: new Container(
               child: new Card(
-                color: Colors.white,
                 elevation: 6.0,
                 margin: EdgeInsets.only(right: 15.0, left: 15.0),
                 child: new Wrap(
@@ -50,24 +45,21 @@ class _DetailPageState extends State<DetailPage>{
                       margin: EdgeInsets.only(left: 12, top: 25),
                       width: MediaQuery.of(context).size.width,
                       height: 70,
-                      color: Colors.white,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text("Order ID",
                             style: TextStyle(
-                                color: Colors.grey.shade600,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17
+                                fontSize: 17,
+                               fontStyle: FontStyle.italic
                             ),
                           ),
                           Padding(
                             padding: EdgeInsets.only(top: 2),
                           ),
-                          Text("19S0-03",
+                          Text(orders_data['salesIdField']!=null?orders_data['salesIdField']:'',
                             style: TextStyle(
-                                color: Colors.black,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 17
                             ),
@@ -85,22 +77,19 @@ class _DetailPageState extends State<DetailPage>{
                           margin: EdgeInsets.only(left: 2, right: 2 ),
                           width: 110,
                           height: 70,
-                          color: Colors.white,
                           child: Column(
                             children: <Widget>[
                               Text("Packing Slip#",
                                 style: TextStyle(
-                                    color: Colors.grey.shade600,
-                                    fontWeight: FontWeight.bold,
+                                    fontStyle: FontStyle.italic,
                                     fontSize: 17
                                 ),
                               ),
                               Padding(
                                 padding: EdgeInsets.only(top: 2),
                               ),
-                              Text("19-DN05344",
+                              Text(orders_data['packingSlipNumField']!=null?orders_data['packingSlipNumField']:'',
                                 style: TextStyle(
-                                    color: Colors.black,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 17
                                 ),
@@ -111,22 +100,19 @@ class _DetailPageState extends State<DetailPage>{
                         Container(
                           width: 110,
                           height: 70,
-                          color: Colors.white,
                           child: Column(
                             children: <Widget>[
-                              Text("Plate Quantity",
+                              Text("Pallet Quantity",
                                 style: TextStyle(
-                                    color: Colors.grey.shade600,
-                                    fontWeight: FontWeight.bold,
+                                    fontStyle: FontStyle.italic,
                                     fontSize: 17
                                 ),
                               ),
                               Padding(
                                 padding: EdgeInsets.only(top: 2),
                               ),
-                              Text("44",
+                              Text(orders_data['quantityInPalletsField']!=null?orders_data['quantityInPalletsField'].toString():'',
                                 style: TextStyle(
-                                    color: Colors.black,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 17
                                 ),
@@ -137,22 +123,19 @@ class _DetailPageState extends State<DetailPage>{
                         Container(
                           width: 130,
                           height: 70,
-                          color: Colors.white,
                           child: Column(
                             children: <Widget>[
                               Text("Quantity In SQM",
                                 style: TextStyle(
-                                    color: Colors.grey.shade600,
-                                    fontWeight: FontWeight.bold,
+                                    fontStyle: FontStyle.italic,
                                     fontSize: 17
                                 ),
                               ),
                               Padding(
                                 padding: EdgeInsets.only(top: 2),
                               ),
-                              Text("1520.640",
+                              Text(orders_data['quantityInSQMField']!=null?orders_data['quantityInSQMField'].toString():'',
                                 style: TextStyle(
-                                    color: Colors.black,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 17
                                 ),
@@ -172,22 +155,19 @@ class _DetailPageState extends State<DetailPage>{
                           margin: EdgeInsets.only(left: 2, right: 2 ),
                           width: 110,
                           height: 70,
-                          color: Colors.white,
                           child: Column(
                             children: <Widget>[
                               Text("Truck Driver",
                                 style: TextStyle(
-                                    color: Colors.grey.shade600,
-                                    fontWeight: FontWeight.bold,
+                                    fontStyle: FontStyle.italic,
                                     fontSize: 17
                                 ),
                               ),
                               Padding(
                                 padding: EdgeInsets.only(top: 2),
                               ),
-                              Text("Usman",
+                              Text(orders_data['truckDriverField']!=null?orders_data['truckDriverField']:'',
                                 style: TextStyle(
-                                    color: Colors.black,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 17
                                 ),
@@ -198,22 +178,19 @@ class _DetailPageState extends State<DetailPage>{
                         Container(
                           width: 110,
                           height: 70,
-                          color: Colors.white,
                           child: Column(
                             children: <Widget>[
                               Text("Truck Number",
                                 style: TextStyle(
-                                    color: Colors.grey.shade600,
-                                    fontWeight: FontWeight.bold,
+                                    fontStyle: FontStyle.italic,
                                     fontSize: 17
                                 ),
                               ),
                               Padding(
                                 padding: EdgeInsets.only(top: 2),
                               ),
-                              Text("3289",
+                              Text(orders_data['truckPlateNumField']!=null?orders_data['truckPlateNumField']:'',
                                 style: TextStyle(
-                                    color: Colors.black,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 17
                                 ),
@@ -224,22 +201,19 @@ class _DetailPageState extends State<DetailPage>{
                         Container(
                           width: 110,
                           height: 70,
-                          color: Colors.white,
                           child: Column(
                             children: <Widget>[
                               Text("Line No.",
                                 style: TextStyle(
-                                    color: Colors.grey.shade600,
-                                    fontWeight: FontWeight.bold,
+                                    fontStyle: FontStyle.italic,
                                     fontSize: 17
                                 ),
                               ),
                               Padding(
                                 padding: EdgeInsets.only(top: 2),
                               ),
-                              Text("0",
+                              Text(orders_data['lineNumField']!=null?orders_data['lineNumField'].toString():'',
                                 style: TextStyle(
-                                    color: Colors.black,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 17
                                 ),
@@ -268,7 +242,7 @@ class _DetailPageState extends State<DetailPage>{
 
                         ),
                         ) ,
-                        subtitle:Text("15 April 2020", style: TextStyle(
+                        subtitle:Text(orders_data['deliveryDateField']!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(orders_data['deliveryDateField'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:'', style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold
                         ),

@@ -56,24 +56,41 @@ class _SalesOrdersList extends State<SalesOrdersList>{
       ),
       body: Visibility(
         visible: isVisible,
-        child: ListView.builder(
-          itemCount: order_data!=null?order_data.length:temp.length,
-          itemBuilder: (BuildContext context,int index){
-          return Column(
-            children: <Widget>[
-          ListTile(
-          title: Text(order_data[index]['salesIdField']!=null?order_data[index]['salesIdField'].toString():''),
-            leading: Icon(Icons.local_shipping,size: 40,),
-            trailing: Text(order_data[index]['salesStatusField']!=null?get_order_status(order_data[index]['salesStatusField']):''),
-            onTap: (){
-             Navigator.push(context, MaterialPageRoute(builder: (context)=>salesOrdersDetails(order_data[index])));
-            },
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Card(
+            elevation: 10,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
             ),
-              Divider(),
-            ],
-          );
+            child: ListView.builder(
+              itemCount: order_data!=null?order_data.length:temp.length,
+              itemBuilder: (BuildContext context,int index){
+              return Column(
+                children: <Widget>[
+              ListTile(
+              title: Text(order_data[index]['salesIdField']!=null?order_data[index]['salesIdField'].toString():''),
+                trailing:  Text(order_data[index]['deliveryDateField']!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(order_data[index]['deliveryDateField'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
+                leading: Material(
+                    borderRadius: BorderRadius.circular(24),
+                    color: Colors.teal.shade100,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Icon(Icons.local_shipping,size: 30,color: Color(0xFF004c4c),),
+                    )
+                ),
+               // trailing: Text(order_data[index]['salesStatusField']!=null?get_order_status(order_data[index]['salesStatusField']):''),
+                onTap: (){
+                 Navigator.push(context, MaterialPageRoute(builder: (context)=>salesOrdersDetails(order_data[index])));
+                },
+                ),
+                  Divider(),
+                ],
+              );
 
-          },
+              },
+            ),
+          ),
         ),
       ),
     );

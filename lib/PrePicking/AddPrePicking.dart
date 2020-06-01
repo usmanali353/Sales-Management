@@ -41,82 +41,108 @@ class _AddPrePickingState extends ResumableState<AddPrePicking> {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(top:16,left: 16,right: 16,bottom: 16),
-                  child: FormBuilderTextField(
-                    controller: address,
-                    attribute: "Address",
-                    validators: [FormBuilderValidators.required()],
-                    decoration: InputDecoration(
-                      labelText: "Address",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(9.0),
-                          borderSide:
-                          BorderSide(color: Colors.teal, width: 1.0)),
+                  child: Card(
+                    elevation: 10,
+                    child: FormBuilderTextField(
+                      controller: address,
+                      attribute: "Address",
+                      validators: [FormBuilderValidators.required()],
+                      decoration: InputDecoration(
+                        hintText: "Address",
+                        contentPadding: EdgeInsets.all(16),
+                         border: InputBorder.none
+//                        border: OutlineInputBorder(
+//                            borderRadius: BorderRadius.circular(9.0),
+//                            borderSide:
+//                            BorderSide(color: Colors.teal, width: 1.0)),
+                      ),
                     ),
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 16,right: 16),
-                  child: FormBuilderTextField(
-                    controller: mobileNo,
-                    attribute: "Mobile No",
-                    validators: [FormBuilderValidators.required()],
-                    decoration: InputDecoration(
-                      labelText: "Mobile No",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(9.0),
-                          borderSide:
-                          BorderSide(color: Colors.teal, width: 1.0)),
+                  child: Card(
+                    elevation: 10,
+                    child: FormBuilderTextField(
+                      controller: mobileNo,
+                      attribute: "Mobile No",
+                      validators: [FormBuilderValidators.required()],
+                      decoration: InputDecoration(
+                        hintText: "Mobile No",
+                        contentPadding: EdgeInsets.all(16),
+                        border: InputBorder.none
+//                        border: OutlineInputBorder(
+//                            borderRadius: BorderRadius.circular(9.0),
+//                            borderSide:
+//                            BorderSide(color: Colors.teal, width: 1.0)),
+                      ),
                     ),
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top:16,left: 16,right: 16,bottom: 16),
-                  child:FormBuilderDateTimePicker(
-                    attribute: "date",
-                    style: Theme.of(context).textTheme.body1,
-                    inputType: InputType.date,
-                    validators: [FormBuilderValidators.required()],
-                    format: DateFormat("MM-dd-yyyy"),
-                    decoration: InputDecoration(labelText: "Delivery Date",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(9.0),
-                          borderSide: BorderSide(color: Colors.teal, width: 1.0)
-                      ),),
-                    onChanged: (value){
-                      setState(() {
-                        this.deliveryDate=value;
-                      });
-                    },
+                  child:Card(
+                    elevation: 10,
+                    child: FormBuilderDateTimePicker(
+                      attribute: "date",
+                      style: Theme.of(context).textTheme.body1,
+                      inputType: InputType.date,
+                      validators: [FormBuilderValidators.required()],
+                      format: DateFormat("MM-dd-yyyy"),
+                      decoration: InputDecoration(hintText: "Delivery Date",
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.all(16),
+//                        border: OutlineInputBorder(
+//                            borderRadius: BorderRadius.circular(9.0),
+//                            borderSide: BorderSide(color: Colors.teal, width: 1.0)
+//                        ),
+                      ),
+                      onChanged: (value){
+                        setState(() {
+                          this.deliveryDate=value;
+                        });
+                      },
+                    ),
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 16,right: 16),
-                  child: FormBuilderTextField(
-                    controller: driverName,
-                    attribute: "Driver Name",
-                    validators: [FormBuilderValidators.required()],
-                    decoration: InputDecoration(
-                      labelText: "Driver Name",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(9.0),
-                          borderSide:
-                          BorderSide(color: Colors.teal, width: 1.0)),
+                  child: Card(
+                    elevation: 10,
+                    child: FormBuilderTextField(
+                      controller: driverName,
+                      attribute: "Driver Name",
+                      validators: [FormBuilderValidators.required()],
+                      decoration: InputDecoration(
+                        hintText: "Driver Name",
+                       contentPadding: EdgeInsets.all(16),
+                       border: InputBorder.none
+//                        border: OutlineInputBorder(
+//                            borderRadius: BorderRadius.circular(9.0),
+//                            borderSide:
+//                            BorderSide(color: Colors.teal, width: 1.0)),
+                      ),
                     ),
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top:16,left: 16, right: 16),
-                  child: FormBuilderTextField(
-                    controller: truckNumber,
-                    attribute: "Truck Number",
-                    keyboardType: TextInputType.number,
-                    validators: [FormBuilderValidators.required()],
-                    decoration: InputDecoration(
-                      labelText: "Truck Number",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(9.0),
-                          borderSide:
-                          BorderSide(color: Colors.teal, width: 1.0)),
+                  child: Card(
+                    elevation: 10,
+                    child: FormBuilderTextField(
+                      controller: truckNumber,
+                      attribute: "Truck Number",
+                      keyboardType: TextInputType.number,
+                      validators: [FormBuilderValidators.required()],
+                      decoration: InputDecoration(
+                        hintText: "Truck Number",
+                        contentPadding: EdgeInsets.all(16),
+                         border: InputBorder.none
+//                        border: OutlineInputBorder(
+//                            borderRadius: BorderRadius.circular(9.0),
+//                            borderSide:
+//                            BorderSide(color: Colors.teal, width: 1.0)),
+                      ),
                     ),
                   ),
                 ),
@@ -124,8 +150,8 @@ class _AddPrePickingState extends ResumableState<AddPrePicking> {
                   child: Padding(
                     padding: const EdgeInsets.only(top:8.0),
                     child: MaterialButton(
-                      color: Colors.teal[800],
-                      child: Text("Add Products"),
+                      color: Color(0xFF004c4c),
+                      child: Text("Add Products",style: TextStyle(color:Colors.white),),
                       onPressed: (){
                         if(_fbKey.currentState.validate()) {
                           push(context, MaterialPageRoute(builder: (context) => AddProducts(deliveryDate, driverName.text, truckNumber.text,address.text,mobileNo.text)));

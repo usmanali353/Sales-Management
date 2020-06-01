@@ -55,40 +55,113 @@ class _InvoiceDetails extends State<InvoiceDetails>{
       ),
       body: ListView(
         children: <Widget>[
-          Column(
-            children: <Widget>[
-              ListTile(
-                title: Text("Invoice Id"),
-                subtitle: Text(InvoiceData['InvoiceId']),
+          Padding(
+            padding: const EdgeInsets.only(top: 16),
+            child: Center(
+              child: Text(
+                "Order Info",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
               ),
-              Divider(),
-              ListTile(
-                title: Text("Invoice Date"),
-                subtitle: Text(DateTime.fromMillisecondsSinceEpoch(int.parse(InvoiceData['InvoiceDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
               ),
-              Divider(),
-              ListTile(
-                title: Text("Order Id"),
-                subtitle: Text(InvoiceData['SalesOrderId']),
+              elevation: 10,
+              child: Column(
+                children: <Widget>[
+                  ListTile(
+                    title: Text("Order Id"),
+                    subtitle: Text(InvoiceData['SalesOrderId']),
+                  ),
+                  Divider(),
+                  ListTile(
+                    title: Text("Delivery Name"),
+                    subtitle: Text(InvoiceData['DeliveryName']),
+                  ),
+                  Divider(),
+                ],
               ),
-              Divider(),
-              ListTile(
-                title: Text("Delivery Name"),
-                subtitle: Text(InvoiceData['DeliveryName']),
+            ),
+          ),
+
+          Center(
+            child: Text(
+              "Invoice Info",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
               ),
-              Divider(),
-              ListTile(
-                title: Text("Sales Tax"),
-                subtitle: Text(InvoiceData['SalesTaxAmount'].toString()),
+              elevation: 10,
+              child: Column(
+                children: <Widget>[
+                  ListTile(
+                    title: Text("Invoice Date"),
+                    subtitle: Text(DateTime.fromMillisecondsSinceEpoch(int.parse(InvoiceData['InvoiceDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]),
+                  ),
+                  Divider(),
+                  ListTile(
+                    title: Text("Invoice Id"),
+                    subtitle: Text(InvoiceData['InvoiceId']),
+                  ),
+                  Divider(),
+                  ListTile(
+                    title: Text("Amount without Tax"),
+                    subtitle: Text(InvoiceData['SalesAmount']!=null?InvoiceData['SalesAmount'].toString():''),
+                  ),
+                  Divider(),
+                  ListTile(
+                    title: Text("Sales Tax"),
+                    subtitle: Text(InvoiceData['SalesTaxAmount'].toString()),
+                  ),
+                  Divider(),
+                  ListTile(
+                    title: Text("Total Amount"),
+                    subtitle: Text(InvoiceData['InvoiceAmount'].toString()),
+                  ),
+                  Divider()
+                ],
               ),
-              Divider(),
-              ListTile(
-                title: Text("Total Amount"),
-                subtitle: Text(InvoiceData['InvoiceAmount'].toString()),
-              ),
-              Divider(),
-            ],
-          )
+            ),
+          ),
+//          ListTile(
+//            title: Text("Invoice Id"),
+//            subtitle: Text(InvoiceData['InvoiceId']),
+//          ),
+//          Divider(),
+//          ListTile(
+//            title: Text("Invoice Date"),
+//            subtitle: Text(DateTime.fromMillisecondsSinceEpoch(int.parse(InvoiceData['InvoiceDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]),
+//          ),
+//          Divider(),
+//          ListTile(
+//            title: Text("Order Id"),
+//            subtitle: Text(InvoiceData['SalesOrderId']),
+//          ),
+//          Divider(),
+//          ListTile(
+//            title: Text("Delivery Name"),
+//            subtitle: Text(InvoiceData['DeliveryName']),
+//          ),
+//          Divider(),
+//          ListTile(
+//            title: Text("Sales Tax"),
+//            subtitle: Text(InvoiceData['SalesTaxAmount'].toString()),
+//          ),
+//          Divider(),
+//          ListTile(
+//            title: Text("Total Amount"),
+//            subtitle: Text(InvoiceData['InvoiceAmount'].toString()),
+//          ),
+//          Divider()
         ],
       ),
     );

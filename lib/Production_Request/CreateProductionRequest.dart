@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -35,7 +35,9 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Create Production Request"),),
+      appBar: AppBar(
+        title: Text("Create Production Request"),
+      ),
       body: ListView(
         children: <Widget>[
           FormBuilder(
@@ -46,10 +48,44 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
                   padding: EdgeInsets.only(top:16,left: 16,right: 16),
                   child:  Visibility(
                     visible: isVisible,
+                    child: Card(
+                      elevation: 10,
+                      child: FormBuilderDropdown(
+                        attribute: "Select Item",
+                        hint: Text("Select Item"),
+                        items: itemName!=null?itemName.map((plans)=>DropdownMenuItem(
+                          child: Text(plans),
+                          value: plans,
+                        )).toList():[""].map((name) => DropdownMenuItem(
+                            value: name, child: Text("$name")))
+                            .toList(),
+                        onChanged: (value){
+                          setState(() {
+                            this.selectedItemId=onHand[itemName.indexOf(value)]['ItemNumber'];
+                            this.selectedItemStock=onHand[itemName.indexOf(value)]['OnhandALL'];
+                          });
+                        },
+                        style: Theme.of(context).textTheme.body1,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(16)
+//                          border: OutlineInputBorder(
+//                              borderRadius: BorderRadius.circular(9.0),
+//                              borderSide: BorderSide(color: Colors.teal, width: 1.0)
+//                          ),
+                        ),
+
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top:16,left: 16,right: 16),
+                  child: Card(
+                    elevation: 10,
                     child: FormBuilderDropdown(
-                      attribute: "Select Item",
-                      hint: Text("Select Item"),
-                      items: itemName!=null?itemName.map((plans)=>DropdownMenuItem(
+                      attribute: "Select Production Month",
+                      hint: Text("Select Production Month"),
+                      items: months!=null?months.map((plans)=>DropdownMenuItem(
                         child: Text(plans),
                         value: plans,
                       )).toList():[""].map((name) => DropdownMenuItem(
@@ -57,71 +93,50 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
                           .toList(),
                       onChanged: (value){
                         setState(() {
-                          this.selectedItemId=onHand[itemName.indexOf(value)]['ItemNumber'];
-                          this.selectedItemStock=onHand[itemName.indexOf(value)]['OnhandALL'];
+                          this.selectedMonth=months.indexOf(value)+1;
                         });
                       },
                       style: Theme.of(context).textTheme.body1,
-                      decoration: InputDecoration(labelText: "Select Item Size",
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(9.0),
-                            borderSide: BorderSide(color: Colors.teal, width: 1.0)
-                        ),
-                      ),
-
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top:16,left: 16,right: 16),
-                  child: FormBuilderDropdown(
-                    attribute: "Select Production Month",
-                    hint: Text("Select Production Month"),
-                    items: months!=null?months.map((plans)=>DropdownMenuItem(
-                      child: Text(plans),
-                      value: plans,
-                    )).toList():[""].map((name) => DropdownMenuItem(
-                        value: name, child: Text("$name")))
-                        .toList(),
-                    onChanged: (value){
-                      setState(() {
-                        this.selectedMonth=months.indexOf(value)+1;
-                      });
-                    },
-                    style: Theme.of(context).textTheme.body1,
-                    decoration: InputDecoration(labelText: "Select Production Month",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(9.0),
-                          borderSide: BorderSide(color: Colors.teal, width: 1.0)
+                      decoration: InputDecoration(contentPadding: EdgeInsets.all(16),
+//                        border: OutlineInputBorder(
+//                            borderRadius: BorderRadius.circular(9.0),
+//                            borderSide: BorderSide(color: Colors.teal, width: 1.0)
+//                        ),
                       ),
                     ),
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top:16,left: 16,right: 16),
-                  child:  FormBuilderTextField(
-                    controller: customerItemCode,
-                    attribute: "Customer Item Code",
-                    validators: [FormBuilderValidators.required()],
-                    decoration: InputDecoration(labelText: "Customer Item Code",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(9.0),
-                          borderSide: BorderSide(color: Colors.teal, width: 1.0)
+                  child:  Card(
+                    elevation: 10,
+                    child: FormBuilderTextField(
+                      controller: customerItemCode,
+                      attribute: "Customer Item Code",
+                      validators: [FormBuilderValidators.required()],
+                      decoration: InputDecoration(hintText: "Customer Item Code",contentPadding: EdgeInsets.all(16),border: InputBorder.none
+//                        border: OutlineInputBorder(
+//                            borderRadius: BorderRadius.circular(9.0),
+//                            borderSide: BorderSide(color: Colors.teal, width: 1.0)
+//                        ),
                       ),
                     ),
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top:16,left: 16,right: 16),
-                  child:  FormBuilderTextField(
-                    controller: quantity,
-                    attribute: "Quantity",
-                    keyboardType: TextInputType.number,
-                    validators: [FormBuilderValidators.required()],
-                    decoration: InputDecoration(labelText: "Quantity",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(9.0),
-                          borderSide: BorderSide(color: Colors.teal, width: 1.0)
+                  child:  Card(
+                    elevation: 10,
+                    child: FormBuilderTextField(
+                      controller: quantity,
+                      attribute: "Quantity",
+                      keyboardType: TextInputType.number,
+                      validators: [FormBuilderValidators.required()],
+                      decoration: InputDecoration(hintText: "Quantity",contentPadding: EdgeInsets.all(16),border: InputBorder.none
+//                        border: OutlineInputBorder(
+//                            borderRadius: BorderRadius.circular(9.0),
+//                            borderSide: BorderSide(color: Colors.teal, width: 1.0)
+//                        ),
                       ),
                     ),
                   ),
@@ -131,7 +146,7 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
                     return Padding(
                       padding: const EdgeInsets.only(top:16),
                       child: MaterialButton(
-                        color: Colors.teal,
+                        color: Colors.teal[800],
                         child: Text("Create Production Request",style: TextStyle(color: Colors.white),),
                         onPressed: (){
                          showAlertDialog(context);
@@ -189,7 +204,15 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: Text("Notice"),
-      content: Text("You have $selectedItemStock SQM available for this item"),
+      content: RichText(
+         text: TextSpan(
+           children: [
+             TextSpan(text: "You have ",style: TextStyle(color: Colors.black)),
+             TextSpan(text: "$selectedItemStock",style: TextStyle(color: Color(0xFF004c4c),fontWeight: FontWeight.bold)),
+             TextSpan(text: " SQM available for this item",style: TextStyle(color: Colors.black)),
+           ]
+         ),
+      ), //Text("You have $selectedItemStock SQM available for this item"),
       actions: [
         remindButton,
         cancelButton,

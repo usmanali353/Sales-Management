@@ -19,37 +19,47 @@ class _CaseDetail extends State<CaseDetail>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Case Detail"),),
+      appBar: AppBar(title: Text("Case Detail"),
+      ),
       body: ListView(
         children: <Widget>[
-          Column(
-            children: <Widget>[
-              ListTile(
-                title: Text("Case Id"),
-                subtitle: Text(caseData['CaseNum']!=null?caseData['CaseNum']:''),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Card(
+              elevation: 10,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
               ),
-              Divider(),
-              ListTile(
-                title: Text("Case type"),
-                subtitle: Text(caseData['CategoryTypeId']!=null?getCaseType(caseData['CategoryTypeId']):''),
+              child: Column(
+                children: <Widget>[
+                  ListTile(
+                    title: Text("Case Id"),
+                    subtitle: Text(caseData['CaseNum']!=null?caseData['CaseNum']:''),
+                  ),
+                  Divider(),
+                  ListTile(
+                    title: Text("Case type"),
+                    subtitle: Text(caseData['CategoryTypeId']!=null?getCaseType(caseData['CategoryTypeId']):''),
+                  ),
+                  Divider(),
+                  ListTile(
+                    title: Text("Case Description"),
+                    subtitle: Text(caseData['CaseDescription']!=null?caseData['CaseDescription']:''),
+                  ),
+                  Divider(),
+                  ListTile(
+                    title: Text("Case Priority"),
+                    subtitle: Text(caseData['Priority']!=null?caseData['Priority']:''),
+                  ),
+                  Divider(),
+                  ListTile(
+                    title: Text("Resolution Type"),
+                    subtitle: Text(caseData['ResolutionType']!=null?getResolutionType(caseData['ResolutionType']):''),
+                  ),
+                  Divider(),
+                ],
               ),
-              Divider(),
-              ListTile(
-                title: Text("Case Description"),
-                subtitle: Text(caseData['CaseDescription']!=null?caseData['CaseDescription']:''),
-              ),
-              Divider(),
-              ListTile(
-                title: Text("Case Priority"),
-                subtitle: Text(caseData['Priority']!=null?caseData['Priority']:''),
-              ),
-              Divider(),
-              ListTile(
-                title: Text("Resolution Type"),
-                subtitle: Text(caseData['ResolutionType']!=null?getResolutionType(caseData['ResolutionType']):''),
-              ),
-              Divider(),
-            ],
+            ),
           )
 
         ],

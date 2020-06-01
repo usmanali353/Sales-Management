@@ -97,18 +97,28 @@ class _SelectedProductsState extends State<SelectedProducts> {
           )
         ],
       ),
-      body: ListView.builder(itemCount:productList.length,itemBuilder:(BuildContext context,int index){
-        return Column(
-          children: <Widget>[
-            ListTile(
-              title: Text(productList[index].ItemNumber!=null?productList[index].ItemNumber:''),
-              leading: Icon(FontAwesomeIcons.box),
-            ),
-            Divider(),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Card(
+          elevation: 10,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          child: ListView.builder(itemCount:productList.length,itemBuilder:(BuildContext context,int index){
+            return Column(
+              children: <Widget>[
+                ListTile(
+                  title: Text(productList[index].ItemName!=null?productList[index].ItemName:''),
+                  subtitle: Text(productList[index].SalesQuantity!=null?'Quantity: '+productList[index].SalesQuantity.toString():''),
+                  leading: Icon(FontAwesomeIcons.box),
+                ),
+                Divider(),
 
-          ],
-        );
-      }),
+              ],
+            );
+          }),
+        ),
+      ),
     );
   }
 }

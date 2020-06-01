@@ -19,31 +19,35 @@ class _PlanDetailState extends State<PlanDetail> {
       appBar: AppBar(title: Text("Plan Detail"),),
       body: ListView(
         children: <Widget>[
-          ListTile(
-            title: Text("Customer Account"),
-            subtitle: Text(planData['CustomerAccount']!=null?planData['CustomerAccount'].toString():''),
-          ),
-          Divider(),
-          ListTile(
-            title: Text("Plan Year"),
-            subtitle: Text(planData['WhichYear']!=null?planData['WhichYear'].toString():''),
-          ),
-          Divider(),
-          ListTile(
-            title: Text("Plan Month"),
-            subtitle: Text(planData['MonthOfYear']!=null?planData['MonthOfYear']:''),
-          ),
-          Divider(),
-          ListTile(
-            title: Text("Size of Requested Item"),
-            subtitle: Text(planData['ItemSize']!=null?planData['ItemSize']:''),
-          ),
-          Divider(),
-          ListTile(
-            title: Text("Requested Quantity"),
-            subtitle: Text(planData['EstimatedQuantity']!=null?planData['EstimatedQuantity'].toString():''),
-          ),
-          Divider(),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Card(
+              elevation: 10,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              child: Column(
+                children: <Widget>[
+                  ListTile(
+                    title: Text("Plan Month"),
+                    subtitle: Text(planData['WhichYear']!=null&&planData['MonthOfYear']!=null?planData['MonthOfYear']+' '+planData['WhichYear'].toString():''),
+                  ),
+                  Divider(),
+                  ListTile(
+                    title: Text("Size Requested"),
+                    subtitle: Text(planData['ItemSize']!=null?planData['ItemSize']:''),
+                  ),
+                  Divider(),
+                  ListTile(
+                    title: Text("Requested Quantity"),
+                    subtitle: Text(planData['EstimatedQuantity']!=null?planData['EstimatedQuantity'].toString():''),
+                  ),
+                  Divider(),
+                ],
+              ),
+            ),
+          )
+
         ],
       ),
     );
