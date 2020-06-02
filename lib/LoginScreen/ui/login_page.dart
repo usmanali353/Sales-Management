@@ -341,7 +341,7 @@ class _LoginPageState extends State<LoginPage>
                     ),
                    onPressed: (){
                      //Navigator.push(context, MaterialPageRoute(builder: (context) => breeding_control_details_page(control_list[index], get_check_method_by_id(control_list[index]['check_Method']))));
-                     Navigator.push(context, MaterialPageRoute(builder: (context)=>newdashboard()));
+
                    }),
               ),
             ],

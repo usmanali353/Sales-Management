@@ -15,7 +15,6 @@ import 'Production_Schedule/ScheduleList.dart';
 import 'Sales_Services/Deliveries/DeliveriesList.dart';
 import 'Sales_Services/Invoices/InVoicesList.dart';
 import 'Sales_Services/SalesOrders/SalesOrdersList.dart';
-import 'Sales_Services/Stocks/StocksMainPage.dart';
 import 'Utils.dart';
 
 class newdashboard extends StatefulWidget{
@@ -240,7 +239,7 @@ class _newdashboard extends State<newdashboard>{
                           children: <Widget>[
                             Container(
                               margin: EdgeInsets.only(left: 12),
-                              child: Text("Today's\n(In SQM)",
+                              child: Text("Today's\n(In m\u00B2)",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold
@@ -309,7 +308,7 @@ class _newdashboard extends State<newdashboard>{
                           children: <Widget>[
                             Container(
                               margin: EdgeInsets.only(left: 12),
-                              child: Text("Weekly\n(In SQM)",
+                              child: Text("Weekly\n(In m\u00B2)",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold
@@ -400,7 +399,7 @@ class _newdashboard extends State<newdashboard>{
                           children: <Widget>[
                             Container(
                               margin: EdgeInsets.only(left: 12),
-                              child: Text("Requested\n(In SQM)",
+                              child: Text("Requested\n(In m\u00B2)",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold
                                 ),
@@ -576,7 +575,7 @@ class _newdashboard extends State<newdashboard>{
                         children: <Widget>[
                           Container(
                             margin: EdgeInsets.only(left: 12),
-                            child: Text("Total Produced (In SQM)",
+                            child: Text("Total Produced (In m\u00B2)",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold
                               ),
@@ -774,7 +773,7 @@ class _newdashboard extends State<newdashboard>{
                       children: <Widget>[
                         Container(
                           margin: EdgeInsets.only(left: 12),
-                          child: Text("On-Hand\nStock\n(In SQM)",
+                          child: Text("On-Hand\nStock\n(In m\u00B2)",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold
                             ),
@@ -851,7 +850,7 @@ class _newdashboard extends State<newdashboard>{
                         //OnHand Stock
                         Container(
                           margin: EdgeInsets.only(left: 12),
-                          child: Text("Old Stock\n(In SQM)",
+                          child: Text("Old Stock\n(In m\u00B2)",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold
                             ),

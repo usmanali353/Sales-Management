@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:salesmanagement/LoginScreen/Login.dart';
 import 'package:salesmanagement/NewDashboard.dart';
 import 'package:salesmanagement/PrePicking/PrePickingList.dart';
 import 'LoginScreen/ui/login_page.dart';
@@ -29,6 +30,6 @@ void main(){
       primarySwatch: myColor,
       brightness: Brightness.light
     ),
-    home: LoginPage(),
+    home: LoginScreen(),
   ));
 }

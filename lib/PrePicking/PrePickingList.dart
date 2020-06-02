@@ -8,7 +8,7 @@ import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/Network_Operations.dart';
 import 'package:salesmanagement/PrePicking/AddPrePicking.dart';
 import 'package:salesmanagement/PrePicking/UpdatePrePicking.dart';
-import 'file:///G:/Projects/sales_management/sales_management/lib/PrePicking/PrePickingDetails.dart';
+import 'PrePickingDetails.dart';
 
 import '../Utils.dart';
 class PrePickingList extends StatefulWidget {
@@ -46,7 +46,7 @@ class _PrePickingListState extends ResumableState<PrePickingList> {
       floatingActionButton: FloatingActionButton(
         backgroundColor:  Color(0xFF004c4c),
         onPressed: (){
-         Navigator.push(context, MaterialPageRoute(builder: (context)=>AddPrePicking()));
+         push(context, MaterialPageRoute(builder: (context)=>AddPrePicking()));
         },
         child: Icon(Icons.add),
       ),
