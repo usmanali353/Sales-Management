@@ -1,15 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:need_resume/need_resume.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:salesmanagement/Model/Products.dart';
 import 'package:salesmanagement/Model/sqlite_helper.dart';
 import 'package:salesmanagement/Network_Operations.dart';
-import 'package:salesmanagement/Production_Request/CreateProductionRequest.dart';
+import 'package:salesmanagement/PrePicking/ProductVariations.dart';
+import 'package:salesmanagement/PrePicking/SelectedProductsList.dart';
 import '../Utils.dart';
-import 'SelectedProductsList.dart';
 class AddProducts extends StatefulWidget {
  var  truckNumber,deliveryDate,mobileNo,address,driverName;
  AddProducts(this.deliveryDate, this.driverName, this.truckNumber,this.address,this.mobileNo);
@@ -18,21 +18,28 @@ class AddProducts extends StatefulWidget {
 }
 
 class _AddProductsState extends ResumableState<AddProducts> {
-  var stockItems=[],isVisible=false,selectedItemStock,truckNumber,deliveryDate,mobileNo,address,driverName,totalProductionRequests=0,counter=0,_isSearching=false;
+  var counter=0,stockItems=[],isVisible=false,truckNumber,deliveryDate,mobileNo,address,driverName,_isSearching=false;
   sqlite_helper db;
  String searchQuery = "Search query";
   var filteredList=[];
   static final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  List<Map> prePickingLines=[];
   var productsList=[];
-
-  TextEditingController quantity,_searchQuery;
+  TextEditingController _searchQuery;
   _AddProductsState(this.deliveryDate, this.driverName, this.truckNumber,this.address,this.mobileNo);
 
   @override
   void onResume() {
-    print("Data "+resume.data.toString());
-    if(resume.data.toString()=='Refresh') {
+    print("Data " + resume.data.toString());
+    if (resume.data.toString() == 'Refresh') {
+      db.getProducts().then((product){
+        print(product.length);
+        if(product.length>0){
+          setState(() {
+            this.counter=product.length;
+          });
+        }
+      });
+    }else if(resume.data.toString() == 'Close'){
       Navigator.pop(context,'Close');
     }
   }
@@ -40,7 +47,6 @@ class _AddProductsState extends ResumableState<AddProducts> {
   @override
   void initState() {
     _searchQuery=TextEditingController();
-    quantity=TextEditingController();
     db=sqlite_helper();
     db.getProducts().then((product){
       print(product.length);
@@ -60,7 +66,6 @@ class _AddProductsState extends ResumableState<AddProducts> {
           if(response!=null){
             setState(() {
               stockItems=jsonDecode(response);
-
               if(stockItems!=null&&stockItems.length>0){
                 stockItems.sort((a,b){
                   return double.parse(a['OnhandALL'].toString()).compareTo(double.parse(b['OnhandALL'].toString()));
@@ -110,25 +115,7 @@ class _AddProductsState extends ResumableState<AddProducts> {
                         )
                     ),
                     onTap: (){
-                      this.selectedItemStock=filteredList[index]['OnhandALL'];
-                      ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-                      pd.show();
-                      Network_Operations.GetProdRequestListByItemNotFinished("LC0001",stockItems[index]['ItemNumber'], 1, 10).then((response){
-                        pd.dismiss();
-                        if(response!=null){
-                              setState(() {
-                                totalProductionRequests=0;
-                              var prodRequests=jsonDecode(response);
-                              if(prodRequests!=null&&prodRequests.length>0){
-                                for(int i=0;i<prodRequests.length;i++){
-                                  totalProductionRequests=totalProductionRequests+prodRequests[i]['QuantityRequested'];
-                                }
-                              }
-                              showQuantityDialog(context,filteredList[index]);
-                              });
-                        }
-                      });
-
+                      push(context, MaterialPageRoute(builder: (context)=>ProductVariations(filteredList[index]['ItemNumber'],deliveryDate, driverName, truckNumber,address,mobileNo)));
                     },
                   ),
                   Divider(),
@@ -140,143 +127,7 @@ class _AddProductsState extends ResumableState<AddProducts> {
       ),
     );
   }
-  showQuantityDialog(BuildContext context,var stock){
-    Widget addQuantityButton = FlatButton(
-      child: Text("Add Quantity"),
-      onPressed:  () {
-        setState(() {
-          Navigator.pop(context);
-         showAlertDialog(context, stock, quantity.text);
-        });
-      },
-    );
-    Widget cancelButton = FlatButton(
-      child: Text("Cancel"),
-      onPressed:  () {
-        Navigator.pop(context);
-      },
-    );
-    AlertDialog alert = AlertDialog(
-      title: Text("Add Quantity"),
-      content: TextField(
-        keyboardType: TextInputType.numberWithOptions(),
-        controller: quantity,
-        decoration: InputDecoration(
-          hintText: "Enter Quantity",
-        ),
-      ),
-      actions: [
-        addQuantityButton,
-        cancelButton,
-      ],
-    );
 
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-  showAlertDialog(BuildContext context,var stock,var quantity) {
-    // set up the buttons
-    Widget cancelButton = FlatButton(
-      child: Text("Cancel"),
-      onPressed:  () {
-        Navigator.pop(context);
-      },
-    );
-    Widget orderButton = FlatButton(
-      child: Text("Add Product"),
-      onPressed:  () {
-        Network_Operations.GetProductInfo(stock['ItemNumber']).then((response){
-          if(response!=null){
-            setState(() {
-              var info=jsonDecode(response);
-              prePickingLines.clear();
-              db.checkAlreadyExists(stock['ItemNumber']).then((alreadyExists){
-                if(alreadyExists.length>0){
-                  Scaffold.of(context).showSnackBar(SnackBar(
-                    content: Text("product Already Exists"),
-                    backgroundColor: Colors.red,
-                  ));
-                }else{
-                  Products p=Products(stock['ItemDescription'],stock['ItemNumber'],info['ItemSize'],'','','','',double.parse(quantity));
-                  db.addProducts(p);
-                  db.getProducts().then((product){
-                    if(product.length>0){
-                      setState(() {
-                        this.counter=product.length;
-                      });
-                    }
-                  });
-                }
-              });
-              Navigator.pop(context);
-            });
-
-          }
-        });
-
-      },
-    );
-    Widget prodRequestButton = FlatButton(
-      child: Text("Production Request"),
-      onPressed:  () {
-        Navigator.pop(context);
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>CreateProductionRequest()));
-      },
-    );
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text("Notice"),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          ListTile(
-            title: Text("OnHand Stock"),
-            trailing: Text('$selectedItemStock'),
-          ),
-          Divider(),
-          ListTile(
-            title: Text("Pending Production Requests"),
-            trailing: Text('$totalProductionRequests'),
-          ),
-          Divider(),
-          ListTile(
-            title: Text("Selected Quantity"),
-            trailing: Text('$quantity'),
-          ),
-          Divider(),
-        ],
-      ),
-//      content: RichText(
-//        text: TextSpan(
-//          children: [
-//            TextSpan(text: "You have ",style: TextStyle(color: Colors.black)),
-//            TextSpan(text: "$selectedItemStock",style:Theme.of(context).textTheme.body1),
-//            TextSpan(text: " SQM available for this item"+'\n'+'and having ',style: Theme.of(context).textTheme.body1),
-//            TextSpan(text: "$totalProductionRequests",style: TextStyle(color: Color(0xFF004c4c),fontWeight: FontWeight.bold)),
-//            TextSpan(text: " SQM production Requests Pending",style:Theme.of(context).textTheme.body1),
-//          ]
-//        ),
-//      ), //Text("You have $selectedItemStock SQM available for this item"+'\n'+'and having $totalProductionRequests SQM production Requests Pending'),
-      actions: [
-        orderButton,
-        cancelButton,
-        prodRequestButton,
-      ],
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
   void _startSearch() {
     ModalRoute
         .of(context)
@@ -374,19 +225,19 @@ class _AddProductsState extends ResumableState<AddProducts> {
         icon: const Icon(Icons.search),
         onPressed: _startSearch,
       ),
-      InkWell(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: Text(
-                "Selected  ($counter)"
-            ),
+      Padding(
+        padding: const EdgeInsets.all(16),
+        child: InkWell(
+          onTap: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>SelectedProducts(deliveryDate,driverName,truckNumber,address,mobileNo)));
+          },
+          child: Badge(
+            badgeContent: Text('$counter',style: TextStyle(color: Colors.white),),
+            child: Icon(Icons.shopping_basket),
+            showBadge: counter==0?false:true,
           ),
         ),
-        onTap: (){
-          push(context, MaterialPageRoute(builder: (context)=>SelectedProducts(deliveryDate,driverName,truckNumber,address,mobileNo)));
-        },
-      ),
+      )
     ];
   }
 }

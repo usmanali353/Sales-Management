@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:need_resume/need_resume.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -52,12 +53,12 @@ class _SelectedProductsState extends State<SelectedProducts> {
               for(int i=0;i<productList.length;i++){
                 prePickingLines.add(
                 {
-                "ColorItem":"",
-                "Grade":"",
+                  "SalesQuantity":productList[i].SalesQuantity,
+                "ColorItem":productList[i].ColorItem,
+                "Grade":productList[i].Grade,
                 "ItemNumber":productList[i].ItemNumber,
                 "PickingId":"",
-                "InventoryDimension":"",
-                "SalesQuantity":productList[i].SalesQuantity,
+                "InventoryDimension":productList[i].InventoryDimension,
                 "SizeItem":productList[i].SizeItem
                 }
                 );
@@ -81,7 +82,7 @@ class _SelectedProductsState extends State<SelectedProducts> {
 //                        content: Text("Pre Picking Added"),
 //                        backgroundColor: Colors.green,
 //                      ));
-                    Navigator.pop(context,'Refresh');
+                    Navigator.pop(context,'Close');
                   }else{
 //                      Scaffold.of(context).showSnackBar(SnackBar(
 //                        content: Text("Pre Picking Not Added"),
@@ -107,10 +108,42 @@ class _SelectedProductsState extends State<SelectedProducts> {
           child: ListView.builder(itemCount:productList.length,itemBuilder:(BuildContext context,int index){
             return Column(
               children: <Widget>[
-                ListTile(
-                  title: Text(productList[index].ItemName!=null?productList[index].ItemName:''),
-                  subtitle: Text(productList[index].SalesQuantity!=null?'Quantity: '+productList[index].SalesQuantity.toString():''),
-                  leading: Icon(FontAwesomeIcons.box),
+                Slidable(
+                  actionPane: SlidableDrawerActionPane(),
+                  actionExtentRatio: 0.20,
+                  closeOnScroll: true,
+                  actions: <Widget>[
+                    IconSlideAction(
+                      color: Colors.red,
+                      icon: Icons.delete,
+                      caption: "Delete",
+                      closeOnTap: true,
+                      onTap: (){
+                        db.deleteProductsById(productList[index].ItemNumber).then((deletedProducts){
+                          if(deletedProducts>0){
+                            productList.clear();
+                            setState(() {
+                              db.getProducts().then((product){
+                                print(product.length);
+                                if(product.length>0){
+                                  setState(() {
+                                    for(int i=0;i<product.length;i++){
+                                      productList.add(Products.fromMap(product[i]));
+                                    }
+                                  });
+                                }
+                              });
+                            });
+                          }
+                        });
+                      },
+                    ),
+                  ],
+                  child: ListTile(
+                    title: Text(productList[index].ItemName!=null?productList[index].ItemName:''),
+                    subtitle: Text(productList[index].SalesQuantity!=null?'Quantity: '+productList[index].SalesQuantity.toString():''),
+                    leading: Icon(FontAwesomeIcons.box),
+                  ),
                 ),
                 Divider(),
 

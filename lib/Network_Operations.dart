@@ -697,6 +697,7 @@ class Network_Operations {
   }
   static Future<String> GetOnhandStockByItem(String customerId,String itemNumber) async {
     final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/PrePickingService.svc/GetOnhandStockByItem/'+customerId+'/'+itemNumber, headers: {'authorization': basicAuth});
+    print(response.body);
     if (response.statusCode == 200) {
       return response.body;
     } else
@@ -739,7 +740,8 @@ class Network_Operations {
       'SalesID':''
     });
     final response= await http.post("http://sales.arabianceramics.com/AcmcMobileServices/PrePickingService.svc/CreatePrePicking",headers:{'authorization': basicAuth,'Content-type':'application/json'},body: body);
-    print(response.body);
+    debugPrint(response.body);
+    debugPrint(body);
     if (response.statusCode == 200) {
       return response.body;
     } else
