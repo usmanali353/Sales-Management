@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:need_resume/need_resume.dart';
@@ -67,13 +68,14 @@ class _ProductVariationsState extends ResumableState<ProductVariations> {
                   ListTile(
                     title: Text(variations[index]['ItemSize']),
                     trailing: Text('Color: '+variations[index]['ItemColor']),
-                    subtitle: Text('OnHand: '+variations[index]['Onhand'].toString()),
+                    subtitle: Text('Available: '+(variations[index]['OnOrdered']-variations[index]['Onhand']).toString()),
                     leading:  Material(
               borderRadius: BorderRadius.circular(24),
               color: Colors.teal.shade100,
               child: Padding(
               padding: const EdgeInsets.only(top:10,bottom: 15,right: 15,left: 10),
-              child: Icon(FontAwesomeIcons.boxes,size: 30,color: Color(0xFF004c4c),),
+              child: Icon(FontAwesomeIcons
+                  .boxes,size: 30,color: Color(0xFF004c4c),),
               )
               ),
                     onTap: (){
@@ -109,14 +111,35 @@ class _ProductVariationsState extends ResumableState<ProductVariations> {
       child: Text("Add Quantity"),
       onPressed:  () {
         setState(() {
-          Navigator.pop(context);
-          showAlertDialog(context, stock, quantity.text);
+          if(quantity.text==null||quantity.text==""){
+            Flushbar(
+              backgroundColor: Colors.red,
+              message: "Please Enter Quantity",
+              duration: Duration(seconds: 3),
+            )..show(context);
+          } else if(stock['Onhand']<2.0){
+            Flushbar(
+              backgroundColor: Colors.red,
+              message: "OnHand Stock too low to order",
+              duration: Duration(seconds: 3),
+            )..show(context);
+          }else if(double.parse(quantity.text)>=stock['Onhand']){
+            Flushbar(
+              backgroundColor: Colors.red,
+              message: "Quantity should be less the the OnHand Stock",
+              duration: Duration(seconds: 3),
+            )..show(context);
+          }else{
+            Navigator.pop(context);
+            showAlertDialog(context, stock, quantity.text);
+          }
         });
       },
     );
     Widget cancelButton = FlatButton(
       child: Text("Cancel"),
       onPressed:  () {
+
         Navigator.pop(context);
       },
     );
@@ -187,7 +210,7 @@ class _ProductVariationsState extends ResumableState<ProductVariations> {
         children: <Widget>[
           ListTile(
             title: Text("OnHand Stock"),
-            trailing: Text(stock['Onhand'].toString()),
+            trailing: Text((stock['OnOrdered']-stock['Onhand']).toString()),
           ),
           Divider(),
           ListTile(

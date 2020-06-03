@@ -11,6 +11,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body:  Container(
+        padding: EdgeInsets.only(top: 55, bottom: 20),
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/img/background.png"),
@@ -21,7 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
           children: <Widget>[
             Column(
               children: <Widget>[
-                Image.asset('assets/img/login.png',width: 200,height: 200,),
+                Image.asset('assets/img/login.png',width: 230,height: 230,),
 
                 Padding(
                   padding: const EdgeInsets.all(20),
@@ -107,7 +108,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>newdashboard()));
                     },
                     color: Colors.white,
-                    child: Text("Sign In",),
+                    child: Text("SIGN IN",style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15
+                    ),),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),

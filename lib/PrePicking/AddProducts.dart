@@ -229,7 +229,7 @@ class _AddProductsState extends ResumableState<AddProducts> {
         padding: const EdgeInsets.all(16),
         child: InkWell(
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>SelectedProducts(deliveryDate,driverName,truckNumber,address,mobileNo)));
+            push(context, MaterialPageRoute(builder: (context)=>SelectedProducts(deliveryDate,driverName,truckNumber,address,mobileNo)));
           },
           child: Badge(
             badgeContent: Text('$counter',style: TextStyle(color: Colors.white),),

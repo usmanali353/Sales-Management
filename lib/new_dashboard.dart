@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_gradient_colors/flutter_gradient_colors.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:salesmanagement/SettingPage.dart';
 import 'Customer_Cases/casesList.dart';
 import 'Network_Operations.dart';
 import 'PrePicking/PrePickingList.dart';
@@ -127,7 +127,7 @@ class _newdashboard extends State<newdashboard>{
               color: Color(0xEBECF0),
               alignment: Alignment.topCenter,
               child: DrawerHeader(
-                child:  Image.asset("assets/AC.png",width: 200,height: 200,),
+                child:  Image.asset("assets/img/AC.png",width: 200,height: 200,),
               ),
             ),
             Expanded(
@@ -154,6 +154,14 @@ class _newdashboard extends State<newdashboard>{
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>SchedulesList("LC0001")));
                     },
                   ),
+                  ListTile(
+                    title: Text("Setting"),
+                    leading: Icon(Icons.settings),
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>SettingsPage()));
+                    },
+                  ),
+
 //                  ListTile(
 //                    title: Text("Stocks"),
 //                    leading: Icon(FontAwesomeIcons.pallet),
@@ -239,7 +247,7 @@ class _newdashboard extends State<newdashboard>{
                           children: <Widget>[
                             Container(
                               margin: EdgeInsets.only(left: 12),
-                              child: Text("Today's\n(In m\u00B2)",
+                              child: Text("Today's\n(m\u00B2)",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold
@@ -308,7 +316,7 @@ class _newdashboard extends State<newdashboard>{
                           children: <Widget>[
                             Container(
                               margin: EdgeInsets.only(left: 12),
-                              child: Text("Weekly\n(In m\u00B2)",
+                              child: Text("Weekly\n(m\u00B2)",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold
@@ -346,9 +354,98 @@ class _newdashboard extends State<newdashboard>{
                     ),
                   ),
                 ),
+
               ],
             ),
+            Visibility(
+              visible: prodRequestCardVisible,
+              child: InkWell(
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList('All','LC0001',null,null)));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8.0,right:8.0),
+                  child: Card(
+                    elevation: 10,
+                    child: Container(
+                      // margin: EdgeInsets.only(left: 12.5,right: 12.5),
+                      height: 130,
+                      width: 20,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+//                        boxShadow: [
+//                          BoxShadow(
+//                            color: Colors.grey.shade400,
+//                            offset: Offset(4.0, 4.0),
+//                            blurRadius: 15.0,
+//                            // spreadRadius: 1.0
+//                          ),
+//                          BoxShadow(
+//                            color: Colors.grey.shade200,
+//                            offset: Offset(-4.0, -4.0),
+//                            blurRadius: 15.0,
+//                            //spreadRadius: 1.0
+//                          ),
+//                        ]
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.only(left: 12),
+                            child: Text("Today's Pending (m\u00B2)",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),
+                            ),
+                          ),
+                          Container(
+                            //margin: EdgeInsets.only(left: 10, top: 5,bottom: 5),
 
+                            height: 30,
+                            width: 100,
+                            decoration: BoxDecoration(
+
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(15),
+                                  bottomLeft: Radius.circular(15)
+                              ),
+                              color: Colors.grey.shade200,
+//                              boxShadow: [
+//                                BoxShadow(
+//                                  color: Colors.grey.shade400,
+//                                  offset: Offset(4.0, 4.0),
+//                                  blurRadius: 15.0,
+//                                  // spreadRadius: 1.0
+//                                ),
+//                                BoxShadow(
+//                                  color: Colors.grey.shade100,
+//                                  offset: Offset(-4.0, -4.0),
+//                                  blurRadius: 15.0,
+//                                  //spreadRadius: 1.0
+//                                ),
+//                              ]
+                            ),
+                            child: Container(margin: EdgeInsets.only(left: 10,top: 5),
+                              child: Text(productionRequestNumbers!=null?productionRequestNumbers[4]['OtherValue'].toString():'0',
+                                style: TextStyle(
+                                    color:Colors.teal.shade800,
+                                    //Color(0xFF004c4c),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold
+                                ),
+
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+
+                    ),
+                  ),
+                ),
+              ),
+            ),
             Padding(
               padding: EdgeInsets.only(top: 15),
             ),
@@ -399,7 +496,7 @@ class _newdashboard extends State<newdashboard>{
                           children: <Widget>[
                             Container(
                               margin: EdgeInsets.only(left: 12),
-                              child: Text("Requested\n(In m\u00B2)",
+                              child: Text("Requested\n(m\u00B2)",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold
                                 ),
@@ -575,13 +672,12 @@ class _newdashboard extends State<newdashboard>{
                         children: <Widget>[
                           Container(
                             margin: EdgeInsets.only(left: 12),
-                            child: Text("Total Produced (In m\u00B2)",
+                            child: Text("Total Produced (m\u00B2)",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold
                               ),
                             ),
                           ),
-
                           Container(
                             //margin: EdgeInsets.only(left: 10, top: 5,bottom: 5),
 
@@ -620,7 +716,7 @@ class _newdashboard extends State<newdashboard>{
 
                               ),
                             ),
-                          )
+                          ),
                         ],
                       ),
 
@@ -773,7 +869,7 @@ class _newdashboard extends State<newdashboard>{
                       children: <Widget>[
                         Container(
                           margin: EdgeInsets.only(left: 12),
-                          child: Text("On-Hand\nStock\n(In m\u00B2)",
+                          child: Text("On-Hand\nStock\n(m\u00B2)",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold
                             ),
@@ -850,7 +946,7 @@ class _newdashboard extends State<newdashboard>{
                         //OnHand Stock
                         Container(
                           margin: EdgeInsets.only(left: 12),
-                          child: Text("Old Stock\n(In m\u00B2)",
+                          child: Text("Old Stock\n(m\u00B2)",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold
                             ),
