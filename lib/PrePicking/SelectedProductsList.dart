@@ -1,5 +1,3 @@
-import 'package:flushbar/flushbar.dart';
-import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -7,7 +5,6 @@ import 'package:need_resume/need_resume.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/Model/Products.dart';
 import 'package:salesmanagement/Model/sqlite_helper.dart';
-
 import '../Network_Operations.dart';
 class SelectedProducts extends StatefulWidget {
   var truckNumber,deliveryDate,mobileNo,address,driverName;
@@ -86,12 +83,6 @@ class _SelectedProductsState extends State<SelectedProducts> {
 //                      ));
                     Navigator.pop(context,'Close');
                   }else{
-                    //FlushbarHelper.createError(message: "Prepicking not added",title: "",duration: Duration(seconds: 10));
-                    Flushbar(
-                      backgroundColor: Colors.red,
-                      message: "PrePicking not added",
-                      duration: Duration(seconds: 3),
-                    )..show(context);
                     setState(() {
                       db.deleteProducts().then((deletedProducts){
                         if(deletedProducts>0){

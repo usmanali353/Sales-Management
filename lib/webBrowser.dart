@@ -1,4 +1,3 @@
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -37,12 +36,6 @@ class _WebBrowserState extends State<WebBrowser> {
               webviewController.canGoBack().then((value){
                 if(value){
                   webviewController.goBack();
-                }else{
-                  Flushbar(
-                    backgroundColor: Colors.red,
-                    message: "Can't go back any more",
-                    duration: Duration(seconds: 3),
-                  )..show(context);
                 }
               });
             }),
