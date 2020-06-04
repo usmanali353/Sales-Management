@@ -68,7 +68,13 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
                             this.selectedItemStock=onHand[itemName.indexOf(value)]['OnhandALL'];
                           });
                         },
-                        style: Theme.of(context).textTheme.body1,
+                        onSaved: (value){
+                          setState(() {
+                            this.selectedItemId=onHand[itemName.indexOf(value)]['ItemNumber'];
+                            this.selectedItemStock=onHand[itemName.indexOf(value)]['OnhandALL'];
+                          });
+                        },
+                        style: Theme.of(context).textTheme.bodyText1,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.all(16)
 //                          border: OutlineInputBorder(

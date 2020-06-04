@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/Model/Products.dart';
@@ -16,8 +17,9 @@ class VariationDetails extends StatefulWidget {
 }
 
 class _VariationDetailsState extends State<VariationDetails> {
-  var variationData,pendingRequests=0,selectedPreference,quantity,db;
-
+  var variationData,pendingRequests=0,selectedPreference;
+ sqlite_helper db;
+ TextEditingController quantity;
   _VariationDetailsState(this.variationData);
  @override
   void initState() {
@@ -91,6 +93,11 @@ class _VariationDetailsState extends State<VariationDetails> {
                     ),
                     Divider(),
                     ListTile(
+                      title: Text("Item Color"),
+                      subtitle: Text(variationData['ItemColor']),
+                    ),
+                    Divider(),
+                    ListTile(
                       title: Text("Item Size"),
                       subtitle: Text(variationData['ItemSize']),
                     ),
@@ -149,9 +156,7 @@ class _VariationDetailsState extends State<VariationDetails> {
                 ),
               ),
             ),
-            Builder(
-              builder: (BuildContext context){
-                return  Padding(
+            Padding(
                   padding: const EdgeInsets.all(16),
                   child: InkWell(
                     onTap: (){
@@ -161,10 +166,7 @@ class _VariationDetailsState extends State<VariationDetails> {
                       child: Text("Order/Production Request"),
                     ),
                   ),
-                );
-              },
-
-            )
+                ),
           ],
         ),
         ],
@@ -179,37 +181,7 @@ class _VariationDetailsState extends State<VariationDetails> {
         Navigator.pop(context);
       },
     );
-    Widget orderButton = FlatButton(
-        child: Text("Ok"),
-        onPressed:  () {
-          print(selectedPreference);
-          if(selectedPreference.contains('Order')){
-            showQuantityDialog(context,variationData);
-            Navigator.pop(context);
-          }else if(selectedPreference.contains('Production Request')){
-             Navigator.push(context,MaterialPageRoute(builder: (context)=>CreateProductionRequest(),
-                 settings: RouteSettings(
-               arguments: {'itemName':variationData['ItemDescription'],'ItemSize':variationData['ItemSize']}
-             )));
-          }
-//          db.checkAlreadyExists(stock['ItemNumber']).then((alreadyExists){
-//            if(alreadyExists.length>0){
-//              Scaffold.of(context).showSnackBar(SnackBar(
-//                content: Text("Product Already Exists"),
-//                backgroundColor: Colors.red,
-//              ));
-//            }else{
-//              Products p=Products(stock['ItemDescription'],stock['ItemNumber'],stock['ItemSize'],stock['InventoryDimension'],stock['ItemColor'],'',stock['ItemGrade'],double.parse(quantity));
-//              db.addProducts(p);
-//              db.getProducts().then((product){
-//                if(product.length>0){
-//                  Navigator.pop(context,'Refresh');
-//                }
-//              });
-//            }
-//          });
-          Navigator.pop(context);
-        });
+
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: Text("Select your Preference"),
@@ -225,6 +197,9 @@ class _VariationDetailsState extends State<VariationDetails> {
                  onChanged: (choice){
                    setState(() {
                     this.selectedPreference=choice;
+                    showQuantityDialog(context,variationData);
+                    selectedPreference=null;
+
                    });
                  },
                ),
@@ -235,10 +210,13 @@ class _VariationDetailsState extends State<VariationDetails> {
                  onChanged: (choice){
                    setState(() {
                      this.selectedPreference=choice;
+                     Navigator.pop(context);
+                     selectedPreference=null;
                      Navigator.push(context,MaterialPageRoute(builder: (context)=>CreateProductionRequest(),
                          settings: RouteSettings(
                              arguments: {'itemName':variationData['ItemDescription'].toString(),'ItemSize':variationData['ItemSize'].toString()}
                          )));
+
                    });
                  },
                ),
@@ -248,8 +226,6 @@ class _VariationDetailsState extends State<VariationDetails> {
       ),
       actions: [
         cancelButton,
-        orderButton,
-
       ],
     );
 
@@ -269,23 +245,59 @@ class _VariationDetailsState extends State<VariationDetails> {
           var as=stock['Onhand']-stock['OnOrdered']>1?stock['Onhand']-stock['OnOrdered']:0.0;
           print(stock['OnOrdered'].toString());
           if(quantity.text==null||quantity.text==""){
-            Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text("Enter Quantity"),
+//            Scaffold.of(context).showSnackBar(SnackBar(
+//              content: Text("Enter Quantity"),
+//              backgroundColor: Colors.red,
+//            ));
+            Flushbar(
+              message:  "Enter Quantity",
               backgroundColor: Colors.red,
-            ));
+              duration:  Duration(seconds: 5),
+            )..show(context);
           } else if(stock['Onhand']-stock['OnOrdered']<2.0){
-            Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text("OnHand Stock too low to order"),
+//            Scaffold.of(context).showSnackBar(SnackBar(
+//              content: Text("OnHand Stock too low to order"),
+//              backgroundColor: Colors.red,
+//            ));
+            Flushbar(
+              message:  "OnHand Stock too low to order",
               backgroundColor: Colors.red,
-            ));
+              duration:  Duration(seconds: 5),
+            )..show(context);
           }else if(double.parse(quantity.text)>=as){
-            Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text("Quantity should be less the the OnHand Stock"),
+//            Scaffold.of(context).showSnackBar(SnackBar(
+//              content: Text("Quantity should be less the the OnHand Stock"),
+//              backgroundColor: Colors.red,
+//            ));
+            Flushbar(
+              message:  "Quantity should be less the the OnHand Stock",
+              duration:  Duration(seconds: 5),
               backgroundColor: Colors.red,
-            ));
+            )..show(context);
           }else{
-            Navigator.pop(context);
-            //showAlertDialog(context, stock, quantity.text);
+            db.checkAlreadyExists(variationData['InventoryDimension']).then((alreadyExist){
+              if(alreadyExist.length>0){
+                Flushbar(
+                  message:  "Product already Exists",
+                  backgroundColor: Colors.red,
+                  duration:  Duration(seconds: 5),
+                )..show(context);
+              }else{
+                Products products=Products(variationData['ItemDescription'],variationData['ItemNumber'],variationData['ItemSize'],variationData['InventoryDimension'],variationData['ItemColor'],'',variationData['ItemGrade'],double.parse(quantity.text));
+
+                db.addProducts(products).then((value){
+                  if(value>0){
+                    Flushbar(
+                      message:  "Product added for Order",
+                      backgroundColor: Colors.green,
+                      duration:  Duration(seconds: 5),
+                    )..show(context);
+                    Navigator.pop(context);
+                  }
+                });
+              }
+            });
+           // Navigator.pop(context);
           }
         });
       },
