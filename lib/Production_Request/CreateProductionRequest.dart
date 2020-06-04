@@ -34,6 +34,8 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
   }
   @override
   Widget build(BuildContext context) {
+    var params = jsonDecode(ModalRoute.of(context).settings.arguments.toString());
+    print(params);
     return Scaffold(
       appBar: AppBar(
         title: Text("Create Production Request"),
@@ -53,6 +55,7 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
                       child: FormBuilderDropdown(
                         attribute: "Select Item",
                         hint: Text("Select Item"),
+                        initialValue: params!=null&&params['itemName']!=null?itemName[itemName.indexOf(params['itemName'])]:'',
                         items: itemName!=null?itemName.map((plans)=>DropdownMenuItem(
                           child: Text(plans),
                           value: plans,

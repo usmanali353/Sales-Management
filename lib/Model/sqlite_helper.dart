@@ -42,18 +42,18 @@ class sqlite_helper{
     var result = await dbClient.rawQuery('SELECT * FROM Products');
     return result.toList();
   }
-  Future<List> checkAlreadyExists(String itemNumber) async {
+  Future<List> checkAlreadyExists(String InventoryDimension) async {
     var dbClient= await db;
-    var result = await dbClient.query("Products",where: 'ItemNumber = ?',whereArgs: [itemNumber]);
+    var result = await dbClient.query("Products",where: 'InventoryDimension = ?',whereArgs: [InventoryDimension]);
     return result.toList();
   }
   Future<int> deleteProducts() async {
     var dbClient= await db;
     return await dbClient.rawDelete('DELETE FROM Products');
   }
-  Future<int> deleteProductsById(String itemNumber) async {
+  Future<int> deleteProductsById(String inventoryDimension) async {
     var dbClient= await db;
-    return await dbClient.delete("Products",where: "ItemNumber = ?",whereArgs: [itemNumber]);
+    return await dbClient.delete("Products",where: "InventoryDimension = ?",whereArgs: [inventoryDimension]);
   }
 //  //Training
 // Future<int> create_training(Training training) async {

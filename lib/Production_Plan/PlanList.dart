@@ -126,7 +126,7 @@ class _PlanList extends ResumableState<PlanList>{
         child: Icon(Icons.add),
       ),
       appBar: AppBar(
-        title: Text("Plans"),
+        title: Text("Production Plans"),
          actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),

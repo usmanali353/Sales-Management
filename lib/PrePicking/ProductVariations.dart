@@ -6,6 +6,7 @@ import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/Model/Products.dart';
 import 'package:salesmanagement/Model/sqlite_helper.dart';
 import 'package:salesmanagement/Network_Operations.dart';
+import 'package:salesmanagement/PrePicking/VariationsDetails.dart';
 import 'package:salesmanagement/Production_Request/CreateProductionRequest.dart';
 import '../Utils.dart';
 import 'SelectedProductsList.dart';
@@ -78,23 +79,24 @@ class _ProductVariationsState extends ResumableState<ProductVariations> {
               )
               ),
                     onTap: (){
-                      ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-                      pd.show();
-                      Network_Operations.GetProdRequestListByItemNotFinished("LC0001",variations[index]['ItemNumber'], 1, 10).then((response){
-                        pd.dismiss();
-                        if(response!=null){
-                              setState(() {
-                                totalProductionRequests=0;
-                              var prodRequests=jsonDecode(response);
-                              if(prodRequests!=null&&prodRequests.length>0){
-                                for(int i=0;i<prodRequests.length;i++){
-                                  totalProductionRequests=totalProductionRequests+prodRequests[i]['QuantityRequested'];
-                                }
-                              }
-                              showQuantityDialog(context,variations[index]);
-                              });
-                        }
-                      });
+//                      ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
+//                      pd.show();
+//                      Network_Operations.GetProdRequestListByItemNotFinished("LC0001",variations[index]['ItemNumber'], 1, 10).then((response){
+//                        pd.dismiss();
+//                        if(response!=null){
+//                              setState(() {
+//                                totalProductionRequests=0;
+//                              var prodRequests=jsonDecode(response);
+//                              if(prodRequests!=null&&prodRequests.length>0){
+//                                for(int i=0;i<prodRequests.length;i++){
+//                                  totalProductionRequests=totalProductionRequests+prodRequests[i]['QuantityRequested'];
+//                                }
+//                              }
+//                              showQuantityDialog(context,variations[index]);
+//                              });
+//                        }
+//                      });
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>VariationDetails(variations[index])));
                     },
                   )
                 ],
@@ -105,147 +107,5 @@ class _ProductVariationsState extends ResumableState<ProductVariations> {
       ),
     );
   }
-  showQuantityDialog(BuildContext context,var stock){
-    Widget addQuantityButton = FlatButton(
-      child: Text("Add Quantity"),
-      onPressed:  () {
-        setState(() {
-         var as=stock['Onhand']-stock['OnOrdered']>1?stock['Onhand']-stock['OnOrdered']:0.0;
-         print(stock['OnOrdered'].toString());
-          if(quantity.text==null||quantity.text==""){
-            Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text("Enter Quantity"),
-              backgroundColor: Colors.red,
-            ));
-          } else if(stock['Onhand']-stock['OnOrdered']<2.0){
-            Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text("OnHand Stock too low to order"),
-              backgroundColor: Colors.red,
-            ));
-          }else if(double.parse(quantity.text)>=as){
-            Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text("Quantity should be less the the OnHand Stock"),
-              backgroundColor: Colors.red,
-            ));
-          }else{
-            Navigator.pop(context);
-            showAlertDialog(context, stock, quantity.text);
-          }
-        });
-      },
-    );
-    Widget cancelButton = FlatButton(
-      child: Text("Cancel"),
-      onPressed:  () {
-        Navigator.pop(context);
-      },
-    );
-    AlertDialog alert = AlertDialog(
-      title: Text("Add Quantity"),
-      content: TextField(
-        keyboardType: TextInputType.numberWithOptions(),
-        controller: quantity,
-        decoration: InputDecoration(
-          hintText: "Enter Quantity",
-        ),
-      ),
-      actions: [
-        addQuantityButton,
-        cancelButton,
-      ],
-    );
 
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-  showAlertDialog(BuildContext context,var stock,var quantity) {
-    // set up the buttons
-    Widget cancelButton = FlatButton(
-      child: Text("Cancel"),
-      onPressed:  () {
-        Navigator.pop(context);
-      },
-    );
-    Widget orderButton = FlatButton(
-      child: Text("Add Product"),
-      onPressed:  () {
-        db.checkAlreadyExists(stock['ItemNumber']).then((alreadyExists){
-          if(alreadyExists.length>0){
-            Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text("Product Already Exists"),
-              backgroundColor: Colors.red,
-            ));
-          }else{
-            Products p=Products(stock['ItemDescription'],stock['ItemNumber'],stock['ItemSize'],stock['InventoryDimension'],stock['ItemColor'],'',stock['ItemGrade'],double.parse(quantity));
-          db.addProducts(p);
-          db.getProducts().then((product){
-          if(product.length>0){
-           Navigator.pop(context,'Refresh');
-          }
-          });
-        }
-        });
-        Navigator.pop(context);
-      });
-    Widget prodRequestButton = FlatButton(
-      child: Text("Production Request"),
-      onPressed:  () {
-        Navigator.pop(context);
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>CreateProductionRequest()));
-      },
-    );
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text("Notice"),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          ListTile(
-            title: Text("OnHand Stock"),
-            trailing: Text(stock['Onhand']-stock['OnOrdered']>1?(stock['Onhand']-stock['OnOrdered']).toString():0.toString()),
-          ),
-          Divider(),
-          ListTile(
-            title: Text("Pending Production Requests"),
-            trailing: Text('$totalProductionRequests'),
-          ),
-          Divider(),
-          ListTile(
-            title: Text("Selected Quantity"),
-            trailing: Text('$quantity'),
-          ),
-          Divider(),
-        ],
-      ),
-//      content: RichText(
-//        text: TextSpan(
-//          children: [
-//            TextSpan(text: "You have ",style: TextStyle(color: Colors.black)),
-//            TextSpan(text: "$selectedItemStock",style:Theme.of(context).textTheme.body1),
-//            TextSpan(text: " SQM available for this item"+'\n'+'and having ',style: Theme.of(context).textTheme.body1),
-//            TextSpan(text: "$totalProductionRequests",style: TextStyle(color: Color(0xFF004c4c),fontWeight: FontWeight.bold)),
-//            TextSpan(text: " SQM production Requests Pending",style:Theme.of(context).textTheme.body1),
-//          ]
-//        ),
-//      ), //Text("You have $selectedItemStock SQM available for this item"+'\n'+'and having $totalProductionRequests SQM production Requests Pending'),
-      actions: [
-        orderButton,
-        cancelButton,
-        prodRequestButton,
-      ],
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
 }
