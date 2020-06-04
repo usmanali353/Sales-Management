@@ -106,59 +106,88 @@ class _SelectedProductsState extends State<SelectedProducts> {
           )
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Card(
-          elevation: 10,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-          child: ListView.builder(itemCount:productList.length,itemBuilder:(BuildContext context,int index){
-            return Column(
-              children: <Widget>[
-                Slidable(
-                  actionPane: SlidableDrawerActionPane(),
-                  actionExtentRatio: 0.20,
-                  closeOnScroll: true,
-                  actions: <Widget>[
-                    IconSlideAction(
-                      color: Colors.red,
-                      icon: Icons.delete,
-                      caption: "Delete",
-                      closeOnTap: true,
-                      onTap: (){
-                        db.deleteProductsById(productList[index].ItemNumber).then((deletedProducts){
-                          if(deletedProducts>0){
-                            productList.clear();
-                            setState(() {
-                              db.getProducts().then((product){
-                                print(product.length);
-                                if(product.length>0){
-                                  setState(() {
-                                    for(int i=0;i<product.length;i++){
-                                      productList.add(Products.fromMap(product[i]));
+      body: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Card(
+              elevation: 10,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              child: ListView.builder(itemCount:productList.length,itemBuilder:(BuildContext context,int index){
+                return Column(
+                  children: <Widget>[
+                    Slidable(
+                      actionPane: SlidableDrawerActionPane(),
+                      actionExtentRatio: 0.20,
+                      closeOnScroll: true,
+                      actions: <Widget>[
+                        IconSlideAction(
+                          color: Colors.red,
+                          icon: Icons.delete,
+                          caption: "Delete",
+                          closeOnTap: true,
+                          onTap: (){
+                            db.deleteProductsById(productList[index].ItemNumber).then((deletedProducts){
+                              if(deletedProducts>0){
+                                productList.clear();
+                                setState(() {
+                                  db.getProducts().then((product){
+                                    print(product.length);
+                                    if(product.length>0){
+                                      setState(() {
+                                        for(int i=0;i<product.length;i++){
+                                          productList.add(Products.fromMap(product[i]));
+                                        }
+                                      });
                                     }
                                   });
-                                }
-                              });
+                                });
+                              }
                             });
-                          }
-                        });
-                      },
+                          },
+                        ),
+                      ],
+                      child: ExpansionTile(
+                        title:Text(productList[index].ItemName!=null?productList[index].ItemName:''),
+                        subtitle: Text(productList[index].SalesQuantity!=null?'Quantity: '+productList[index].SalesQuantity.toString():''),
+                        leading: Material(
+                            borderRadius: BorderRadius.circular(24),
+                            color: Colors.teal.shade100,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top:10,bottom: 15,right: 15,left: 10),
+                              child: Icon(FontAwesomeIcons.boxes,size: 30,color: Color(0xFF004c4c),),
+                            )
+                        ),
+                        children: <Widget>[
+                          ListTile(
+                            title: Text("Item Size"),
+                            trailing: Text(productList[index].SizeItem),
+                          ),
+                          Divider(),
+                          ListTile(
+                            title: Text("Item Color"),
+                            trailing: Text(productList[index].ColorItem),
+                          ),
+                          Divider(),
+                          ListTile(
+                            title: Text("Item Grade"),
+                            trailing: Text(productList[index].Grade),
+                          ),
+                        ],
+                      ),
                     ),
+                    Divider(),
                   ],
-                  child: ListTile(
-                    title: Text(productList[index].ItemName!=null?productList[index].ItemName:''),
-                    subtitle: Text(productList[index].SalesQuantity!=null?'Quantity: '+productList[index].SalesQuantity.toString():''),
-                    leading: Icon(FontAwesomeIcons.box),
-                  ),
-                ),
-                Divider(),
+                );
+              }),
+            ),
+          ),
+        ],
 
-              ],
-            );
-          }),
-        ),
       ),
     );
   }
