@@ -34,7 +34,7 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
   }
   @override
   Widget build(BuildContext context) {
-    var params = jsonDecode(ModalRoute.of(context).settings.arguments.toString());
+    final  Map<String, Object> params = ModalRoute.of(context).settings.arguments;
     print(params);
     return Scaffold(
       appBar: AppBar(
@@ -55,7 +55,7 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
                       child: FormBuilderDropdown(
                         attribute: "Select Item",
                         hint: Text("Select Item"),
-                        initialValue: params!=null&&params['itemName']!=null?itemName[itemName.indexOf(params['itemName'])]:'',
+                        initialValue: params!=null&&params['itemName']!=null?itemName[itemName.indexOf(params['itemName'])]:null,
                         items: itemName!=null?itemName.map((plans)=>DropdownMenuItem(
                           child: Text(plans),
                           value: plans,
@@ -210,9 +210,9 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
       content: RichText(
          text: TextSpan(
            children: [
-             TextSpan(text: "You have ",style: TextStyle(color: Colors.black)),
-             TextSpan(text: "$selectedItemStock",style: TextStyle(color: Color(0xFF004c4c),fontWeight: FontWeight.bold)),
-             TextSpan(text: " SQM available for this item",style: TextStyle(color: Colors.black)),
+             TextSpan(text: "You have ",style: Theme.of(context).textTheme.bodyText1),
+             TextSpan(text: "$selectedItemStock",style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(color: Colors.teal))),
+             TextSpan(text: " SQM available for this item",style: Theme.of(context).textTheme.bodyText1),
            ]
          ),
       ), //Text("You have $selectedItemStock SQM available for this item"),

@@ -149,16 +149,21 @@ class _VariationDetailsState extends State<VariationDetails> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: InkWell(
-                onTap: (){
-                  showAlertDialog(context,null,null);
-                },
-                child: Center(
-                  child: Text("Order/Production Request"),
-                ),
-              ),
+            Builder(
+              builder: (BuildContext context){
+                return  Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: InkWell(
+                    onTap: (){
+                      showAlertDialog(context,null,null);
+                    },
+                    child: Center(
+                      child: Text("Order/Production Request"),
+                    ),
+                  ),
+                );
+              },
+
             )
           ],
         ),
@@ -230,6 +235,10 @@ class _VariationDetailsState extends State<VariationDetails> {
                  onChanged: (choice){
                    setState(() {
                      this.selectedPreference=choice;
+                     Navigator.push(context,MaterialPageRoute(builder: (context)=>CreateProductionRequest(),
+                         settings: RouteSettings(
+                             arguments: {'itemName':variationData['ItemDescription'].toString(),'ItemSize':variationData['ItemSize'].toString()}
+                         )));
                    });
                  },
                ),
