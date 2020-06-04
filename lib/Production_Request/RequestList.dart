@@ -140,9 +140,9 @@ class _RequestsList extends ResumableState<RequestList>{
                           title: Text(requests[index]['ItemDescription']),
                           subtitle: Text((() {
                             if(!requests[index]['PlannedDate'].contains("-22089564")){
-                              return 'Quantity:'+requests[index]['QuantityRequested'].toString()+'\n'+'Planned Production Date:'+DateTime.fromMillisecondsSinceEpoch(int.parse(requests[index]['PlannedDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0];
+                              return 'Quantity:'+requests[index]['QuantityRequested'].toString()+'\n'+'Production Date:'+DateTime.fromMillisecondsSinceEpoch(int.parse(requests[index]['PlannedDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]+'\n'+'Status: '+requests[index]['ProductionStatus'];
                             }else
-                            return 'Quantity:'+requests[index]['QuantityRequested'].toString();
+                            return 'Quantity:'+requests[index]['QuantityRequested'].toString()+'\n'+'Status: '+requests[index]['ProductionStatus'];
                           })()),
                           leading:  Material(
                   borderRadius: BorderRadius.circular(24),

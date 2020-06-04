@@ -67,7 +67,7 @@ class _ProductVariationsState extends ResumableState<ProductVariations> {
                   ListTile(
                     title: Text(variations[index]['ItemSize']),
                     trailing: Text('Color: '+variations[index]['ItemColor']),
-                    subtitle: Text('Onhand: '+(variations[index]['OnOrdered']-variations[index]['Onhand']).toString()),
+                    subtitle: Text(variations[index]['Onhand']-variations[index]['OnOrdered']>1?(variations[index]['Onhand']-variations[index]['OnOrdered']).toString():'0'),
                     leading:  Material(
               borderRadius: BorderRadius.circular(24),
               color: Colors.teal.shade100,
@@ -110,17 +110,19 @@ class _ProductVariationsState extends ResumableState<ProductVariations> {
       child: Text("Add Quantity"),
       onPressed:  () {
         setState(() {
+         var as=stock['Onhand']-stock['OnOrdered']>1?stock['Onhand']-stock['OnOrdered']:0.0;
+         print(stock['OnOrdered'].toString());
           if(quantity.text==null||quantity.text==""){
             Scaffold.of(context).showSnackBar(SnackBar(
               content: Text("Enter Quantity"),
               backgroundColor: Colors.red,
             ));
-          } else if(stock['Onhand']<2.0){
+          } else if(stock['Onhand']-stock['OnOrdered']<2.0){
             Scaffold.of(context).showSnackBar(SnackBar(
               content: Text("OnHand Stock too low to order"),
               backgroundColor: Colors.red,
             ));
-          }else if(double.parse(quantity.text)>=stock['Onhand']){
+          }else if(double.parse(quantity.text)>=as){
             Scaffold.of(context).showSnackBar(SnackBar(
               content: Text("Quantity should be less the the OnHand Stock"),
               backgroundColor: Colors.red,
@@ -205,7 +207,7 @@ class _ProductVariationsState extends ResumableState<ProductVariations> {
         children: <Widget>[
           ListTile(
             title: Text("OnHand Stock"),
-            trailing: Text((stock['OnOrdered']-stock['Onhand']).toString()),
+            trailing: Text(stock['Onhand']-stock['OnOrdered']>1?(stock['Onhand']-stock['OnOrdered']).toString():0.toString()),
           ),
           Divider(),
           ListTile(
