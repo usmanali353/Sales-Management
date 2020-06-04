@@ -54,7 +54,7 @@ class _VariationDetailsState extends State<VariationDetails> {
             padding: const EdgeInsets.all(16),
             child: InkWell(
               onTap: (){
-                showAlertDialog(context,null,null);
+
               },
               child: Center(child: Text("Order")),
             ),
@@ -117,7 +117,7 @@ class _VariationDetailsState extends State<VariationDetails> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 16,left: 16,right:16),
+              padding: const EdgeInsets.only(left: 16,right:16),
               child: Card(
                 elevation: 10,
                 shape: RoundedRectangleBorder(
@@ -149,6 +149,17 @@ class _VariationDetailsState extends State<VariationDetails> {
                 ),
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: InkWell(
+                onTap: (){
+                  showAlertDialog(context,null,null);
+                },
+                child: Center(
+                  child: Text("Order/Production Request"),
+                ),
+              ),
+            )
           ],
         ),
         ],
