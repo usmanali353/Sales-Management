@@ -49,16 +49,16 @@ class _StockItemsList extends State<StockItemsList>{
             }
           });
         }else{
-          Network_Operations.GetCustomerOlderStock(customerId, 1, 10).then((response){
-            pd.hide();
-            if(response!=null&&response!='[]'){
-                setState(() {
-                  items=jsonDecode(response);
-                  isVisible=true;
-                });
-
-            }
-          });
+//          Network_Operations.GetCustomerOlderStock(customerId, 1, 10).then((response){
+//            pd.hide();
+//            if(response!=null&&response!='[]'){
+//                setState(() {
+//                  items=jsonDecode(response);
+//                  isVisible=true;
+//                });
+//
+//            }
+//          });
         }
       }
     });

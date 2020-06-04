@@ -27,7 +27,7 @@ class newdashboard extends StatefulWidget{
 }
 
 class _newdashboard extends State<newdashboard>{
-  var todayDeliveryCardVisible=false,weeklyDeliveryCardVisible=false,prodRequestCardVisible=false,financeVisible=false;
+  var todayDeliveryCardVisible=false,weeklyDeliveryCardVisible=false,prodRequestCardVisible=false,financeVisible=false,totalOlderStock=0.0,olderstockVisible=false;
   var caseNumbers,caseCardsVisible=false,productionRequestCardVisible=false,productionRequestNumbers,deliveryCardVisible=false,deliveryNumber,weeklyDelivery,financeCardVisible=false,finance,totalOnhandStock=0.0,onhandVisible=false;
   List<double> onHandValues=[];
   @override
@@ -52,6 +52,20 @@ class _newdashboard extends State<newdashboard>{
 //            });
 //          }
 //        });
+        Network_Operations.GetCustomerOlderStock("LC0001").then((response){
+          if(response!=null){
+            setState(() {
+              var olderStock=jsonDecode(response);
+              if(olderStock!=null&&olderStock.length>0){
+                this.olderstockVisible=true;
+                for(int i=0;i<olderStock.length;i++){
+                  totalOlderStock=totalOlderStock+olderStock[i]['QtyAvailablePhysical'];
+                }
+              }
+            });
+
+          }
+        });
         Network_Operations.GetDeliveryInDatesSummary("LC0001","2018-10-01","2018-10-02").then((response){
           if(response!=null&&response!='[]'){
             setState(() {
@@ -841,13 +855,15 @@ class _newdashboard extends State<newdashboard>{
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Card(
-                  elevation: 10,
-                  child: Container(
-                    height: 130,
-                    width: 185,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
+                Visibility(
+                  visible: onhandVisible,
+                  child: Card(
+                    elevation: 10,
+                    child: Container(
+                      height: 130,
+                      width: 185,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
 
 //                      boxShadow: [
 //                        BoxShadow(
@@ -863,29 +879,29 @@ class _newdashboard extends State<newdashboard>{
 //                          //spreadRadius: 1.0
 //                        ),
 //                      ]
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.only(left: 12),
-                          child: Text("On-Hand\nStock\n(m\u00B2)",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.only(left: 12),
+                            child: Text("On-Hand\nStock\n(m\u00B2)",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),
                             ),
                           ),
-                        ),
-                        Container(
-                          //margin: EdgeInsets.only(left: 10, top: 5,bottom: 5),
-                          height: 30,
-                          width: 95,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(15),
-                                  bottomLeft: Radius.circular(15)
-                              ),
+                          Container(
+                            //margin: EdgeInsets.only(left: 10, top: 5,bottom: 5),
+                            height: 30,
+                            width: 95,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(15),
+                                    bottomLeft: Radius.circular(15)
+                                ),
 
-                              color: Colors.grey.shade200,
+                                color: Colors.grey.shade200,
 //                            boxShadow: [
 //                              BoxShadow(
 //                                color: Colors.grey.shade400,
@@ -900,31 +916,34 @@ class _newdashboard extends State<newdashboard>{
 //                                //spreadRadius: 1.0
 //                              ),
 //                            ]
-                          ),
-                          child: Container(margin: EdgeInsets.only(left: 10,top: 5),
-                            child: Text(totalOnhandStock.toString()??'0',
-                              style: TextStyle(
-                                  color:Color(0xFF004c4c),
-                                  //Color(0xFF004c4c),
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold
-                              ),
-
                             ),
-                          ),
-                        )
-                      ],
-                    ),
+                            child: Container(margin: EdgeInsets.only(left: 10,top: 5),
+                              child: Text(totalOnhandStock.toString()??'0',
+                                style: TextStyle(
+                                    color:Color(0xFF004c4c),
+                                    //Color(0xFF004c4c),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold
+                                ),
 
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+
+                    ),
                   ),
                 ),
-                Card(
-                  elevation: 10,
-                  child: Container(
-                    height: 130,
-                    width: 185,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
+                Visibility(
+                  visible: olderstockVisible,
+                  child: Card(
+                    elevation: 10,
+                    child: Container(
+                      height: 130,
+                      width: 185,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
 //                      boxShadow: [
 //                        BoxShadow(
 //                          color: Colors.grey.shade400,
@@ -939,32 +958,32 @@ class _newdashboard extends State<newdashboard>{
 //                          //spreadRadius: 1.0
 //                        ),
 //                      ]
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        //OnHand Stock
-                        Container(
-                          margin: EdgeInsets.only(left: 12),
-                          child: Text("Old Stock\n(m\u00B2)",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          //OnHand Stock
+                          Container(
+                            margin: EdgeInsets.only(left: 12),
+                            child: Text("Old Stock\n(m\u00B2)",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold
+                              ),
                             ),
                           ),
-                        ),
-                        //Older Stock
-                        Container(
-                          //margin: EdgeInsets.only(left: 10, top: 5,bottom: 5),
+                          //Older Stock
+                          Container(
+                            //margin: EdgeInsets.only(left: 10, top: 5,bottom: 5),
 
-                          height: 30,
-                          width: 95,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(15),
-                                  bottomLeft: Radius.circular(15)
-                              ),
+                            height: 30,
+                            width: 95,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(15),
+                                    bottomLeft: Radius.circular(15)
+                                ),
 
-                              color: Colors.grey.shade200,
+                                color: Colors.grey.shade200,
 //                              boxShadow: [
 //                                BoxShadow(
 //                                  color: Colors.grey.shade400,
@@ -979,20 +998,21 @@ class _newdashboard extends State<newdashboard>{
 //                                  //spreadRadius: 1.0
 //                                ),
 //                              ]
-                          ),
-                          child: Container(margin: EdgeInsets.only(left: 10,top: 5),
-                            child: Text("1",
-                              style: TextStyle(
-                                  color:Color(0xFF004c4c),
-                                  //Color(0xFF004c4c),
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold
-                              ),
+                            ),
+                            child: Container(margin: EdgeInsets.only(left: 10,top: 5),
+                              child: Text(totalOlderStock!=null?totalOlderStock.toString():'0.0',
+                                style: TextStyle(
+                                    color:Color(0xFF004c4c),
+                                    //Color(0xFF004c4c),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold
+                                ),
 
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),

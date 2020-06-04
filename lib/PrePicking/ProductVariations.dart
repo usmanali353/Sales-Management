@@ -53,32 +53,37 @@ class _ProductVariationsState extends ResumableState<ProductVariations> {
       appBar: AppBar(
           title:Text('Available Variations'),
       ),
-      body: Visibility(
-        visible: isVisible,
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            elevation: 10,
-            child: ListView.builder(itemCount:variations!=null?variations.length:0,itemBuilder: (BuildContext context,int index){
-              return Column(
-                children: <Widget>[
-                  ListTile(
-                    title: Text(variations[index]['ItemSize']),
-                    trailing: Text('Color: '+variations[index]['ItemColor']),
-                    subtitle: Text(variations[index]['Onhand']-variations[index]['OnOrdered']>1?(variations[index]['Onhand']-variations[index]['OnOrdered']).toString():'0'),
-                    leading:  Material(
-              borderRadius: BorderRadius.circular(24),
-              color: Colors.teal.shade100,
-              child: Padding(
-              padding: const EdgeInsets.only(top:10,bottom: 15,right: 15,left: 10),
-              child: Icon(FontAwesomeIcons
-                  .boxes,size: 30,color: Color(0xFF004c4c),),
-              )
+      body: WillPopScope(
+        onWillPop: () async {
+          Navigator.pop(context,'Refresh');
+          return false;
+        },
+        child: Visibility(
+          visible: isVisible,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
               ),
-                    onTap: (){
+              elevation: 10,
+              child: ListView.builder(itemCount:variations!=null?variations.length:0,itemBuilder: (BuildContext context,int index){
+                return Column(
+                  children: <Widget>[
+                    ListTile(
+                      title: Text(variations[index]['ItemSize']),
+                      trailing: Text('Color: '+variations[index]['ItemColor']),
+                      subtitle: Text(variations[index]['Onhand']-variations[index]['OnOrdered']>1?(variations[index]['Onhand']-variations[index]['OnOrdered']).toString():'0'),
+                      leading:  Material(
+                borderRadius: BorderRadius.circular(24),
+                color: Colors.teal.shade100,
+                child: Padding(
+                padding: const EdgeInsets.only(top:10,bottom: 15,right: 15,left: 10),
+                child: Icon(FontAwesomeIcons
+                    .boxes,size: 30,color: Color(0xFF004c4c),),
+                )
+                ),
+                      onTap: (){
 //                      ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
 //                      pd.show();
 //                      Network_Operations.GetProdRequestListByItemNotFinished("LC0001",variations[index]['ItemNumber'], 1, 10).then((response){
@@ -96,12 +101,13 @@ class _ProductVariationsState extends ResumableState<ProductVariations> {
 //                              });
 //                        }
 //                      });
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>VariationDetails(variations[index])));
-                    },
-                  )
-                ],
-              );
-            }),
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>VariationDetails(variations[index])));
+                      },
+                    )
+                  ],
+                );
+              }),
+            ),
           ),
         ),
       ),

@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import  'package:flutter/material.dart';
+import 'package:salesmanagement/Network_Operations.dart';
+import 'package:salesmanagement/Production_Request/CreateProductionRequest.dart';
 class PlanDetail extends StatefulWidget {
  var planData;
 
@@ -12,11 +16,37 @@ class _PlanDetailState extends State<PlanDetail> {
   var planData;
 
   _PlanDetailState(this.planData);
-
+ @override
+  void initState() {
+   Network_Operations.GetProdRequestListBySize('LC0001', planData['ItemSize'], 1, 100).then((value){
+     if(value!=null){
+       var requestBysize=jsonDecode(value);
+     }
+   });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Plan Detail"),),
+      appBar: AppBar(
+        title: Text("Plan Detail"),
+        actions: <Widget>[
+          InkWell(
+            onTap: (){
+              Navigator.push(context,MaterialPageRoute(builder: (context)=>CreateProductionRequest(),
+                  settings: RouteSettings(
+                      arguments: {'month':planData['MonthOfYear'].toString()}
+                  )));
+            },
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text("Create Production Request"),
+              ),
+            ),
+          )
+        ],
+      ),
       body: ListView(
         children: <Widget>[
           Padding(

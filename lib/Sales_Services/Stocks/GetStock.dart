@@ -128,17 +128,17 @@ class _GetStock extends State<GetStock>{
                                 }
                               });
                             }else{
-                              Network_Operations.GetCustomerOlderStock(customerId.text, 1, 10).then((response){
-                                pd.dismiss();
-                                if(response!=null&&response!=''&&response!='[]'){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => StockItemsList(selectedValue, jsonDecode(response))));
-                                }else{
-                                  Scaffold.of(context).showSnackBar(SnackBar(
-                                    backgroundColor: Colors.red,
-                                    content: Text("Stock Not Found"),
-                                  ));
-                                }
-                              });
+//                              Network_Operations.GetCustomerOlderStock(customerId.text, 1, 10).then((response){
+//                                pd.dismiss();
+//                                if(response!=null&&response!=''&&response!='[]'){
+//                                  Navigator.push(context, MaterialPageRoute(builder: (context) => StockItemsList(selectedValue, jsonDecode(response))));
+//                                }else{
+//                                  Scaffold.of(context).showSnackBar(SnackBar(
+//                                    backgroundColor: Colors.red,
+//                                    content: Text("Stock Not Found"),
+//                                  ));
+//                                }
+//                              });
                             }
 
                           }

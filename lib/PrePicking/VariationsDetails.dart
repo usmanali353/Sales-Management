@@ -56,7 +56,7 @@ class _VariationDetailsState extends State<VariationDetails> {
             padding: const EdgeInsets.all(16),
             child: InkWell(
               onTap: (){
-
+                showAlertDialog(context,null,null);
               },
               child: Center(child: Text("Order")),
             ),
@@ -156,17 +156,6 @@ class _VariationDetailsState extends State<VariationDetails> {
                 ),
               ),
             ),
-            Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: InkWell(
-                    onTap: (){
-                      showAlertDialog(context,null,null);
-                    },
-                    child: Center(
-                      child: Text("Order/Production Request"),
-                    ),
-                  ),
-                ),
           ],
         ),
         ],
@@ -197,9 +186,8 @@ class _VariationDetailsState extends State<VariationDetails> {
                  onChanged: (choice){
                    setState(() {
                     this.selectedPreference=choice;
-                    showQuantityDialog(context,variationData);
                     selectedPreference=null;
-
+                    showQuantityDialog(context,variationData);
                    });
                  },
                ),
@@ -284,16 +272,13 @@ class _VariationDetailsState extends State<VariationDetails> {
                 )..show(context);
               }else{
                 Products products=Products(variationData['ItemDescription'],variationData['ItemNumber'],variationData['ItemSize'],variationData['InventoryDimension'],variationData['ItemColor'],'',variationData['ItemGrade'],double.parse(quantity.text));
-
                 db.addProducts(products).then((value){
-                  if(value>0){
-                    Flushbar(
-                      message:  "Product added for Order",
-                      backgroundColor: Colors.green,
-                      duration:  Duration(seconds: 5),
-                    )..show(context);
-                    Navigator.pop(context);
-                  }
+                  Flushbar(
+                    message:  "Product added for Order",
+                    backgroundColor: Colors.green,
+                    duration:  Duration(seconds: 5),
+                  )..show(context);
+                  Navigator.pop(context);
                 });
               }
             });

@@ -94,6 +94,7 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
                     child: FormBuilderDropdown(
                       attribute: "Select Production Month",
                       hint: Text("Select Production Month"),
+                      initialValue: params!=null&&params['month']!=null?months[months.indexOf(params['month'])]:null,
                       items: months!=null?months.map((plans)=>DropdownMenuItem(
                         child: Text(plans),
                         value: plans,
