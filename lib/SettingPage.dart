@@ -18,7 +18,7 @@ class _SettingsPageState extends State<SettingsPage> {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
     _lightTheme = (themeNotifier.getTheme() == lightTheme);
     return Scaffold(
-      appBar: AppBar(title: Text("Setting"),),
+      appBar: AppBar(title: Text("Settings"),),
       body: ListView(
         children: <Widget>[
           ListTile(
@@ -39,7 +39,7 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           ListTile(
             title: Text("Visit our Website"),
-            leading: Icon(Icons.web),
+            trailing: Icon(Icons.web),
             onTap: (){
               Navigator.push(context, MaterialPageRoute(builder: (context)=>WebBrowser('https://www.arabian-ceramics.com/en-us/')));
             },
@@ -47,7 +47,7 @@ class _SettingsPageState extends State<SettingsPage> {
           Divider(),
           ListTile(
             title: Text("About US"),
-            leading: Icon(Icons.web),
+            trailing: Icon(Icons.web),
             onTap: (){
               Navigator.push(context, MaterialPageRoute(builder: (context)=>WebBrowser('https://www.arabian-ceramics.com/en-us/about-us')));
             },

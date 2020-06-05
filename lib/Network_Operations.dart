@@ -675,6 +675,7 @@ class Network_Operations {
   }
   static Future<String> GetOnhandStock(String customerId) async {
     final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/PrePickingService.svc/GetOnhandStock/'+customerId, headers: {'authorization': basicAuth});
+    print(response.body);
     if (response.statusCode == 200) {
       return response.body;
     } else

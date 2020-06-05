@@ -74,7 +74,7 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
                             this.selectedItemStock=onHand[itemName.indexOf(value)]['OnhandALL'];
                           });
                         },
-                        style: Theme.of(context).textTheme.bodyText1,
+                        style: Theme.of(context).textTheme.body1,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.all(16)
 //                          border: OutlineInputBorder(
@@ -102,6 +102,11 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
                           value: name, child: Text("$name")))
                           .toList(),
                       onChanged: (value){
+                        setState(() {
+                          this.selectedMonth=months.indexOf(value)+1;
+                        });
+                      },
+                      onSaved: (value){
                         setState(() {
                           this.selectedMonth=months.indexOf(value)+1;
                         });
@@ -159,6 +164,7 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
                         color: Colors.teal[800],
                         child: Text("Create Production Request",style: TextStyle(color: Colors.white),),
                         onPressed: (){
+                          _fbKey.currentState.save();
                          showAlertDialog(context);
                         },
                       ),
@@ -217,9 +223,9 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
       content: RichText(
          text: TextSpan(
            children: [
-             TextSpan(text: "You have ",style: Theme.of(context).textTheme.bodyText1),
-             TextSpan(text: "$selectedItemStock",style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(color: Colors.teal))),
-             TextSpan(text: " SQM available for this item",style: Theme.of(context).textTheme.bodyText1),
+             TextSpan(text: "You have ",style: Theme.of(context).textTheme.body1),
+             TextSpan(text: "$selectedItemStock",style: Theme.of(context).textTheme.body1.merge(TextStyle(color: Colors.teal))),
+             TextSpan(text: " SQM available for this item",style: Theme.of(context).textTheme.body1),
            ]
          ),
       ), //Text("You have $selectedItemStock SQM available for this item"),

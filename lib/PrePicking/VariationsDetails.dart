@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:need_resume/need_resume.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/Model/Products.dart';
 import 'package:salesmanagement/Model/sqlite_helper.dart';
 import 'package:salesmanagement/Network_Operations.dart';
+import 'package:salesmanagement/PrePicking/OrderedProductQty.dart';
 import 'package:salesmanagement/Production_Request/CreateProductionRequest.dart';
 import 'package:salesmanagement/Utils.dart';
 class VariationDetails extends StatefulWidget {
@@ -16,12 +18,20 @@ class VariationDetails extends StatefulWidget {
   _VariationDetailsState createState() => _VariationDetailsState(variationData);
 }
 
-class _VariationDetailsState extends State<VariationDetails> {
+class _VariationDetailsState extends ResumableState<VariationDetails> {
   var variationData,pendingRequests=0,selectedPreference;
  sqlite_helper db;
  TextEditingController quantity;
   _VariationDetailsState(this.variationData);
- @override
+
+  @override
+  void onResume() {
+    if(resume.data.toString()=='Close'){
+      Navigator.pop(context,'Close');
+    }
+  }
+
+  @override
   void initState() {
    quantity=TextEditingController();
    db=sqlite_helper();
@@ -124,7 +134,7 @@ class _VariationDetailsState extends State<VariationDetails> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 16,right:16),
+              padding: const EdgeInsets.only(left: 16,right:16,bottom: 16),
               child: Card(
                 elevation: 10,
                 shape: RoundedRectangleBorder(
@@ -187,7 +197,8 @@ class _VariationDetailsState extends State<VariationDetails> {
                    setState(() {
                     this.selectedPreference=choice;
                     selectedPreference=null;
-                    showQuantityDialog(context,variationData);
+                    Navigator.pop(context);
+                    push(context, MaterialPageRoute(builder: (context)=>OrderedProductQty(variationData)));
                    });
                  },
                ),
@@ -213,97 +224,6 @@ class _VariationDetailsState extends State<VariationDetails> {
         },
       ),
       actions: [
-        cancelButton,
-      ],
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-  showQuantityDialog(BuildContext context,var stock){
-    Widget addQuantityButton = FlatButton(
-      child: Text("Add Quantity"),
-      onPressed:  () {
-        setState(() {
-          var as=stock['Onhand']-stock['OnOrdered']>1?stock['Onhand']-stock['OnOrdered']:0.0;
-          print(stock['OnOrdered'].toString());
-          if(quantity.text==null||quantity.text==""){
-//            Scaffold.of(context).showSnackBar(SnackBar(
-//              content: Text("Enter Quantity"),
-//              backgroundColor: Colors.red,
-//            ));
-            Flushbar(
-              message:  "Enter Quantity",
-              backgroundColor: Colors.red,
-              duration:  Duration(seconds: 5),
-            )..show(context);
-          } else if(stock['Onhand']-stock['OnOrdered']<2.0){
-//            Scaffold.of(context).showSnackBar(SnackBar(
-//              content: Text("OnHand Stock too low to order"),
-//              backgroundColor: Colors.red,
-//            ));
-            Flushbar(
-              message:  "OnHand Stock too low to order",
-              backgroundColor: Colors.red,
-              duration:  Duration(seconds: 5),
-            )..show(context);
-          }else if(double.parse(quantity.text)>=as){
-//            Scaffold.of(context).showSnackBar(SnackBar(
-//              content: Text("Quantity should be less the the OnHand Stock"),
-//              backgroundColor: Colors.red,
-//            ));
-            Flushbar(
-              message:  "Quantity should be less the the OnHand Stock",
-              duration:  Duration(seconds: 5),
-              backgroundColor: Colors.red,
-            )..show(context);
-          }else{
-            db.checkAlreadyExists(variationData['InventoryDimension']).then((alreadyExist){
-              if(alreadyExist.length>0){
-                Flushbar(
-                  message:  "Product already Exists",
-                  backgroundColor: Colors.red,
-                  duration:  Duration(seconds: 5),
-                )..show(context);
-              }else{
-                Products products=Products(variationData['ItemDescription'],variationData['ItemNumber'],variationData['ItemSize'],variationData['InventoryDimension'],variationData['ItemColor'],'',variationData['ItemGrade'],double.parse(quantity.text));
-                db.addProducts(products).then((value){
-                  Flushbar(
-                    message:  "Product added for Order",
-                    backgroundColor: Colors.green,
-                    duration:  Duration(seconds: 5),
-                  )..show(context);
-                  Navigator.pop(context);
-                });
-              }
-            });
-           // Navigator.pop(context);
-          }
-        });
-      },
-    );
-    Widget cancelButton = FlatButton(
-      child: Text("Cancel"),
-      onPressed:  () {
-        Navigator.pop(context);
-      },
-    );
-    AlertDialog alert = AlertDialog(
-      title: Text("Add Quantity"),
-      content: TextField(
-        keyboardType: TextInputType.numberWithOptions(),
-        controller: quantity,
-        decoration: InputDecoration(
-          hintText: "Enter Quantity",
-        ),
-      ),
-      actions: [
-        addQuantityButton,
         cancelButton,
       ],
     );
