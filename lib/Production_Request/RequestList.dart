@@ -1,6 +1,8 @@
 import 'dart:convert';
-
+import 'package:flushbar/flushbar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:need_resume/need_resume.dart';
@@ -20,7 +22,7 @@ class RequestList extends StatefulWidget {
   }
 }
 class _RequestsList extends ResumableState<RequestList>{
-  var requests,temp=['',''],type,customerId,size,itemNumber,isVisible=false;
+  var requests,temp=['',''],type,customerId,size,itemNumber,isVisible=false,itemSizes,selectedValue;
   _RequestsList(this.type,this.customerId,this.size,this.itemNumber);
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
 
@@ -53,14 +55,65 @@ class _RequestsList extends ResumableState<RequestList>{
         },
         child: Icon(Icons.add),
       ),
-      appBar: AppBar(title: Text("Production Requests")),
+      appBar: AppBar(
+          title: Text("Production Requests"),
+          actions: <Widget>[
+            PopupMenuButton<String>(
+              onSelected: (choice){
+                if(choice=='Filter by Size'){
+                 Network_Operations.GetItemSizes().then((value){
+                   if(value!=null){
+                     setState(() {
+                       var size=jsonDecode(value);
+                       List<String> sizeNames=[];
+                       if(size!=null&&size.length>0){
+                         sizeNames.insert(0, 'All');
+                         for(int i=1;i<size.length;i++){
+                           sizeNames.add(size[i]['ItemSize']);
+                         }
+                         showSizeAlertDialog(context, sizeNames);
+                       }
+                     });
+                   }
+                 });
+                }else if(choice=='Filter by Item') {
+                    Network_Operations.GetOnhandStock("LC0001").then((value) {
+                      if (value != null) {
+                        setState(() {
+                          var items = jsonDecode(value);
+                          List<String> itemNames = [];
+                          if (items != null && items.length > 0) {
+                            itemNames.insert(0, 'All');
+                            for (int i = 1; i < items.length; i++) {
+                              itemNames.add(items[i]['ItemDescription']);
+                            }
+
+                            showAlertDialog(context, itemNames, items);
+                          }
+                        });
+                      }
+                    });
+                  }
+              },
+              itemBuilder: (BuildContext context){
+                return ['Filter by Size','Filter by Item'].map((String choice){
+                  return PopupMenuItem<String>(
+                    value: choice,
+                    child: Text(choice),
+                  );
+                }).toList();
+              },
+            )
+          ],
+      ),
       body:
         RefreshIndicator(
           onRefresh: (){
             if(type=='All'){
-              return Network_Operations.GetProdRequestList(customerId, 1, 10).then((response){
+              return Network_Operations.GetProdRequestList(customerId, 1, 100).then((response){
                 if(response!=null&&response!=''&&response!='[]'){
                   setState(() {
+                    requests.clear();
                     this.requests=jsonDecode(response);
                     this.isVisible=true;
                   });
@@ -166,7 +219,173 @@ class _RequestsList extends ResumableState<RequestList>{
           ),
         ),
       );
-
   }
+  showAlertDialog(BuildContext context,List<String> itemsNames,var items) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Ok"),
+      onPressed:  () {
+        Network_Operations.GetProdRequestListByItem("LC0001",items[selectedValue]['ItemNumber'], 1, 100).then((value){
+          if(value!=null){
+            setState(() {
+              var requestsByItem=jsonDecode(value);
+              if (selectedValue == 0) {
+                WidgetsBinding.instance
+                    .addPostFrameCallback((_) =>
+                    _refreshIndicatorKey.currentState
+                        .show());
+              }else if(requestsByItem!=null&&requestsByItem.length>0) {
+                requests.clear();
+                requests.addAll(requestsByItem);
+                Navigator.pop(context);
+              }else{
+                Flushbar(
+                  message:  "No Requests Found",
+                  backgroundColor: Colors.red,
+                  duration:  Duration(seconds: 5),
+                )..show(context);
+                Navigator.pop(context);
+              }
+            });
+          }
+        });
 
+      },
+    );
+    Widget launchButton = FlatButton(
+      child: Text("Cancel"),
+      onPressed:  () {
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Notice"),
+      content:FormBuilder(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                FormBuilderDropdown(
+                  attribute: "Select Item",
+                  hint: Text("Select Item"),
+                  isDense: true,
+                  items: itemsNames!=null?itemsNames.map((plans)=>DropdownMenuItem(
+                    child: Text(plans),
+                    value: plans,
+                  )).toList():[""].map((name) => DropdownMenuItem(
+                      value: name, child: Text("$name")))
+                      .toList(),
+                  onChanged: (value){
+                    setState(() {
+                      this.selectedValue=itemsNames.indexOf(value);
+                    });
+                  },
+                  style: Theme.of(context).textTheme.bodyText1,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.all(16),
+                  ),
+
+                ),
+              ],
+            )
+          ),
+      actions: [
+        cancelButton,
+        launchButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+  showSizeAlertDialog(BuildContext context,List<String> sizeNames) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Ok"),
+      onPressed:  () {
+        Network_Operations.GetProdRequestListBySize("LC0001",sizeNames[selectedValue], 1, 100).then((value){
+          if(value!=null){
+            setState(() {
+              var requestsByItem=jsonDecode(value);
+              if (selectedValue == 0) {
+                WidgetsBinding.instance
+                    .addPostFrameCallback((_) =>
+                    _refreshIndicatorKey.currentState
+                        .show());
+              }else if(requestsByItem!=null&&requestsByItem.length>0) {
+                requests.clear();
+                requests.addAll(requestsByItem);
+                Navigator.pop(context);
+              }else{
+                Navigator.pop(context);
+                Flushbar(
+                  message:  "No Requests Found",
+                  backgroundColor: Colors.red,
+                  duration:  Duration(seconds: 5),
+                )..show(context);
+              }
+            });
+          }
+        });
+
+      },
+    );
+    Widget launchButton = FlatButton(
+      child: Text("Cancel"),
+      onPressed:  () {
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Notice"),
+      content:FormBuilder(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              FormBuilderDropdown(
+                attribute: "Select Item Size",
+                hint: Text("Select Item Size"),
+                isDense: true,
+                items: sizeNames!=null?sizeNames.map((plans)=>DropdownMenuItem(
+                  child: Text(plans),
+                  value: plans,
+                )).toList():[""].map((name) => DropdownMenuItem(
+                    value: name, child: Text("$name")))
+                    .toList(),
+                onChanged: (value){
+                  setState(() {
+                    this.selectedValue=sizeNames.indexOf(value);
+                  });
+                },
+                style: Theme.of(context).textTheme.bodyText1,
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.all(16),
+                ),
+
+              ),
+            ],
+          )
+      ),
+      actions: [
+        cancelButton,
+        launchButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 }

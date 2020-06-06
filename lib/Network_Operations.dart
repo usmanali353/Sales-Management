@@ -27,7 +27,7 @@ class Network_Operations {
             '/' +
             date,
         headers: {'authorization': basicAuth});
-    print(response.body);
+    debugPrint(response.body);
     if (response.statusCode == 200) {
       return response.body;
     } else
@@ -90,7 +90,7 @@ class Network_Operations {
         'http://sales.arabianceramics.com/AcmcMobileServices/SalesService.svc/GetOnHandByItem/' +
             itemNumber,
         headers: {'authorization': basicAuth});
-    print(response.body);
+    debugPrint(response.body);
     if (response.statusCode == 200) {
       return response.body;
     } else
@@ -107,6 +107,7 @@ class Network_Operations {
             '/' +
             PageSize.toString(),
         headers: {'authorization': basicAuth});
+    debugPrint(response.body);
     if (response.statusCode == 200) {
       return response.body;
     } else
@@ -130,7 +131,7 @@ class Network_Operations {
         'http://sales.arabianceramics.com/AcmcMobileServices/SalesService.svc/GetProductInfo/' +
             itemNumber,
         headers: {'authorization': basicAuth});
-    print(response.body);
+    debugPrint(response.body);
     if (response.statusCode == 200) {
       return response.body;
     } else
@@ -179,7 +180,7 @@ class Network_Operations {
 
   static Future<String> GetCustomerOlderStock(String CustomerId) async {
     final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/SalesService.svc/GetCustomerOlderStockOverAll/' + CustomerId+'/_', headers: {'authorization': basicAuth});
-    print(response.body);
+    debugPrint(response.body);
     if (response.statusCode == 200) {
       return response.body;
     } else
@@ -192,7 +193,7 @@ class Network_Operations {
         'http://sales.arabianceramics.com/AcmcMobileServices/CustomerCaseService.svc/GetCase/' +
             caseId,
         headers: {'authorization': basicAuth});
-    print(response.body);
+    debugPrint(response.body);
     if (response.statusCode == 200) {
       return response.body;
     } else
@@ -204,7 +205,7 @@ class Network_Operations {
         'http://sales.arabianceramics.com/AcmcMobileServices/CustomerCaseService.svc/FindCases/' +
             customerId,
         headers: {'authorization': basicAuth});
-    print(response.body);
+    debugPrint(response.body);
     if (response.statusCode == 200) {
       return response.body;
     } else
@@ -612,7 +613,7 @@ class Network_Operations {
         'http://sales.arabianceramics.com/AcmcMobileServices/SummaryService.svc/SummaryCases/' +
             CustomerId,
         headers: {'authorization': basicAuth});
-    // print(response.body);
+     debugPrint(response.body);
     if (response.statusCode == 200) {
       return response.body;
     } else
@@ -624,7 +625,7 @@ class Network_Operations {
         'http://sales.arabianceramics.com/AcmcMobileServices/SummaryService.svc/SummaryProductionRequests/' +
             CustomerId,
         headers: {'authorization': basicAuth});
-    // print(response.body);
+     debugPrint(response.body);
     if (response.statusCode == 200) {
       return response.body;
     } else
@@ -656,7 +657,7 @@ class Network_Operations {
             '/' +
             endDate,
         headers: {'authorization': basicAuth});
-    //print(response.body);
+    debugPrint(response.body);
     if (response.statusCode == 200) {
       return response.body;
     } else
@@ -675,7 +676,7 @@ class Network_Operations {
   }
   static Future<String> GetOnhandStock(String customerId) async {
     final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/PrePickingService.svc/GetOnhandStock/'+customerId, headers: {'authorization': basicAuth});
-    print(response.body);
+    debugPrint(response.body);
     if (response.statusCode == 200) {
       return response.body;
     } else
@@ -690,7 +691,7 @@ class Network_Operations {
   }
   static Future<String> GetOnhandStockByItem(String customerId,String itemNumber) async {
     final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/PrePickingService.svc/GetOnhandStockByItemWithOrdered/'+customerId+'/'+itemNumber, headers: {'authorization': basicAuth});
-    print(response.body);
+    debugPrint(response.body);
     if (response.statusCode == 200) {
       return response.body;
     } else
@@ -754,7 +755,7 @@ class Network_Operations {
       'SalesID':''
     });
     final response= await http.put("http://sales.arabianceramics.com/AcmcMobileServices/PrePickingService.svc/UpdatePrePicking/"+pickingId,headers:{'authorization': basicAuth,'Content-type':'application/json'},body: body);
-    print(response.body);
+    debugPrint(response.body);
     if (response.statusCode == 200) {
       return response.body;
     } else

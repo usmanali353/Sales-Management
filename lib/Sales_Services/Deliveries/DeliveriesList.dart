@@ -21,7 +21,7 @@ class DeliveryList extends StatefulWidget{
 }
 class _DeliveryList extends State<DeliveryList>{
   bool isVisible=false;
-  var orders_list,temp=['',''],CustomerId,_isSearching=false;
+  var orders_list,temp=['',''],CustomerId,_isSearching=false,filteredList=[];
   String date,searchQuery = "Search query";
   TextEditingController _searchQuery;
   _DeliveryList(this.date,this.CustomerId);
@@ -39,7 +39,10 @@ class _DeliveryList extends State<DeliveryList>{
           if(response!=null&&response!='[]'){
             setState(() {
               orders_list=json.decode(response);
-              isVisible=true;
+              if(orders_list!=null&&orders_list.length>0) {
+                isVisible = true;
+                filteredList.addAll(orders_list);
+              }
             });
           }else{
             setState(() {
@@ -68,17 +71,17 @@ class _DeliveryList extends State<DeliveryList>{
               borderRadius: BorderRadius.circular(15.0),
             ),
             elevation: 10,
-            child: ListView.builder(itemCount: orders_list!=null?orders_list.length:temp.length,itemBuilder: (context,int index){
+            child: ListView.builder(itemCount: filteredList!=null?filteredList.length:temp.length,itemBuilder: (context,int index){
               return Column(
                 children: <Widget>[
                   ListTile(
-                    title: Text(orders_list[index]['salesIdField']),
-                    trailing:  Text(orders_list[index]['deliveryDateField']!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(orders_list[index]['deliveryDateField'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
+                    title: Text(filteredList[index]['salesIdField']),
+                    trailing:  Text(filteredList[index]['deliveryDateField']!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(filteredList[index]['deliveryDateField'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
                     subtitle:  Text((() {
-                      if(orders_list[index]['packingSlipNumField']!=null){
-                        return 'Quantity:'+orders_list[index]['quantityInSQMField'].toString()+' SQM'+'\n'+'Packing Slip:'+orders_list[index]['packingSlipNumField'];
+                      if(filteredList[index]['packingSlipNumField']!=null){
+                        return 'Quantity:'+filteredList[index]['quantityInSQMField'].toString()+' SQM'+'\n'+'Packing Slip:'+filteredList[index]['packingSlipNumField'];
                       }else
-                        return 'Quantity:'+orders_list[index]['quantityInSQMField'].toString()+' SQM';
+                        return 'Quantity:'+filteredList[index]['quantityInSQMField'].toString()+' SQM';
                     })()),
                     leading: Material(
                         borderRadius: BorderRadius.circular(24),
@@ -116,12 +119,15 @@ class _DeliveryList extends State<DeliveryList>{
     _clearSearchQuery();
     setState(() {
       _isSearching = false;
+      filteredList.addAll(orders_list);
     });
   }
 
   void _clearSearchQuery() {
     setState(() {
       _searchQuery.clear();
+      filteredList.clear();
+      filteredList.addAll(orders_list);
       updateSearchQuery("Search query");
     });
   }
@@ -161,7 +167,17 @@ class _DeliveryList extends State<DeliveryList>{
 
   void updateSearchQuery(String newQuery) {
     setState(() {
+      filteredList.clear();
       searchQuery = newQuery;
+      if(searchQuery.length>0){
+        for(int i=0;i<orders_list.length;i++){
+          if(orders_list[i]['salesIdField'].toLowerCase().contains(searchQuery)){
+            filteredList.add(orders_list[i]);
+          }
+        }
+      }else{
+        filteredList.addAll(orders_list);
+      }
     });
   }
 

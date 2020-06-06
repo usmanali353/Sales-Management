@@ -4,7 +4,6 @@ import 'package:salesmanagement/LoginScreen/Login.dart';
 import 'package:salesmanagement/NewDashboard.dart';
 import 'package:salesmanagement/PrePicking/PrePickingList.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'LoginScreen/ui/login_page.dart';
 import 'Model/Theme.dart';
 import 'Model/ThemeNotifier.dart';
 import 'PrePicking/AddProducts.dart';

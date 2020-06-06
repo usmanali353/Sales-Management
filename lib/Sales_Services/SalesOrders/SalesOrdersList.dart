@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/Network_Operations.dart';
@@ -19,7 +18,7 @@ class SalesOrdersList extends StatefulWidget{
 
 }
 class _SalesOrdersList extends State<SalesOrdersList>{
-  var startDate,endDate,order_data,temp=['',''],CustomerId,title,_isSearching=false;
+  var startDate,endDate,order_data,temp=['',''],CustomerId,title,_isSearching=false,filteredList=[];
   bool isVisible=false;
  String searchQuery = "Search query";
   TextEditingController _searchQuery;
@@ -37,7 +36,11 @@ class _SalesOrdersList extends State<SalesOrdersList>{
          if(response!=null){
            setState(() {
              this.order_data=json.decode(response);
-             this.isVisible=true;
+             if(order_data!=null&&order_data.length>0){
+               this.isVisible=true;
+               filteredList.addAll(order_data);
+             }
+
            });
          }
        });
@@ -64,13 +67,13 @@ class _SalesOrdersList extends State<SalesOrdersList>{
               borderRadius: BorderRadius.circular(15.0),
             ),
             child: ListView.builder(
-              itemCount: order_data!=null?order_data.length:temp.length,
+              itemCount: filteredList!=null?filteredList.length:temp.length,
               itemBuilder: (BuildContext context,int index){
               return Column(
                 children: <Widget>[
               ListTile(
-              title: Text(order_data[index]['salesIdField']!=null?order_data[index]['salesIdField'].toString():''),
-                trailing:  Text(order_data[index]['deliveryDateField']!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(order_data[index]['deliveryDateField'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
+              title: Text(filteredList[index]['salesIdField']!=null?filteredList[index]['salesIdField'].toString():''),
+                trailing:  Text(filteredList[index]['deliveryDateField']!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(filteredList[index]['deliveryDateField'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
                 leading: Material(
                     borderRadius: BorderRadius.circular(24),
                     color: Colors.teal.shade100,
@@ -117,6 +120,7 @@ class _SalesOrdersList extends State<SalesOrdersList>{
 
     setState(() {
       _isSearching = true;
+
     });
   }
 
@@ -124,12 +128,15 @@ class _SalesOrdersList extends State<SalesOrdersList>{
     _clearSearchQuery();
     setState(() {
       _isSearching = false;
+      filteredList.addAll(order_data);
     });
   }
 
   void _clearSearchQuery() {
     setState(() {
       _searchQuery.clear();
+      filteredList.clear();
+      filteredList.addAll(order_data);
       updateSearchQuery("Search query");
     });
   }
@@ -169,7 +176,17 @@ class _SalesOrdersList extends State<SalesOrdersList>{
 
   void updateSearchQuery(String newQuery) {
     setState(() {
+      filteredList.clear();
       searchQuery = newQuery;
+      if(searchQuery.length>0){
+        for(int i=0;i<order_data.length;i++){
+          if(order_data[i]['salesIdField'].toLowerCase().contains(searchQuery)){
+            filteredList.add(order_data[i]);
+          }
+        }
+      }else{
+        filteredList.addAll(order_data);
+      }
     });
   }
 
