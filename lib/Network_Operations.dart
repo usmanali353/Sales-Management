@@ -601,7 +601,7 @@ class Network_Operations {
         'http://sales.arabianceramics.com/AcmcMobileServices/ProdRequestService.svc/GetProdScheduleByRequest/' +
             requestId,
         headers: {'authorization': basicAuth});
-    //print(response.body);
+    debugPrint(response.statusCode.toString());
     if (response.statusCode == 200) {
       return response.body;
     } else

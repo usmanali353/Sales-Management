@@ -1,4 +1,9 @@
+import 'dart:convert';
+
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:salesmanagement/Network_Operations.dart';
+import 'package:salesmanagement/Production_Schedule/ScheduleDetails.dart';
 
 class RequestDetails extends StatefulWidget{
   var requestData;
@@ -19,7 +24,56 @@ class _RequestDetails extends State<RequestDetails>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Production Request Details")),
+      appBar: AppBar(
+          title: Text("Production Request Details"),
+        actions: <Widget>[
+          requestData['ProductionStatus']!='Requested'?
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: InkWell(
+                child: Center(child: Text("View Schedule")),
+                onTap: () {
+                  try {
+                    Network_Operations.GetProductionScheduleByRequest(
+                        requestData['ProductionRequestId']).then((response) {
+                          if(response!=null){
+                            var schedulebyRequest = jsonDecode(response);
+                            if (schedulebyRequest != null) {
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) =>
+                                      ScheduleDetails(schedulebyRequest)));
+                          }else{
+                              Flushbar(
+                                message: "Not Found",
+                                backgroundColor: Colors.red,
+                                duration: Duration(seconds: 5),
+                              )
+                                ..show(context);
+                            }
+
+                      } else {
+                        Flushbar(
+                          message: "Not Found",
+                          backgroundColor: Colors.red,
+                          duration: Duration(seconds: 5),
+                        )
+                          ..show(context);
+                      }
+                    });
+                  } catch (e) {
+                    Flushbar(
+                      message: "Not Found",
+                      backgroundColor: Colors.red,
+                      duration: Duration(seconds: 5),
+                    )
+                      ..show(context);
+                  }
+                },
+              ),
+            ):Container(),
+
+        ],
+      ),
       body: ListView(
         children: <Widget>[
           Padding(

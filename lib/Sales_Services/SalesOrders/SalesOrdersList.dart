@@ -84,7 +84,7 @@ class _SalesOrdersList extends State<SalesOrdersList>{
                 ),
                // trailing: Text(order_data[index]['salesStatusField']!=null?get_order_status(order_data[index]['salesStatusField']):''),
                 onTap: (){
-                 Navigator.push(context, MaterialPageRoute(builder: (context)=>salesOrdersDetails(order_data[index])));
+                 Navigator.push(context, MaterialPageRoute(builder: (context)=>salesOrdersDetails(filteredList[index])));
                 },
                 ),
                   Divider(),

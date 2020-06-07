@@ -9,20 +9,20 @@ import 'package:salesmanagement/Production_Schedule/ScheduleDetails.dart';
 import '../Utils.dart';
 
 class SchedulesList extends StatefulWidget{
-  var customerId;
+  var customerId,scheduleByRequest;
 
-  SchedulesList(this.customerId);
+  SchedulesList(this.customerId,this.scheduleByRequest);
 
   @override
   State<StatefulWidget> createState() {
-    return _SchedulesList(customerId);
+    return _SchedulesList(customerId,scheduleByRequest);
   }
 
 }
 class _SchedulesList extends State<SchedulesList>{
-  var schedules,temp=['',''],customerId,isVisible=false,selectedValue;
+  var schedules,temp=['',''],customerId,isVisible=false,selectedValue,scheduleByRequest;
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
-  _SchedulesList(this.customerId);
+  _SchedulesList(this.customerId,this.scheduleByRequest);
   @override
   void initState() {
     Utils.check_connectivity().then((connected){

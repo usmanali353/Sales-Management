@@ -149,7 +149,7 @@ class _DashboardState extends State<Dashboard> {
                        title: Text("Production Schedule"),
                        leading: Icon(FontAwesomeIcons.calendar),
                        onTap: (){
-                         Navigator.push(context, MaterialPageRoute(builder: (context)=>SchedulesList("LC0001")));
+                         Navigator.push(context, MaterialPageRoute(builder: (context)=>SchedulesList("LC0001",null)));
                        },
                      ),
                      ListTile(
@@ -259,7 +259,7 @@ class _DashboardState extends State<Dashboard> {
                   children: <Widget>[
                     InkWell(
                       onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList('All','LC0001',null,null)));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList()));
                       },
                       child: Card(
                         elevation: 10,
@@ -288,7 +288,7 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     InkWell(
                       onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList('All','LC0001',null,null)));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList()));
                       },
                       child: Card(
                         elevation: 10,
@@ -317,7 +317,7 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     InkWell(
                       onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList('All','LC0001',null,null)));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList()));
                       },
                       child: Card(
                         elevation: 10,

@@ -164,7 +164,7 @@ class _newdashboard extends State<newdashboard>{
                     title: Text("Production Schedule"),
                     leading: Icon(FontAwesomeIcons.calendar),
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>SchedulesList("LC0001")));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>SchedulesList("LC0001",null)));
                     },
                   ),
                   ListTile(
@@ -370,11 +370,14 @@ class _newdashboard extends State<newdashboard>{
 
               ],
             ),
+            Padding(
+              padding: EdgeInsets.only(top: 8.0),
+            ),
             Visibility(
               visible: prodRequestCardVisible,
               child: InkWell(
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList('All','LC0001',null,null)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList()));
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(left: 8.0,right:8.0),
@@ -401,6 +404,7 @@ class _newdashboard extends State<newdashboard>{
 //                          ),
 //                        ]
                       ),
+
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -479,7 +483,7 @@ class _newdashboard extends State<newdashboard>{
                   //Status Requested
                   InkWell(
                     onTap:(){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList('All','LC0001',null,null)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList()));
                     },
                     child: Card(
                       elevation: 10,
@@ -563,7 +567,7 @@ class _newdashboard extends State<newdashboard>{
                   //Status Approved for Production
                   InkWell(
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList('All','LC0001',null,null)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList()));
                     },
                     child: Card(
                       elevation: 10,
@@ -653,7 +657,7 @@ class _newdashboard extends State<newdashboard>{
               visible: prodRequestCardVisible,
               child: InkWell(
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList('All','LC0001',null,null)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList()));
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(left: 8.0,right:8.0),
@@ -749,7 +753,7 @@ class _newdashboard extends State<newdashboard>{
                 )
             ),
             Padding(
-              padding: EdgeInsets.only(top: 15),
+              padding: EdgeInsets.only(top: 8),
             ),
             //Finance
             Visibility(
@@ -805,7 +809,6 @@ class _newdashboard extends State<newdashboard>{
 //                    ),
                         Container(
                           //margin: EdgeInsets.only(left: 10, top: 5,bottom: 5),
-
                           height: 30,
                           width: 100,
                           decoration: BoxDecoration(
@@ -1178,7 +1181,7 @@ class _newdashboard extends State<newdashboard>{
                                 color: Colors.grey.shade100,
                               ),
                               child: Container(margin: EdgeInsets.only(left: 10,top: 5, bottom: 5),
-                                child: Text(caseNumbers!=null?caseNumbers[1]['SummaryValue'].toString():'0',
+                                child: Text(caseNumbers!=null&&caseNumbers.length>1?caseNumbers[0]['SummaryValue'].toString():'0',
                                   style: TextStyle(
                                       color:Color(0xFF004c4c),
                                       //Color(0xFF004c4c),

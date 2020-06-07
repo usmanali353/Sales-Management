@@ -11,19 +11,21 @@ import 'package:salesmanagement/Production_Request/CreateProductionRequest.dart'
 import 'package:salesmanagement/Production_Request/RequestDetails.dart';
 import 'package:salesmanagement/Production_Request/UpdateProductionRequest.dart';
 
-class RequestList extends StatefulWidget {
-  var requests,type,customerId,size,itemNumber;
+import '../Utils.dart';
 
-  RequestList(this.type,this.customerId,this.size,this.itemNumber);
+class RequestList extends StatefulWidget {
+  var requests;
+
+  RequestList();
 
   @override
   State<StatefulWidget> createState() {
-    return _RequestsList(type,customerId,size,itemNumber);
+    return _RequestsList();
   }
 }
 class _RequestsList extends ResumableState<RequestList>{
-  var requests,temp=['',''],type,customerId,size,itemNumber,isVisible=false,itemSizes,selectedValue;
-  _RequestsList(this.type,this.customerId,this.size,this.itemNumber);
+  var requests,temp=['',''],isVisible=false,itemSizes,selectedValue;
+  _RequestsList();
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
 
   @override
@@ -109,29 +111,15 @@ class _RequestsList extends ResumableState<RequestList>{
       body:
         RefreshIndicator(
           onRefresh: (){
-            if(type=='All'){
-              return Network_Operations.GetProdRequestList(customerId, 1, 100).then((response){
-                if(response!=null&&response!=''&&response!='[]'){
-                  setState(() {
-                    requests.clear();
-                    this.requests=jsonDecode(response);
-                    this.isVisible=true;
-                  });
-                }
-              });
-            }else if(type=='Size'){
-              return Network_Operations.GetProdRequestListBySize(customerId, size, 1, 10).then((response){
-                if(response!=null&&response!=''&&response!='[]'){
-                  setState(() {
-                    this.requests=jsonDecode(response);
-                  });
-                }
-              });
-            }else
-              return Network_Operations.GetProdRequestListByItem(customerId, itemNumber, 1, 10).then((response){
-                if(response!=null&&response!=''&&response!='[]'){
-                  setState(() {
-                    this.requests=jsonDecode(response);
+              return Utils.check_connectivity().then((connected){
+                if(connected){
+                  Network_Operations.GetProdRequestList('LC0001', 1, 100).then((response){
+                    if(response!=null&&response!=''&&response!='[]'){
+                      setState(() {
+                        this.requests=jsonDecode(response);
+                        this.isVisible=true;
+                      });
+                    }
                   });
                 }
               });

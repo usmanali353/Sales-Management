@@ -92,7 +92,7 @@ class _DeliveryList extends State<DeliveryList>{
                         )
                     ),
                     onTap: (){
-                      Navigator.push(context,MaterialPageRoute(builder: (context)=>DeliveryDetails(orders_list[index])));
+                      Navigator.push(context,MaterialPageRoute(builder: (context)=>DeliveryDetails(filteredList[index])));
                     },
                   ),
                   Divider(),

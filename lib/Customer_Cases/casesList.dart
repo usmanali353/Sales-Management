@@ -22,7 +22,7 @@ class casesList extends StatefulWidget{
 
 }
 class _casesList extends State<casesList>{
-  var caseListAll=[],customerId,temp=['',''],isVisible=false,caseList=[],caseType,title,_isSearching=false;
+  var caseListAll=[],customerId,temp=['',''],isVisible=false,caseList=[],caseType,title,_isSearching=false,filteredList=[];
   static final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   String searchQuery = "Search query";
   TextEditingController _searchQuery;
@@ -48,6 +48,7 @@ class _casesList extends State<casesList>{
                     print(caseList.length.toString());
                   }
                 }
+                filteredList.addAll(caseList);
               }else if(caseType=="In Process"){
                 for(int i=0;i<caseListAll.length;i++){
                   print(caseListAll[i]['Status']);
@@ -56,8 +57,10 @@ class _casesList extends State<casesList>{
                     print(caseList.length.toString());
                   }
                 }
+                filteredList.addAll(caseList);
               }else{
                 caseList.addAll(caseListAll);
+                filteredList.addAll(caseList);
                 print(caseList.length.toString());
               }
             });
@@ -94,7 +97,7 @@ class _casesList extends State<casesList>{
               borderRadius: BorderRadius.circular(15.0),
             ),
             elevation: 10,
-            child: ListView.builder(itemCount: caseList!=null?caseList.length:temp.length,itemBuilder: (context,int index){
+            child: ListView.builder(itemCount: filteredList!=null?filteredList.length:temp.length,itemBuilder: (context,int index){
               return Column(
                 children: <Widget>[
                   Slidable(
@@ -108,7 +111,7 @@ class _casesList extends State<casesList>{
                     onTap: (){
                       ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
                       pd.show();
-                      Network_Operations.DeleteCustomerCase(caseList[index]['CaseNum']).then((response){
+                      Network_Operations.DeleteCustomerCase(filteredList[index]['CaseNum']).then((response){
                         pd.dismiss();
                          if(response!=null){
                            Scaffold.of(context).showSnackBar(SnackBar(
@@ -124,13 +127,13 @@ class _casesList extends State<casesList>{
                     color: Colors.blue,
                     caption: 'Update',
                     onTap: (){
-                     Navigator.push(context, MaterialPageRoute(builder: (context)=>UpdateCases(caseList[index])));
+                     Navigator.push(context, MaterialPageRoute(builder: (context)=>UpdateCases(filteredList[index])));
                     },
                   ),
                 ],
                 child: ListTile(
-                    title: Text(caseList[index]['CaseNum']!=null?caseList[index]['CaseNum']:''),
-                    subtitle: Text(caseList[index]['Status']!=null?getCaseType(caseList[index]['CategoryTypeId']):''),
+                    title: Text(filteredList[index]['CaseNum']!=null?filteredList[index]['CaseNum']:''),
+                    subtitle: Text(filteredList[index]['Status']!=null?getCaseType(filteredList[index]['CategoryTypeId']):''),
                     leading: Material(
                         borderRadius: BorderRadius.circular(24),
                         color: Colors.teal.shade100,
@@ -140,7 +143,7 @@ class _casesList extends State<casesList>{
                         )
                     ),
                     onTap: (){
-                      Navigator.push(context,MaterialPageRoute(builder: (context)=>CaseDetail(caseList[index])));
+                      Navigator.push(context,MaterialPageRoute(builder: (context)=>CaseDetail(filteredList[index])));
                     },
               )
                   ),
@@ -180,6 +183,7 @@ class _casesList extends State<casesList>{
     _clearSearchQuery();
     setState(() {
       _isSearching = false;
+      filteredList.addAll(caseList);
     });
   }
 
@@ -225,12 +229,21 @@ class _casesList extends State<casesList>{
 
   void updateSearchQuery(String newQuery) {
     setState(() {
+      filteredList.clear();
       searchQuery = newQuery;
+      if(searchQuery.length>0){
+        for(int i=0;i<caseList.length;i++){
+          if(caseList[i]['CaseNum'].toLowerCase().contains(searchQuery)){
+            filteredList.add(caseList[i]);
+          }
+        }
+      }else{
+        filteredList.addAll(caseList);
+      }
     });
   }
 
   List<Widget> _buildActions() {
-
     if (_isSearching) {
       return <Widget>[
         new IconButton(
