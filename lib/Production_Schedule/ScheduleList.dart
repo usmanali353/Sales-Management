@@ -71,7 +71,7 @@ class _SchedulesList extends State<SchedulesList>{
                ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
                pd.show();
                Network_Operations.GetProductionSchedules(customerId, 1, 100).then((response){
-                 pd.hide();
+                 pd.dismiss();
                  if(response!=null&&response!='[]'){
                    setState(() {
                      schedules=jsonDecode(response);

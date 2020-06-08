@@ -134,7 +134,6 @@ class _PlanList extends ResumableState<PlanList>{
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor:  Color(0xFF004c4c),
         onPressed: (){
           push(context, MaterialPageRoute(builder: (context)=>CreateProductionPlan()));
         },

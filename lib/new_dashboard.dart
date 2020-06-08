@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/SettingPage.dart';
 import 'Customer_Cases/casesList.dart';
@@ -299,7 +300,7 @@ class _newdashboard extends State<newdashboard>{
                   visible: weeklyDeliveryCardVisible,
                   child: InkWell(
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>SalesOrdersList('2018-10-01','2018-10-02',"LC0001",'Week Deliveries')));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>SalesOrdersList('2018-10-01','2018-10-02',"LC0001",DateFormat.MMMM().format(DateTime.now()).toString()+' Deliveries')));
                     },
                     child: Card(
                       elevation: 10,
@@ -329,7 +330,7 @@ class _newdashboard extends State<newdashboard>{
                           children: <Widget>[
                             Container(
                               margin: EdgeInsets.only(left: 12),
-                              child: Text("Weekly\n(m\u00B2)",
+                              child: Text(DateFormat.MMMM().format(DateTime.now()).toString()+'\n(m\u00B2)',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold

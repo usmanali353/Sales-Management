@@ -44,7 +44,6 @@ class _PrePickingListState extends ResumableState<PrePickingList> {
         title: Text("PrePicking"),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor:  Color(0xFF004c4c),
         onPressed: (){
          push(context, MaterialPageRoute(builder: (context)=>AddPrePicking()));
         },

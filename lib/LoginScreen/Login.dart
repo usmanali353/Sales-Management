@@ -65,6 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   padding: const EdgeInsets.only(left: 20,right: 20),
                   child: TextField(
                     style: TextStyle(color: Colors.white),
+                      obscureText: true,
                       decoration: new InputDecoration(
                         labelStyle: TextStyle(color:Colors.white),
                         prefixIcon: Icon(Icons.lock,color: Colors.white,),
@@ -110,7 +111,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     color: Colors.white,
                     child: Text("SIGN IN",style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 15
+                      fontSize: 15,
+                      color: Colors.teal
                     ),),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),

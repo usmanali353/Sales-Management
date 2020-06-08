@@ -77,7 +77,6 @@ class _casesList extends State<casesList>{
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xFF004c4c),
         onPressed: (){
           Navigator.push(context, MaterialPageRoute(builder: (context)=>CreateCase()));
         },
