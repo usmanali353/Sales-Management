@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -75,44 +76,58 @@ class _PlanList extends ResumableState<PlanList>{
   }
   @override
   void initState() {
-   Network_Operations.GetCustomerPlan(customerId,year).then((response){
-     if(response!=null){
-       setState(() {
-         planList=jsonDecode(response);
-         isvisible=true;
-         janSum=0;febSum=0;marSum=0;aprSum=0;maySum=0;juneSum=0;julSum=0;augSum=0;sepSum=0;octSum=0;novSum=0;decSum=0;yearSum=0;
+    Utils.check_connectivity().then((connected){
+      if(connected){
+        ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
+        pd.show();
+        Network_Operations.GetCustomerPlan(customerId,year).then((response){
+          pd.dismiss();
+          if(response!=null){
+            setState(() {
+              planList=jsonDecode(response);
+              isvisible=true;
+              janSum=0;febSum=0;marSum=0;aprSum=0;maySum=0;juneSum=0;julSum=0;augSum=0;sepSum=0;octSum=0;novSum=0;decSum=0;yearSum=0;
 
-         for (int index = 0; index < planList.length; index++) {
-           yearSum=yearSum+planList[index]['EstimatedQuantity'];
-           if (planList[index]['MonthOfYear'] == 'January') {
-             janSum = janSum + planList[index]['EstimatedQuantity'];
-           }else if (planList[index]['MonthOfYear'] == 'Febuary') {
-             febSum = febSum + planList[index]['EstimatedQuantity'];
-           }else if (planList[index]['MonthOfYear'] == 'March') {
-             marSum = marSum + planList[index]['EstimatedQuantity'];
-           }else if (planList[index]['MonthOfYear'] == 'April') {
-             aprSum = aprSum + planList[index]['EstimatedQuantity'];
-           }else if (planList[index]['MonthOfYear'] == 'May') {
-             maySum = maySum + planList[index]['EstimatedQuantity'];
-           }else if (planList[index]['MonthOfYear'] == 'June') {
-             juneSum = juneSum + planList[index]['EstimatedQuantity'];
-           }else if (planList[index]['MonthOfYear'] == 'July') {
-             julSum = julSum + planList[index]['EstimatedQuantity'];
-           }else if (planList[index]['MonthOfYear'] == 'August') {
-             augSum = augSum + planList[index]['EstimatedQuantity'];
-           }else if (planList[index]['MonthOfYear'] == 'September') {
-             sepSum = sepSum + planList[index]['EstimatedQuantity'];
-           }else if (planList[index]['MonthOfYear'] == 'October') {
-             octSum = octSum + planList[index]['EstimatedQuantity'];
-           }else if (planList[index]['MonthOfYear'] == 'November') {
-             novSum = novSum + planList[index]['EstimatedQuantity'];
-           }else if (planList[index]['MonthOfYear'] == 'December') {
-             decSum = decSum + planList[index]['EstimatedQuantity'];
-           }
-         }
-       });
-     }
-   });
+              for (int index = 0; index < planList.length; index++) {
+                yearSum=yearSum+planList[index]['EstimatedQuantity'];
+                if (planList[index]['MonthOfYear'] == 'January') {
+                  janSum = janSum + planList[index]['EstimatedQuantity'];
+                }else if (planList[index]['MonthOfYear'] == 'Febuary') {
+                  febSum = febSum + planList[index]['EstimatedQuantity'];
+                }else if (planList[index]['MonthOfYear'] == 'March') {
+                  marSum = marSum + planList[index]['EstimatedQuantity'];
+                }else if (planList[index]['MonthOfYear'] == 'April') {
+                  aprSum = aprSum + planList[index]['EstimatedQuantity'];
+                }else if (planList[index]['MonthOfYear'] == 'May') {
+                  maySum = maySum + planList[index]['EstimatedQuantity'];
+                }else if (planList[index]['MonthOfYear'] == 'June') {
+                  juneSum = juneSum + planList[index]['EstimatedQuantity'];
+                }else if (planList[index]['MonthOfYear'] == 'July') {
+                  julSum = julSum + planList[index]['EstimatedQuantity'];
+                }else if (planList[index]['MonthOfYear'] == 'August') {
+                  augSum = augSum + planList[index]['EstimatedQuantity'];
+                }else if (planList[index]['MonthOfYear'] == 'September') {
+                  sepSum = sepSum + planList[index]['EstimatedQuantity'];
+                }else if (planList[index]['MonthOfYear'] == 'October') {
+                  octSum = octSum + planList[index]['EstimatedQuantity'];
+                }else if (planList[index]['MonthOfYear'] == 'November') {
+                  novSum = novSum + planList[index]['EstimatedQuantity'];
+                }else if (planList[index]['MonthOfYear'] == 'December') {
+                  decSum = decSum + planList[index]['EstimatedQuantity'];
+                }
+              }
+            });
+          }
+        });
+      }else{
+        Flushbar(
+          message: "Network not Available",
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 5),
+        )..show(context);
+      }
+    });
+
     super.initState();
   }
   @override
@@ -140,10 +155,12 @@ class _PlanList extends ResumableState<PlanList>{
                     if(response!=null){
                       setState(() {
                         var sizes=jsonDecode(response);
-                        for(int i=0;i<sizes.length;i++){
-                          deviceTypes.add(sizes[i]['ItemSize']);
+                        if(sizes!=null&&sizes.length>0) {
+                          for (int i = 1; i < sizes.length; i++) {
+                            deviceTypes.add(sizes[i]['ItemSize']);
+                          }
+                          showAlertDialog(context);
                         }
-                        showAlertDialog(context);
                       });
                     }
                   });
@@ -841,71 +858,121 @@ List<Widget> wholeYear() {
     return columnContent;
   }
   Widget typeFieldWidget() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      child: FormField<String>(
-        builder: (FormFieldState<String> state) {
-          return InputDecorator(
-            decoration: InputDecoration(
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0))),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<String>(
-                hint: Text("Select Size"),
-                isDense: true,
-                onChanged: (newValue) {
-                  setState(() {
-                    currentSelectedValue = newValue;
-                    Navigator.pop(context);
-                    Network_Operations.GetCustomerPlanBySize(customerId, currentSelectedValue, year).then((response){
-                      if(response!=null){
-                        setState(() {
-                          planList=jsonDecode(response);
-                          janSum=0;febSum=0;marSum=0;aprSum=0;maySum=0;juneSum=0;julSum=0;augSum=0;sepSum=0;octSum=0;novSum=0;decSum=0;yearSum=0;
+    return Card(
+      elevation: 10,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: FormField<String>(
+          builder: (FormFieldState<String> state) {
+            return InputDecorator(
+              decoration: InputDecoration(
+                  border: InputBorder.none),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  hint: Text("Select Size"),
+                  isDense: true,
+                  onChanged: (newValue) {
+                    setState(() {
+                      currentSelectedValue = newValue;
+                      Navigator.pop(context);
+                      if(currentSelectedValue=='All'){
+                        ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
+                        pd.show();
+                        Network_Operations.GetCustomerPlan(customerId,year).then((response){
+                          pd.dismiss();
+                          if(response!=null){
+                            setState(() {
+                              planList=jsonDecode(response);
+                              isvisible=true;
+                              janSum=0;febSum=0;marSum=0;aprSum=0;maySum=0;juneSum=0;julSum=0;augSum=0;sepSum=0;octSum=0;novSum=0;decSum=0;yearSum=0;
 
-                          for (int index = 0; index < planList.length; index++) {
-                            yearSum=yearSum+planList[index]['EstimatedQuantity'];
-                            if (planList[index]['MonthOfYear'] == 'January') {
-                              janSum = janSum + planList[index]['EstimatedQuantity'];
-                            }else if (planList[index]['MonthOfYear'] == 'Febuary') {
-                              febSum = febSum + planList[index]['EstimatedQuantity'];
-                            }else if (planList[index]['MonthOfYear'] == 'March') {
-                              marSum = marSum + planList[index]['EstimatedQuantity'];
-                            }else if (planList[index]['MonthOfYear'] == 'April') {
-                              aprSum = aprSum + planList[index]['EstimatedQuantity'];
-                            }else if (planList[index]['MonthOfYear'] == 'May') {
-                              maySum = maySum + planList[index]['EstimatedQuantity'];
-                            }else if (planList[index]['MonthOfYear'] == 'June') {
-                              juneSum = juneSum + planList[index]['EstimatedQuantity'];
-                            }else if (planList[index]['MonthOfYear'] == 'July') {
-                              julSum = julSum + planList[index]['EstimatedQuantity'];
-                            }else if (planList[index]['MonthOfYear'] == 'August') {
-                              augSum = augSum + planList[index]['EstimatedQuantity'];
-                            }else if (planList[index]['MonthOfYear'] == 'September') {
-                              sepSum = sepSum + planList[index]['EstimatedQuantity'];
-                            }else if (planList[index]['MonthOfYear'] == 'October') {
-                              octSum = octSum + planList[index]['EstimatedQuantity'];
-                            }else if (planList[index]['MonthOfYear'] == 'November') {
-                              novSum = novSum + planList[index]['EstimatedQuantity'];
-                            }else if (planList[index]['MonthOfYear'] == 'December') {
-                              decSum = decSum + planList[index]['EstimatedQuantity'];
-                            }
+                              for (int index = 0; index < planList.length; index++) {
+                                yearSum=yearSum+planList[index]['EstimatedQuantity'];
+                                if (planList[index]['MonthOfYear'] == 'January') {
+                                  janSum = janSum + planList[index]['EstimatedQuantity'];
+                                }else if (planList[index]['MonthOfYear'] == 'Febuary') {
+                                  febSum = febSum + planList[index]['EstimatedQuantity'];
+                                }else if (planList[index]['MonthOfYear'] == 'March') {
+                                  marSum = marSum + planList[index]['EstimatedQuantity'];
+                                }else if (planList[index]['MonthOfYear'] == 'April') {
+                                  aprSum = aprSum + planList[index]['EstimatedQuantity'];
+                                }else if (planList[index]['MonthOfYear'] == 'May') {
+                                  maySum = maySum + planList[index]['EstimatedQuantity'];
+                                }else if (planList[index]['MonthOfYear'] == 'June') {
+                                  juneSum = juneSum + planList[index]['EstimatedQuantity'];
+                                }else if (planList[index]['MonthOfYear'] == 'July') {
+                                  julSum = julSum + planList[index]['EstimatedQuantity'];
+                                }else if (planList[index]['MonthOfYear'] == 'August') {
+                                  augSum = augSum + planList[index]['EstimatedQuantity'];
+                                }else if (planList[index]['MonthOfYear'] == 'September') {
+                                  sepSum = sepSum + planList[index]['EstimatedQuantity'];
+                                }else if (planList[index]['MonthOfYear'] == 'October') {
+                                  octSum = octSum + planList[index]['EstimatedQuantity'];
+                                }else if (planList[index]['MonthOfYear'] == 'November') {
+                                  novSum = novSum + planList[index]['EstimatedQuantity'];
+                                }else if (planList[index]['MonthOfYear'] == 'December') {
+                                  decSum = decSum + planList[index]['EstimatedQuantity'];
+                                }
+                              }
+                            });
+                          }
+                        });
+                      }else{
+                        Network_Operations.GetCustomerPlanBySize(customerId, currentSelectedValue, year).then((response){
+                          if(response!=null){
+                            setState(() {
+                              planList=jsonDecode(response);
+                              janSum=0;febSum=0;marSum=0;aprSum=0;maySum=0;juneSum=0;julSum=0;augSum=0;sepSum=0;octSum=0;novSum=0;decSum=0;yearSum=0;
+
+                              for (int index = 0; index < planList.length; index++) {
+                                yearSum=yearSum+planList[index]['EstimatedQuantity'];
+                                if (planList[index]['MonthOfYear'] == 'January') {
+                                  janSum = janSum + planList[index]['EstimatedQuantity'];
+                                }else if (planList[index]['MonthOfYear'] == 'Febuary') {
+                                  febSum = febSum + planList[index]['EstimatedQuantity'];
+                                }else if (planList[index]['MonthOfYear'] == 'March') {
+                                  marSum = marSum + planList[index]['EstimatedQuantity'];
+                                }else if (planList[index]['MonthOfYear'] == 'April') {
+                                  aprSum = aprSum + planList[index]['EstimatedQuantity'];
+                                }else if (planList[index]['MonthOfYear'] == 'May') {
+                                  maySum = maySum + planList[index]['EstimatedQuantity'];
+                                }else if (planList[index]['MonthOfYear'] == 'June') {
+                                  juneSum = juneSum + planList[index]['EstimatedQuantity'];
+                                }else if (planList[index]['MonthOfYear'] == 'July') {
+                                  julSum = julSum + planList[index]['EstimatedQuantity'];
+                                }else if (planList[index]['MonthOfYear'] == 'August') {
+                                  augSum = augSum + planList[index]['EstimatedQuantity'];
+                                }else if (planList[index]['MonthOfYear'] == 'September') {
+                                  sepSum = sepSum + planList[index]['EstimatedQuantity'];
+                                }else if (planList[index]['MonthOfYear'] == 'October') {
+                                  octSum = octSum + planList[index]['EstimatedQuantity'];
+                                }else if (planList[index]['MonthOfYear'] == 'November') {
+                                  novSum = novSum + planList[index]['EstimatedQuantity'];
+                                }else if (planList[index]['MonthOfYear'] == 'December') {
+                                  decSum = decSum + planList[index]['EstimatedQuantity'];
+                                }
+                              }
+                            });
                           }
                         });
                       }
+
                     });
-                  });
-                },
-                items: deviceTypes.map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
+                  },
+                  items: deviceTypes.map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

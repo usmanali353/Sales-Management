@@ -259,7 +259,7 @@ class _DashboardState extends State<Dashboard> {
                   children: <Widget>[
                     InkWell(
                       onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList(null,null)));
                       },
                       child: Card(
                         elevation: 10,
@@ -288,7 +288,7 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     InkWell(
                       onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList(null,null)));
                       },
                       child: Card(
                         elevation: 10,
@@ -317,7 +317,7 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     InkWell(
                       onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList(null,null)));
                       },
                       child: Card(
                         elevation: 10,

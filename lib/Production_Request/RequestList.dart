@@ -6,6 +6,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:need_resume/need_resume.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/Network_Operations.dart';
 import 'package:salesmanagement/Production_Request/CreateProductionRequest.dart';
 import 'package:salesmanagement/Production_Request/RequestDetails.dart';
@@ -14,18 +15,18 @@ import 'package:salesmanagement/Production_Request/UpdateProductionRequest.dart'
 import '../Utils.dart';
 
 class RequestList extends StatefulWidget {
-  var requests;
+  var size,month;
 
-  RequestList();
+  RequestList(this.size,this.month);
 
   @override
   State<StatefulWidget> createState() {
-    return _RequestsList();
+    return _RequestsList(size,month);
   }
 }
 class _RequestsList extends ResumableState<RequestList>{
-  var requests,temp=['',''],isVisible=false,itemSizes,selectedValue;
-  _RequestsList();
+  var requests,temp=['',''],isVisible=false,itemSizes,selectedValue,size,month;
+  _RequestsList(this.size,this.month);
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
 
   @override
@@ -51,7 +52,6 @@ class _RequestsList extends ResumableState<RequestList>{
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor:  Color(0xFF004c4c),
         onPressed: (){
           push(context, MaterialPageRoute(builder: (context)=>CreateProductionRequest()));
         },
@@ -63,7 +63,10 @@ class _RequestsList extends ResumableState<RequestList>{
             PopupMenuButton<String>(
               onSelected: (choice){
                 if(choice=='Filter by Size'){
+                  ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
+                  pd.show();
                  Network_Operations.GetItemSizes().then((value){
+                   pd.dismiss();
                    if(value!=null){
                      setState(() {
                        var size=jsonDecode(value);
@@ -79,7 +82,10 @@ class _RequestsList extends ResumableState<RequestList>{
                    }
                  });
                 }else if(choice=='Filter by Item') {
+                  ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
+                  pd.show();
                     Network_Operations.GetOnhandStock("LC0001").then((value) {
+                      pd.dismiss();
                       if (value != null) {
                         setState(() {
                           var items = jsonDecode(value);
@@ -113,14 +119,54 @@ class _RequestsList extends ResumableState<RequestList>{
           onRefresh: (){
               return Utils.check_connectivity().then((connected){
                 if(connected){
-                  Network_Operations.GetProdRequestList('LC0001', 1, 100).then((response){
-                    if(response!=null&&response!=''&&response!='[]'){
-                      setState(() {
-                        this.requests=jsonDecode(response);
-                        this.isVisible=true;
-                      });
-                    }
-                  });
+                  if(size!=null&&month!=null){
+                    ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
+                    pd.show();
+                    Network_Operations.GetProdRequestListBySize('LC0001',size, 1, 100).then((response){
+                      pd.dismiss();
+                      if(response!=null&&response!=''&&response!='[]'){
+                        setState(() {
+                          var filteredRequest=[];
+                          this.requests=jsonDecode(response);
+                          if(requests!=null&&requests.length>0){
+                            for(int i=0;i<requests.length;i++){
+                              if(requests[i]['ProductionMonth']==month){
+                                filteredRequest.add(requests[i]);
+                              }
+                            }
+                            if(filteredRequest!=null&&filteredRequest.length>0){
+                              requests.clear();
+                              requests.addAll(filteredRequest);
+                              this.isVisible=true;
+                            }else{
+                              Flushbar(
+                                message: "No Requests Found",
+                                backgroundColor: Colors.red,
+                                duration: Duration(seconds: 5),
+                              )..show(context);
+                            }
+
+                          } else{
+
+                          }
+
+                        });
+                      }
+                    });
+                  }else{
+                    ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
+                    pd.show();
+                    Network_Operations.GetProdRequestList('LC0001', 1, 100).then((response){
+                      pd.dismiss();
+                      if(response!=null&&response!=''&&response!='[]'){
+                        setState(() {
+                          this.requests=jsonDecode(response);
+                          this.isVisible=true;
+                        });
+                      }
+                    });
+                  }
+
                 }
               });
           },
@@ -257,7 +303,6 @@ class _RequestsList extends ResumableState<RequestList>{
                 FormBuilderDropdown(
                   attribute: "Select Item",
                   hint: Text("Select Item"),
-                  isDense: true,
                   items: itemsNames!=null?itemsNames.map((plans)=>DropdownMenuItem(
                     child: Text(plans),
                     value: plans,
@@ -292,38 +337,72 @@ class _RequestsList extends ResumableState<RequestList>{
       },
     );
   }
+  Widget typeFieldWidget(List<String> sizeNames) {
+    return Card(
+      elevation: 10,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: FormField<String>(
+          builder: (FormFieldState<String> state) {
+            return InputDecorator(
+              decoration: InputDecoration(
+                  border: InputBorder.none),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  hint: Text("Select Size"),
+                  isDense: true,
+                  onChanged: (newValue) {
+                    setState(() {
+                      selectedValue = newValue;
+                      Navigator.pop(context);
+                      ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
+                      pd.show();
+                      Network_Operations.GetProdRequestListBySize("LC0001",selectedValue, 1, 100).then((value){
+                        pd.dismiss();
+                        if(value!=null){
+                          setState(() {
+                            var requestsByItem=jsonDecode(value);
+                            if (selectedValue == 'All') {
+                              WidgetsBinding.instance
+                                  .addPostFrameCallback((_) =>
+                                  _refreshIndicatorKey.currentState
+                                      .show());
+                            }else if(requestsByItem!=null&&requestsByItem.length>0) {
+                              requests.clear();
+                              requests.addAll(requestsByItem);
+
+                            }else{
+                              Navigator.pop(context);
+                              Flushbar(
+                                message:  "No Requests Found",
+                                backgroundColor: Colors.red,
+                                duration:  Duration(seconds: 5),
+                              )..show(context);
+                            }
+                          });
+                        }
+                      });
+                    });
+                  },
+                  items: sizeNames.map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
   showSizeAlertDialog(BuildContext context,List<String> sizeNames) {
     // set up the buttons
-    Widget cancelButton = FlatButton(
-      child: Text("Ok"),
-      onPressed:  () {
-        Network_Operations.GetProdRequestListBySize("LC0001",sizeNames[selectedValue], 1, 100).then((value){
-          if(value!=null){
-            setState(() {
-              var requestsByItem=jsonDecode(value);
-              if (selectedValue == 0) {
-                WidgetsBinding.instance
-                    .addPostFrameCallback((_) =>
-                    _refreshIndicatorKey.currentState
-                        .show());
-              }else if(requestsByItem!=null&&requestsByItem.length>0) {
-                requests.clear();
-                requests.addAll(requestsByItem);
-                Navigator.pop(context);
-              }else{
-                Navigator.pop(context);
-                Flushbar(
-                  message:  "No Requests Found",
-                  backgroundColor: Colors.red,
-                  duration:  Duration(seconds: 5),
-                )..show(context);
-              }
-            });
-          }
-        });
-
-      },
-    );
     Widget launchButton = FlatButton(
       child: Text("Cancel"),
       onPressed:  () {
@@ -333,37 +412,9 @@ class _RequestsList extends ResumableState<RequestList>{
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Notice"),
-      content:FormBuilder(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              FormBuilderDropdown(
-                attribute: "Select Item Size",
-                hint: Text("Select Item Size"),
-                isDense: true,
-                items: sizeNames!=null?sizeNames.map((plans)=>DropdownMenuItem(
-                  child: Text(plans),
-                  value: plans,
-                )).toList():[""].map((name) => DropdownMenuItem(
-                    value: name, child: Text("$name")))
-                    .toList(),
-                onChanged: (value){
-                  setState(() {
-                    this.selectedValue=sizeNames.indexOf(value);
-                  });
-                },
-                style: Theme.of(context).textTheme.bodyText1,
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.all(16),
-                ),
-
-              ),
-            ],
-          )
-      ),
+      title: Text("Filter by Size"),
+      content:typeFieldWidget(sizeNames),
       actions: [
-        cancelButton,
         launchButton,
       ],
     );

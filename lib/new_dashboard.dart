@@ -377,7 +377,7 @@ class _newdashboard extends State<newdashboard>{
               visible: prodRequestCardVisible,
               child: InkWell(
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList(null,null)));
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(left: 8.0,right:8.0),
@@ -483,7 +483,7 @@ class _newdashboard extends State<newdashboard>{
                   //Status Requested
                   InkWell(
                     onTap:(){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList(null,null)));
                     },
                     child: Card(
                       elevation: 10,
@@ -567,7 +567,7 @@ class _newdashboard extends State<newdashboard>{
                   //Status Approved for Production
                   InkWell(
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList(null,null)));
                     },
                     child: Card(
                       elevation: 10,
@@ -657,7 +657,7 @@ class _newdashboard extends State<newdashboard>{
               visible: prodRequestCardVisible,
               child: InkWell(
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList(null,null)));
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(left: 8.0,right:8.0),

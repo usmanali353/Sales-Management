@@ -1,8 +1,9 @@
 import 'dart:convert';
-
+import 'package:flushbar/flushbar.dart';
 import  'package:flutter/material.dart';
 import 'package:salesmanagement/Network_Operations.dart';
 import 'package:salesmanagement/Production_Request/CreateProductionRequest.dart';
+import 'package:salesmanagement/Production_Request/RequestList.dart';
 class PlanDetail extends StatefulWidget {
  var planData;
 
@@ -18,11 +19,7 @@ class _PlanDetailState extends State<PlanDetail> {
   _PlanDetailState(this.planData);
  @override
   void initState() {
-   Network_Operations.GetProdRequestListBySize('LC0001', planData['ItemSize'], 1, 100).then((value){
-     if(value!=null){
-       var requestBysize=jsonDecode(value);
-     }
-   });
+
     super.initState();
   }
   @override
@@ -31,19 +28,26 @@ class _PlanDetailState extends State<PlanDetail> {
       appBar: AppBar(
         title: Text("Plan Detail"),
         actions: <Widget>[
-          InkWell(
-            onTap: (){
-              Navigator.push(context,MaterialPageRoute(builder: (context)=>CreateProductionRequest(),
-                  settings: RouteSettings(
-                      arguments: {'month':planData['MonthOfYear'].toString()}
-                  )));
+          PopupMenuButton<String>(
+            onSelected: (choice){
+              if(choice=='Create Production Request'){
+                Navigator.push(context,MaterialPageRoute(builder: (context)=>CreateProductionRequest(),
+                    settings: RouteSettings(
+                        arguments: {'month':planData['MonthOfYear'].toString()}
+                    )));
+              }else if(choice=='View Production Requests') {
+                Navigator.push(context, MaterialPageRoute(builder:(context)=>RequestList(planData['ItemSize'],planData['MonthOfYear'])));
+              }
             },
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Text("Create Production Request"),
-              ),
-            ),
+            itemBuilder: (BuildContext context){
+              return ['Create Production Request','View Production Requests'].map((String choice){
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(choice),
+                );
+              }).toList();
+            },
+
           )
         ],
       ),
