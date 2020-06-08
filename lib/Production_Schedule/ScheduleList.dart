@@ -165,7 +165,7 @@ class _SchedulesList extends State<SchedulesList>{
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Notice"),
+      title: Text("Filter by Item"),
       content:FormBuilder(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -184,7 +184,7 @@ class _SchedulesList extends State<SchedulesList>{
                     this.selectedValue=itemsNames.indexOf(value);
                   });
                 },
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context).textTheme.subtitle2.merge(TextStyle(fontSize: 11)),
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.all(16),
                 ),
