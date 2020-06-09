@@ -314,7 +314,7 @@ class _RequestsList extends ResumableState<RequestList>{
                       this.selectedValue=itemsNames.indexOf(value);
                     });
                   },
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(fontSize: 11)),
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.all(16),
                   ),

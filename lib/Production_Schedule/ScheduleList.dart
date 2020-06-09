@@ -184,7 +184,7 @@ class _SchedulesList extends State<SchedulesList>{
                     this.selectedValue=itemsNames.indexOf(value);
                   });
                 },
-                style: Theme.of(context).textTheme.subtitle2.merge(TextStyle(fontSize: 11)),
+                style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(fontSize: 11)),
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.all(16),
                 ),
