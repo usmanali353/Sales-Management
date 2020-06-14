@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:need_resume/need_resume.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/Sales_Services/Stocks/StocksMainPage.dart';
 import 'package:salesmanagement/SettingPage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'Customer_Cases/casesList.dart';
 import 'Network_Operations.dart';
 import 'PrePicking/PrePickingList.dart';
@@ -27,10 +29,23 @@ class newdashboard extends StatefulWidget{
 
 }
 
-class _newdashboard extends State<newdashboard>{
-  var todayDeliveryCardVisible=false,weeklyDeliveryCardVisible=false,prodRequestCardVisible=false,financeVisible=false,totalOlderStock=0.0,olderstockVisible=false;
+class _newdashboard extends ResumableState<newdashboard>{
+  var todayDeliveryCardVisible=false,weeklyDeliveryCardVisible=false,prodRequestCardVisible=false,financeVisible=false,totalOlderStock=0.0,olderstockVisible=false,currentTheme=false;
   var caseNumbers,caseCardsVisible=false,productionRequestCardVisible=false,productionRequestNumbers,deliveryCardVisible=false,deliveryNumber,weeklyDelivery,financeCardVisible=false,finance,totalOnhandStock=0.0,onhandVisible=false;
   List<double> onHandValues=[];
+
+  @override
+  void onResume() {
+    print('Data '+resume.data);
+    if(resume.data.toString()=='Refresh'){
+      SharedPreferences.getInstance().then((prefs){
+        setState(() {
+          this.currentTheme=prefs.getBool("LightMode");
+        });
+      });
+    }
+  }
+
   @override
   void initState() {
     Utils.check_connectivity().then((connected){
@@ -127,6 +142,11 @@ class _newdashboard extends State<newdashboard>{
             });
           }
         });
+        SharedPreferences.getInstance().then((prefs){
+          setState(() {
+            this.currentTheme=prefs.getBool("LightMode");
+          });
+        });
       }
     });
     super.initState();
@@ -201,7 +221,7 @@ class _newdashboard extends State<newdashboard>{
                     title: Text("Settings"),
                     leading: Icon(Icons.settings),
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>SettingsPage()));
+                      push(context, MaterialPageRoute(builder: (context)=>SettingsPage()));
                     },
                   ),
 
@@ -451,7 +471,7 @@ class _newdashboard extends State<newdashboard>{
                                   topLeft: Radius.circular(15),
                                   bottomLeft: Radius.circular(15)
                               ),
-                              color: Colors.grey.shade200,
+                              color: currentTheme?Color(0xFF004c4c):Colors.grey.shade200,
 //                              boxShadow: [
 //                                BoxShadow(
 //                                  color: Colors.grey.shade400,
@@ -470,7 +490,7 @@ class _newdashboard extends State<newdashboard>{
                             child: Container(margin: EdgeInsets.only(left: 10,top: 5),
                               child: Text(productionRequestNumbers!=null?productionRequestNumbers[4]['OtherValue'].toString():'0',
                                 style: TextStyle(
-                                    color:Colors.teal.shade800,
+                                    color:currentTheme?Colors.white:Colors.teal.shade800,
                                     //Color(0xFF004c4c),
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold
@@ -554,7 +574,7 @@ class _newdashboard extends State<newdashboard>{
                                     bottomLeft: Radius.circular(15)
                                 ),
 
-                                color: Colors.grey.shade200,
+                                color:currentTheme?Color(0xFF004c4c):Colors.grey.shade200,
 //                                  boxShadow: [
 //                                    BoxShadow(
 //                                      color: Colors.grey.shade400,
@@ -573,7 +593,7 @@ class _newdashboard extends State<newdashboard>{
                               child: Container(margin: EdgeInsets.only(left: 10,top: 5),
                                 child: Text(productionRequestNumbers!=null?productionRequestNumbers[0]['OtherValue'].toString():'0',
                                   style: TextStyle(
-                                      color:Color(0xFF004c4c),
+                                      color:!currentTheme?Color(0xFF004c4c):Colors.white,
                                       //Color(0xFF004c4c),
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold
@@ -638,7 +658,7 @@ class _newdashboard extends State<newdashboard>{
                                       bottomLeft: Radius.circular(15)
                                   ),
 
-                                  color: Colors.grey.shade200,
+                                  color: currentTheme?Color(0xFF004c4c):Colors.grey.shade200,
 //                                boxShadow: [
 //                                  BoxShadow(
 //                                    color: Colors.grey.shade400,
@@ -657,7 +677,7 @@ class _newdashboard extends State<newdashboard>{
                               child: Container(margin: EdgeInsets.only(left: 10,top: 5),
                                 child: Text(productionRequestNumbers!=null?productionRequestNumbers[3]['OtherValue'].toString():'0',
                                   style: TextStyle(
-                                      color:Color(0xFF004c4c),
+                                      color:!currentTheme?Color(0xFF004c4c):Colors.white,
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold
                                   ),
@@ -730,7 +750,7 @@ class _newdashboard extends State<newdashboard>{
                                   topLeft: Radius.circular(15),
                                   bottomLeft: Radius.circular(15)
                               ),
-                              color: Colors.grey.shade200,
+                              color: currentTheme?Color(0xFF004c4c):Colors.grey.shade200,
 //                              boxShadow: [
 //                                BoxShadow(
 //                                  color: Colors.grey.shade400,
@@ -749,7 +769,7 @@ class _newdashboard extends State<newdashboard>{
                             child: Container(margin: EdgeInsets.only(left: 10,top: 5),
                               child: Text(productionRequestNumbers!=null?productionRequestNumbers[4]['OtherValue'].toString():'0',
                                 style: TextStyle(
-                                    color:Colors.teal.shade800,
+                                    color:!currentTheme?Colors.teal.shade800:Colors.white,
                                     //Color(0xFF004c4c),
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold
@@ -927,7 +947,7 @@ class _newdashboard extends State<newdashboard>{
                                     bottomLeft: Radius.circular(15)
                                 ),
 
-                                color: Colors.grey.shade200,
+                                color: currentTheme?Color(0xFF004c4c):Colors.grey.shade200,
 //                            boxShadow: [
 //                              BoxShadow(
 //                                color: Colors.grey.shade400,
@@ -946,7 +966,7 @@ class _newdashboard extends State<newdashboard>{
                             child: Container(margin: EdgeInsets.only(left: 10,top: 5),
                               child: Text(totalOnhandStock.toString()??'0',
                                 style: TextStyle(
-                                    color:Color(0xFF004c4c),
+                                    color:!currentTheme?Color(0xFF004c4c):Colors.white,
                                     //Color(0xFF004c4c),
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold
@@ -1009,7 +1029,7 @@ class _newdashboard extends State<newdashboard>{
                                     bottomLeft: Radius.circular(15)
                                 ),
 
-                                color: Colors.grey.shade200,
+                                color: currentTheme?Color(0xFF004c4c):Colors.grey.shade200,
 //                              boxShadow: [
 //                                BoxShadow(
 //                                  color: Colors.grey.shade400,
@@ -1028,7 +1048,7 @@ class _newdashboard extends State<newdashboard>{
                             child: Container(margin: EdgeInsets.only(left: 10,top: 5),
                               child: Text(totalOlderStock!=null?totalOlderStock.toString():'0.0',
                                 style: TextStyle(
-                                    color:Color(0xFF004c4c),
+                                    color:!currentTheme?Color(0xFF004c4c):Colors.white,
                                     //Color(0xFF004c4c),
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold

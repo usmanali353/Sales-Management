@@ -19,41 +19,47 @@ class _SettingsPageState extends State<SettingsPage> {
     _lightTheme = (themeNotifier.getTheme() == lightTheme);
     return Scaffold(
       appBar: AppBar(title: Text("Settings"),),
-      body: ListView(
-        children: <Widget>[
-          ListTile(
-            title: Text('Theme'),
-            contentPadding: const EdgeInsets.only(left: 16.0),
-            trailing: Transform.scale(
-              scale: 0.4,
-              child: DayNightSwitch(
-                value: _lightTheme,
-                onChanged: (val) {
-                  setState(() {
-                    _lightTheme = val;
-                  });
-                  onThemeChanged(val, themeNotifier);
-                },
+      body: WillPopScope(
+        onWillPop:() async{
+          Navigator.pop(context,'Refresh');
+          return false;
+        },
+        child: ListView(
+          children: <Widget>[
+            ListTile(
+              title: Text('Theme'),
+              contentPadding: const EdgeInsets.only(left: 16.0),
+              trailing: Transform.scale(
+                scale: 0.4,
+                child: DayNightSwitch(
+                  value: _lightTheme,
+                  onChanged: (val) {
+                    setState(() {
+                      _lightTheme = val;
+                    });
+                    onThemeChanged(val, themeNotifier);
+                  },
+                ),
               ),
             ),
-          ),
-          ListTile(
-            title: Text("Visit our Website"),
-            trailing: Icon(Icons.web),
-            onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>WebBrowser('https://www.arabian-ceramics.com/en-us/')));
-            },
-          ),
-          Divider(),
-          ListTile(
-            title: Text("About US"),
-            trailing: Icon(Icons.web),
-            onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>WebBrowser('https://www.arabian-ceramics.com/en-us/about-us')));
-            },
-          ),
-          Divider(),
-        ],
+            ListTile(
+              title: Text("Visit our Website"),
+              trailing: Icon(Icons.web),
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>WebBrowser('https://www.arabian-ceramics.com/en-us/')));
+              },
+            ),
+            Divider(),
+            ListTile(
+              title: Text("About US"),
+              trailing: Icon(Icons.web),
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>WebBrowser('https://www.arabian-ceramics.com/en-us/about-us')));
+              },
+            ),
+            Divider(),
+          ],
+        ),
       ),
     );
   }
