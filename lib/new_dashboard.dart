@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:salesmanagement/Sales_Services/Stocks/StocksMainPage.dart';
 import 'package:salesmanagement/SettingPage.dart';
 import 'Customer_Cases/casesList.dart';
 import 'Network_Operations.dart';
@@ -148,10 +149,10 @@ class _newdashboard extends State<newdashboard>{
               child: ListView(
                 children: <Widget>[
                   ListTile(
-                    title: Text("Invoices"),
-                    leading: Icon(FontAwesomeIcons.fileInvoice),
+                    title: Text("Dashboard"),
+                    leading: Icon(Icons.dashboard),
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoicesList('LC0001')));
+                     // Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoicesList('LC0001')));
                     },
                   ),
                   ListTile(
@@ -162,14 +163,42 @@ class _newdashboard extends State<newdashboard>{
                     },
                   ),
                   ListTile(
-                    title: Text("Production Schedule"),
+                    title: Text("Production Order"),
                     leading: Icon(FontAwesomeIcons.calendar),
                     onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>SchedulesList("LC0001",null)));
                     },
                   ),
                   ListTile(
-                    title: Text("Setting"),
+                    title: Text("Stock Delivery"),
+                    leading: Icon(FontAwesomeIcons.truckLoading),
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>PrePickingList()));
+                    },
+                  ),
+                  ListTile(
+                    title: Text("Finance"),
+                    leading: Icon(FontAwesomeIcons.dollarSign),
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoicesList("LC0001")));
+                    },
+                  ),
+                  ListTile(
+                    title: Text("Products"),
+                    leading: Icon(FontAwesomeIcons.boxes),
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>StocksMainPage()));
+                    },
+                  ),
+                  ListTile(
+                    title: Text("Complaints"),
+                    leading: Icon(FontAwesomeIcons.angry),
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>casesList('LC0001','All','Customer Complains')));
+                    },
+                  ),
+                  ListTile(
+                    title: Text("Settings"),
                     leading: Icon(Icons.settings),
                     onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>SettingsPage()));
@@ -183,13 +212,7 @@ class _newdashboard extends State<newdashboard>{
 //                      Navigator.push(context, MaterialPageRoute(builder: (context)=>StocksMainPage()));
 //                    },
 //                  ),
-                  ListTile(
-                    title: Text("Pre Picking"),
-                    leading: Icon(FontAwesomeIcons.pallet),
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>PrePickingList()));
-                    },
-                  ),
+
                 ],
               ),
             )

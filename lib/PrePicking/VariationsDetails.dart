@@ -10,19 +10,19 @@ import 'package:salesmanagement/PrePicking/OrderedProductQty.dart';
 import 'package:salesmanagement/Production_Request/CreateProductionRequest.dart';
 import 'package:salesmanagement/Utils.dart';
 class VariationDetails extends StatefulWidget {
-  var variationData;
+  var variationData,forDetail;
 
-  VariationDetails(this.variationData);
+  VariationDetails(this.variationData,this.forDetail);
 
   @override
-  _VariationDetailsState createState() => _VariationDetailsState(variationData);
+  _VariationDetailsState createState() => _VariationDetailsState(variationData,forDetail);
 }
 
 class _VariationDetailsState extends ResumableState<VariationDetails> {
-  var variationData,pendingRequests=0,selectedPreference;
+  var variationData,pendingRequests=0,selectedPreference,forDetail;
  sqlite_helper db;
  TextEditingController quantity;
-  _VariationDetailsState(this.variationData);
+  _VariationDetailsState(this.variationData,this.forDetail);
 
   @override
   void onResume() {
@@ -62,7 +62,7 @@ class _VariationDetailsState extends ResumableState<VariationDetails> {
       appBar: AppBar(
         title: Text("Variation Details"),
         actions: <Widget>[
-          Padding(
+        !forDetail? Padding(
             padding: const EdgeInsets.all(16),
             child: InkWell(
               onTap: (){
@@ -70,7 +70,7 @@ class _VariationDetailsState extends ResumableState<VariationDetails> {
               },
               child: Center(child: Text("Order")),
             ),
-          )
+          ):Container(),
         ],
       ),
       body: ListView(

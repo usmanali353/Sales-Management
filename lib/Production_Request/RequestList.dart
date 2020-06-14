@@ -225,11 +225,12 @@ class _RequestsList extends ResumableState<RequestList>{
                         ],
                         child: ListTile(
                           title: Text(requests[index]['ItemDescription']),
+                          isThreeLine: true,
                           subtitle: Text((() {
                             if(!requests[index]['PlannedDate'].contains("-22089564")){
-                              return 'Quantity:'+requests[index]['QuantityRequested'].toString()+'\n'+'Production Date:'+DateTime.fromMillisecondsSinceEpoch(int.parse(requests[index]['PlannedDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]+'\n'+'Status: '+requests[index]['ProductionStatus'];
+                              return 'Request Date: '+DateTime.fromMillisecondsSinceEpoch(int.parse(requests[index]['RequestedDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]+'\n'+'Quantity:'+requests[index]['QuantityRequested'].toString()+'\n'+'Production Date:'+DateTime.fromMillisecondsSinceEpoch(int.parse(requests[index]['PlannedDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]+'\n'+'Status: '+requests[index]['ProductionStatus'];
                             }else
-                            return 'Quantity:'+requests[index]['QuantityRequested'].toString()+'\n'+'Status: '+requests[index]['ProductionStatus'];
+                            return 'Request Date: '+DateTime.fromMillisecondsSinceEpoch(int.parse(requests[index]['RequestedDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]+'\n'+'Quantity:'+requests[index]['QuantityRequested'].toString()+'\n'+'Status: '+requests[index]['ProductionStatus'];
                           })()),
                           leading:  Material(
                   borderRadius: BorderRadius.circular(24),

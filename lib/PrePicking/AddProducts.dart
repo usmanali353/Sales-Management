@@ -115,7 +115,7 @@ class _AddProductsState extends ResumableState<AddProducts> {
                         )
                     ),
                     onTap: (){
-                      push(context, MaterialPageRoute(builder: (context)=>ProductVariations(filteredList[index]['ItemNumber'],deliveryDate, driverName, truckNumber,address,mobileNo)));
+                      push(context, MaterialPageRoute(builder: (context)=>ProductVariations(filteredList[index]['ItemNumber'],deliveryDate, driverName, truckNumber,address,mobileNo,false)));
                     },
                   ),
                   Divider(),

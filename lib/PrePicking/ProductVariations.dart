@@ -8,20 +8,20 @@ import 'package:salesmanagement/Network_Operations.dart';
 import 'package:salesmanagement/PrePicking/VariationsDetails.dart';
 import '../Utils.dart';
 class ProductVariations extends StatefulWidget {
-  var itemNumber,deliveryDate, driverName, truckNumber,address,mobileNo;
+  var itemNumber,deliveryDate, driverName, truckNumber,address,mobileNo,forDetail;
 
-  ProductVariations(this.itemNumber,this.deliveryDate, this.driverName, this.truckNumber,this.address,this.mobileNo);
+  ProductVariations(this.itemNumber,this.deliveryDate, this.driverName, this.truckNumber,this.address,this.mobileNo,this.forDetail);
 
   @override
-  _ProductVariationsState createState() => _ProductVariationsState(itemNumber,deliveryDate, driverName, truckNumber,address,mobileNo);
+  _ProductVariationsState createState() => _ProductVariationsState(itemNumber,deliveryDate, driverName, truckNumber,address,mobileNo,forDetail);
 }
 
 class _ProductVariationsState extends ResumableState<ProductVariations> {
-  var itemNumber,total,totalProductionRequests=0,deliveryDate, driverName, truckNumber,address,mobileNo;
+  var itemNumber,total,totalProductionRequests=0,deliveryDate, driverName, truckNumber,address,mobileNo,forDetail;
   var isVisible=false;
   var variations;
   TextEditingController quantity;
-  _ProductVariationsState(this.itemNumber,this.deliveryDate, this.driverName, this.truckNumber,this.address,this.mobileNo);
+  _ProductVariationsState(this.itemNumber,this.deliveryDate, this.driverName, this.truckNumber,this.address,this.mobileNo,this.forDetail);
 
   @override
   void onResume() {
@@ -86,7 +86,7 @@ class _ProductVariationsState extends ResumableState<ProductVariations> {
                 )
                 ),
                       onTap: (){
-                      push(context, MaterialPageRoute(builder: (context)=>VariationDetails(variations[index])));
+                      push(context, MaterialPageRoute(builder: (context)=>VariationDetails(variations[index],forDetail)));
                       },
                     )
                   ],
