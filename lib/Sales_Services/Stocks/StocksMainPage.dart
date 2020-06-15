@@ -11,7 +11,7 @@ class _StocksMainPageState extends State<StocksMainPage> {
      return DefaultTabController(
         length: 3,
         child: Scaffold(
-          appBar: AppBar(title: Text("Customer Stocks"),
+          appBar: AppBar(title: Text("Products"),
             bottom: TabBar(
               tabs: <Widget>[
                 Tab(text: "Available Stock",),

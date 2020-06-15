@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:need_resume/need_resume.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:salesmanagement/Sales_Services/Invoices/InvoicesMainPage.dart';
 import 'package:salesmanagement/Sales_Services/Stocks/StocksMainPage.dart';
 import 'package:salesmanagement/SettingPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,7 +31,7 @@ class newdashboard extends StatefulWidget{
 }
 
 class _newdashboard extends ResumableState<newdashboard>{
-  var todayDeliveryCardVisible=false,weeklyDeliveryCardVisible=false,prodRequestCardVisible=false,financeVisible=false,totalOlderStock=0.0,olderstockVisible=false,currentTheme=false;
+  var todayDeliveryCardVisible=false,weeklyDeliveryCardVisible=false,prodRequestCardVisible=false,financeVisible=false,totalOlderStock=0.0,olderstockVisible=false,currentTheme=true;
   var caseNumbers,caseCardsVisible=false,productionRequestCardVisible=false,productionRequestNumbers,deliveryCardVisible=false,deliveryNumber,weeklyDelivery,financeCardVisible=false,finance,totalOnhandStock=0.0,onhandVisible=false;
   List<double> onHandValues=[];
 
@@ -144,6 +145,7 @@ class _newdashboard extends ResumableState<newdashboard>{
         });
         SharedPreferences.getInstance().then((prefs){
           setState(() {
+            if(prefs.getBool("LightMode")!=null)
             this.currentTheme=prefs.getBool("LightMode");
           });
         });
@@ -200,7 +202,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                     title: Text("Finance"),
                     leading: Icon(FontAwesomeIcons.dollarSign),
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoicesList("LC0001")));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoiceMainPage()));
                     },
                   ),
                   ListTile(
@@ -804,15 +806,19 @@ class _newdashboard extends ResumableState<newdashboard>{
               visible: financeCardVisible,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Card(
-                  elevation: 10,
-                  child: Container(
-                    //margin: EdgeInsets.only(left: 12.5,right: 12.5),
-                    height: 130,
-                    width: 20,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Color(0xFF004c4c),
+                child: InkWell(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoiceMainPage()));
+                  },
+                  child: Card(
+                    elevation: 10,
+                    child: Container(
+                      //margin: EdgeInsets.only(left: 12.5,right: 12.5),
+                      height: 130,
+                      width: 20,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Color(0xFF004c4c),
 //                    boxShadow: [
 //                      BoxShadow(
 //                        color: Colors.grey.shade400,
@@ -827,19 +833,19 @@ class _newdashboard extends ResumableState<newdashboard>{
 //                        //spreadRadius: 1.0
 //                      ),
 //                    ]
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.only(left: 12),
-                        child: Text("Customer Balance Amount",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white
-                                ),
-                            ),
                       ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(left: 12),
+                          child: Text("Customer Balance Amount",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white
+                                  ),
+                              ),
+                        ),
 //                    Container(
 //                      margin: EdgeInsets.only(left: 10),
 //                      color: Color(0xFF004c4c),
@@ -851,32 +857,33 @@ class _newdashboard extends ResumableState<newdashboard>{
 //                          ),
 //                      ),
 //                    ),
-                        Container(
-                          //margin: EdgeInsets.only(left: 10, top: 5,bottom: 5),
-                          height: 30,
-                          width: 100,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(15),
-                              bottomLeft: Radius.circular(15)
+                          Container(
+                            //margin: EdgeInsets.only(left: 10, top: 5,bottom: 5),
+                            height: 30,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(15),
+                                bottomLeft: Radius.circular(15)
+                              ),
+                              color: Colors.grey.shade100,
                             ),
-                            color: Colors.grey.shade100,
-                          ),
-                          child: Container(margin: EdgeInsets.only(left: 10,top: 5),
-                            child: Text( finance??'',
-                              style: TextStyle(
-                              color:Colors.teal.shade800,
-                              //Color(0xFF004c4c),
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold
-                            ),
+                            child: Container(margin: EdgeInsets.only(left: 10,top: 5),
+                              child: Text( finance??'',
+                                style: TextStyle(
+                                color:Colors.teal.shade800,
+                                //Color(0xFF004c4c),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold
+                              ),
 
+                              ),
                             ),
-                          ),
-                        )
-                      ],
+                          )
+                        ],
+                      ),
+
                     ),
-
                   ),
                 ),
               ),
@@ -903,13 +910,17 @@ class _newdashboard extends ResumableState<newdashboard>{
               children: <Widget>[
                 Visibility(
                   visible: onhandVisible,
-                  child: Card(
-                    elevation: 10,
-                    child: Container(
-                      height: 130,
-                      width: 185,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
+                  child: InkWell(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>StocksMainPage()));
+                    },
+                    child: Card(
+                      elevation: 10,
+                      child: Container(
+                        height: 130,
+                        width: 185,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
 
 //                      boxShadow: [
 //                        BoxShadow(
@@ -925,29 +936,29 @@ class _newdashboard extends ResumableState<newdashboard>{
 //                          //spreadRadius: 1.0
 //                        ),
 //                      ]
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Container(
-                            margin: EdgeInsets.only(left: 12),
-                            child: Text("On-Hand\nStock\n(m\u00B2)",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(
+                              margin: EdgeInsets.only(left: 12),
+                              child: Text("On-Hand\nStock\n(m\u00B2)",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold
+                                ),
                               ),
                             ),
-                          ),
-                          Container(
-                            //margin: EdgeInsets.only(left: 10, top: 5,bottom: 5),
-                            height: 30,
-                            width: 95,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(15),
-                                    bottomLeft: Radius.circular(15)
-                                ),
+                            Container(
+                              //margin: EdgeInsets.only(left: 10, top: 5,bottom: 5),
+                              height: 30,
+                              width: 95,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(15),
+                                      bottomLeft: Radius.circular(15)
+                                  ),
 
-                                color: currentTheme?Color(0xFF004c4c):Colors.grey.shade200,
+                                  color: currentTheme?Color(0xFF004c4c):Colors.grey.shade200,
 //                            boxShadow: [
 //                              BoxShadow(
 //                                color: Colors.grey.shade400,
@@ -962,34 +973,39 @@ class _newdashboard extends ResumableState<newdashboard>{
 //                                //spreadRadius: 1.0
 //                              ),
 //                            ]
-                            ),
-                            child: Container(margin: EdgeInsets.only(left: 10,top: 5),
-                              child: Text(totalOnhandStock.toString()??'0',
-                                style: TextStyle(
-                                    color:!currentTheme?Color(0xFF004c4c):Colors.white,
-                                    //Color(0xFF004c4c),
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold
-                                ),
-
                               ),
-                            ),
-                          )
-                        ],
-                      ),
+                              child: Container(margin: EdgeInsets.only(left: 10,top: 5),
+                                child: Text(totalOnhandStock.toString()??'0',
+                                  style: TextStyle(
+                                      color:!currentTheme?Color(0xFF004c4c):Colors.white,
+                                      //Color(0xFF004c4c),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold
+                                  ),
 
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+
+                      ),
                     ),
                   ),
                 ),
                 Visibility(
                   visible: olderstockVisible,
-                  child: Card(
-                    elevation: 10,
-                    child: Container(
-                      height: 130,
-                      width: 185,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
+                  child: InkWell(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoiceMainPage()));
+                    },
+                    child: Card(
+                      elevation: 10,
+                      child: Container(
+                        height: 130,
+                        width: 185,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
 //                      boxShadow: [
 //                        BoxShadow(
 //                          color: Colors.grey.shade400,
@@ -1004,32 +1020,32 @@ class _newdashboard extends ResumableState<newdashboard>{
 //                          //spreadRadius: 1.0
 //                        ),
 //                      ]
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          //OnHand Stock
-                          Container(
-                            margin: EdgeInsets.only(left: 12),
-                            child: Text("Old Stock\n(m\u00B2)",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            //OnHand Stock
+                            Container(
+                              margin: EdgeInsets.only(left: 12),
+                              child: Text("Old Stock\n(m\u00B2)",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold
+                                ),
                               ),
                             ),
-                          ),
-                          //Older Stock
-                          Container(
-                            //margin: EdgeInsets.only(left: 10, top: 5,bottom: 5),
+                            //Older Stock
+                            Container(
+                              //margin: EdgeInsets.only(left: 10, top: 5,bottom: 5),
 
-                            height: 30,
-                            width: 95,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(15),
-                                    bottomLeft: Radius.circular(15)
-                                ),
+                              height: 30,
+                              width: 95,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(15),
+                                      bottomLeft: Radius.circular(15)
+                                  ),
 
-                                color: currentTheme?Color(0xFF004c4c):Colors.grey.shade200,
+                                  color: currentTheme?Color(0xFF004c4c):Colors.grey.shade200,
 //                              boxShadow: [
 //                                BoxShadow(
 //                                  color: Colors.grey.shade400,
@@ -1044,20 +1060,21 @@ class _newdashboard extends ResumableState<newdashboard>{
 //                                  //spreadRadius: 1.0
 //                                ),
 //                              ]
-                            ),
-                            child: Container(margin: EdgeInsets.only(left: 10,top: 5),
-                              child: Text(totalOlderStock!=null?totalOlderStock.toString():'0.0',
-                                style: TextStyle(
-                                    color:!currentTheme?Color(0xFF004c4c):Colors.white,
-                                    //Color(0xFF004c4c),
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold
-                                ),
+                              ),
+                              child: Container(margin: EdgeInsets.only(left: 10,top: 5),
+                                child: Text(totalOlderStock!=null?totalOlderStock.toString():'0.0',
+                                  style: TextStyle(
+                                      color:!currentTheme?Color(0xFF004c4c):Colors.white,
+                                      //Color(0xFF004c4c),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold
+                                  ),
 
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),

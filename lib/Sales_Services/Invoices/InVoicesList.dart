@@ -44,9 +44,6 @@ class _InvoicesList extends State<InvoicesList>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Invoices"),
-      ),
       body: Visibility(
         visible: isVisible,
         child: Padding(
