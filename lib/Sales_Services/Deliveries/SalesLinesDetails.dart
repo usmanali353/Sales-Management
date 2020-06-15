@@ -40,7 +40,7 @@ class _SalesLinesDetailsState extends State<SalesLinesDetails> {
                 children: <Widget>[
                   ListTile(
                     title: Text("Item Id"),
-                    subtitle: Text(salesLineData['itemIdField']),
+                    trailing: Text(salesLineData['itemIdField']),
                   ),
                   Divider(),
                   ListTile(
@@ -50,17 +50,17 @@ class _SalesLinesDetailsState extends State<SalesLinesDetails> {
                   Divider(),
                   ListTile(
                     title: Text("Item Size"),
-                    subtitle: Text(salesLineData['sizeField']),
+                    trailing: Text(salesLineData['sizeField']),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Item Shade"),
-                    subtitle: Text(salesLineData['shadeField']),
+                    trailing: Text(salesLineData['shadeField']),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Item Grade"),
-                    subtitle: Text(salesLineData['gradeField']),
+                    trailing: Text(salesLineData['gradeField']),
                   ),
                   Divider(),
                 ],
@@ -85,17 +85,17 @@ class _SalesLinesDetailsState extends State<SalesLinesDetails> {
                 children: <Widget>[
                   ListTile(
                     title: Text("Boxes #"),
-                    subtitle: Text(salesLineData['salesQtyBoxField'].toString()),
+                    trailing: Text(salesLineData['salesQtyBoxField'].toString()),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Pallet #"),
-                    subtitle: Text(salesLineData['salesQtyPalletField']!=null?salesLineData['salesQtyPalletField'].toString():''),
+                    trailing: Text(salesLineData['salesQtyPalletField']!=null?salesLineData['salesQtyPalletField'].toString():''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Quantity in SQM"),
-                    subtitle: Text(salesLineData['salesQtySQMField'].toString()),
+                    trailing: Text(salesLineData['salesQtySQMField'].toString()),
                   ),
                   Divider(),
                 ],
