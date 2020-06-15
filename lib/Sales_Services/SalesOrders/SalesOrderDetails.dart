@@ -53,28 +53,18 @@ class _salesOrdersDetails extends State<salesOrdersDetails>{
                  ),
                  Divider(),
                  ListTile(
-                   title: Text("Order id"),
-                   subtitle: Text(order_data['salesIdField']!=null?order_data['salesIdField']:''),
-                 ),
-                 Divider(),
-                 ListTile(
-                   title: Text("Delivery Date"),
-                   subtitle: Text(order_data['deliveryDateField']!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(order_data['deliveryDateField'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
-                 ),
-                 Divider(),
-                 ListTile(
                    title: Text("Delivery Name"),
                    subtitle: Text(order_data['deliveryNameField']!=null?order_data['deliveryNameField']:''),
                  ),
                  Divider(),
                  ListTile(
                    title: Text("Delivery Mode"),
-                   subtitle: Text(order_data['deliveryModeField']!=null?order_data['deliveryModeField']:''),
+                   trailing: Text(order_data['deliveryModeField']!=null?order_data['deliveryModeField']:''),
                  ),
                  Divider(),
                  ListTile(
                    title: Text("Sales Status"),
-                   subtitle: Text(order_data['salesStatusField']!=null?get_order_status(order_data['salesStatusField']):''),
+                   trailing: Text(order_data['salesStatusField']!=null?get_order_status(order_data['salesStatusField']):''),
                  ),
                  Divider(),
                ],

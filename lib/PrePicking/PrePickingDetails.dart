@@ -55,17 +55,17 @@ class _PrePickingDetailsState extends State<PrePickingDetails> {
                 children: <Widget>[
                   ListTile(
                     title: Text("Order Id"),
-                    subtitle: Text(prePickingData['PickingId']),
+                    trailing: Text(prePickingData['PickingId']),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Address"),
-                    subtitle: Text(prePickingData['Address']),
+                    trailing: Text(prePickingData['Address']),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Delivery Date"),
-                    subtitle: Text(DateTime.fromMillisecondsSinceEpoch(
+                    trailing: Text(DateTime.fromMillisecondsSinceEpoch(
                             int.parse(prePickingData['DeliveryDate']
                                 .replaceAll('/Date(', '')
                                 .replaceAll(')/', '')
@@ -75,7 +75,7 @@ class _PrePickingDetailsState extends State<PrePickingDetails> {
                   ),
                   ListTile(
                     title: Text("Status"),
-                    subtitle: Text(getStatus(prePickingData['Status'])),
+                    trailing: Text(getStatus(prePickingData['Status'])),
                   ),
                   Divider(),
                 ],
@@ -100,17 +100,17 @@ class _PrePickingDetailsState extends State<PrePickingDetails> {
                 children: <Widget>[
                   ListTile(
                     title: Text("Driver Name"),
-                    subtitle: Text(prePickingData['DriverName']),
+                    trailing: Text(prePickingData['DriverName']),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Mobile No"),
-                    subtitle: Text(prePickingData['MobileNum']),
+                    trailing: Text(prePickingData['MobileNum']),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Truck Plate"),
-                    subtitle: Text(prePickingData['TruckPlate']),
+                    trailing: Text(prePickingData['TruckPlate']),
                   ),
                   Divider()
                 ],

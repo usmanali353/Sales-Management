@@ -34,12 +34,12 @@ class _CaseDetail extends State<CaseDetail>{
                 children: <Widget>[
                   ListTile(
                     title: Text("Case Id"),
-                    subtitle: Text(caseData['CaseNum']!=null?caseData['CaseNum']:''),
+                    trailing: Text(caseData['CaseNum']!=null?caseData['CaseNum']:''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Case type"),
-                    subtitle: Text(caseData['CategoryTypeId']!=null?getCaseType(caseData['CategoryTypeId']):''),
+                    trailing: Text(caseData['CategoryTypeId']!=null?getCaseType(caseData['CategoryTypeId']):''),
                   ),
                   Divider(),
                   ListTile(
@@ -49,12 +49,12 @@ class _CaseDetail extends State<CaseDetail>{
                   Divider(),
                   ListTile(
                     title: Text("Case Priority"),
-                    subtitle: Text(caseData['Priority']!=null?caseData['Priority']:''),
+                    trailing: Text(caseData['Priority']!=null?caseData['Priority']:''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Resolution Type"),
-                    subtitle: Text(caseData['ResolutionType']!=null?getResolutionType(caseData['ResolutionType']):''),
+                    trailing: Text(caseData['ResolutionType']!=null?getResolutionType(caseData['ResolutionType']):''),
                   ),
                   Divider(),
                 ],

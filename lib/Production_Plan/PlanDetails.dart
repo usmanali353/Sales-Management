@@ -64,17 +64,17 @@ class _PlanDetailState extends State<PlanDetail> {
                 children: <Widget>[
                   ListTile(
                     title: Text("Plan Month"),
-                    subtitle: Text(planData['WhichYear']!=null&&planData['MonthOfYear']!=null?planData['MonthOfYear']+' '+planData['WhichYear'].toString():''),
+                    trailing: Text(planData['WhichYear']!=null&&planData['MonthOfYear']!=null?planData['MonthOfYear']+' '+planData['WhichYear'].toString():''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Size Requested"),
-                    subtitle: Text(planData['ItemSize']!=null?planData['ItemSize']:''),
+                    trailing: Text(planData['ItemSize']!=null?planData['ItemSize']:''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Requested Quantity"),
-                    subtitle: Text(planData['EstimatedQuantity']!=null?planData['EstimatedQuantity'].toString():''),
+                    trailing: Text(planData['EstimatedQuantity']!=null?planData['EstimatedQuantity'].toString():''),
                   ),
                   Divider(),
                 ],

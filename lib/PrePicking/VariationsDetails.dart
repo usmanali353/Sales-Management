@@ -94,7 +94,7 @@ class _VariationDetailsState extends ResumableState<VariationDetails> {
                   children: <Widget>[
                     ListTile(
                       title: Text("Item Number"),
-                      subtitle: Text(variationData['ItemNumber']),
+                      trailing: Text(variationData['ItemNumber']),
                     ),
                     Divider(),
                     ListTile(
@@ -104,22 +104,22 @@ class _VariationDetailsState extends ResumableState<VariationDetails> {
                     Divider(),
                     ListTile(
                       title: Text("Item Color"),
-                      subtitle: Text(variationData['ItemColor']),
+                      trailing: Text(variationData['ItemColor']),
                     ),
                     Divider(),
                     ListTile(
                       title: Text("Item Size"),
-                      subtitle: Text(variationData['ItemSize']),
+                      trailing: Text(variationData['ItemSize']),
                     ),
                     Divider(),
                     ListTile(
                       title: Text("Item Grade"),
-                      subtitle: Text(variationData['ItemGrade']),
+                      trailing: Text(variationData['ItemGrade']),
                     ),
                     Divider(),
                     ListTile(
                       title: Text("Inventory Dimension"),
-                      subtitle: Text(variationData['InventoryDimension']),
+                      trailing: Text(variationData['InventoryDimension']),
                     ),
                     Divider(),
                   ],
@@ -144,22 +144,22 @@ class _VariationDetailsState extends ResumableState<VariationDetails> {
                   children: <Widget>[
                     ListTile(
                       title: Text("OnHand Stock"),
-                      subtitle: Text(variationData['Onhand'].toString()),
+                      trailing: Text(variationData['Onhand'].toString()),
                     ),
                     Divider(),
                     ListTile(
                       title: Text("Undelivered Stock"),
-                      subtitle: Text(variationData['OnOrdered'].toString()),
+                      trailing: Text(variationData['OnOrdered'].toString()),
                     ),
                     Divider(),
                     ListTile(
                       title: Text("Pending Production Requests"),
-                      subtitle: Text(pendingRequests!=null?pendingRequests.toString():'0'),
+                      trailing: Text(pendingRequests!=null?pendingRequests.toString():'0'),
                     ),
                     Divider(),
                     ListTile(
                       title: Text("Available Stock"),
-                      subtitle: Text(variationData['Onhand']-variationData['OnOrdered']>1?(variationData['Onhand']-variationData['OnOrdered']).toString():'0'),
+                      trailing: Text(variationData['Onhand']-variationData['OnOrdered']>1?(variationData['Onhand']-variationData['OnOrdered']).toString():'0'),
                     ),
                     Divider(),
                   ],

@@ -39,7 +39,7 @@ class _ScheduleDetails extends State<ScheduleDetails>{
                 children: <Widget>[
                   ListTile(
                     title: Text("Item Id"),
-                    subtitle: Text(scheduleData['ItemNumber']!=null?scheduleData['ItemNumber']:''),
+                    trailing: Text(scheduleData['ItemNumber']!=null?scheduleData['ItemNumber']:''),
                   ),
                   Divider(),
                   ListTile(
@@ -49,17 +49,17 @@ class _ScheduleDetails extends State<ScheduleDetails>{
                   Divider(),
                   ListTile(
                     title: Text("Glazing"),
-                    subtitle: Text(scheduleData['GlazingType']!=null?scheduleData['GlazingType']:''),
+                    trailing: Text(scheduleData['GlazingType']!=null?scheduleData['GlazingType']:''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Classification"),
-                    subtitle: Text(scheduleData['Classification']!=null?scheduleData['Classification']:''),
+                    trailing: Text(scheduleData['Classification']!=null?scheduleData['Classification']:''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Packaging type"),
-                    subtitle: Text(scheduleData['PackageName']!=null?scheduleData['PackageName']:''),
+                    trailing: Text(scheduleData['PackageName']!=null?scheduleData['PackageName']:''),
                   ),
                   Divider(),
                 ],
@@ -81,32 +81,32 @@ class _ScheduleDetails extends State<ScheduleDetails>{
                 children: <Widget>[
                   ListTile(
                     title: Text("Planned Production Date"),
-                    subtitle: Text(scheduleData['PlannedProdDate']!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(scheduleData['PlannedProdDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
+                    trailing: Text(scheduleData['PlannedProdDate']!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(scheduleData['PlannedProdDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Production Line Name"),
-                    subtitle: Text(scheduleData['ProductionLine']!=null?scheduleData['ProductionLine']:''),
+                    trailing: Text(scheduleData['ProductionLine']!=null?scheduleData['ProductionLine']:''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Production Start Date"),
-                    subtitle: Text(!scheduleData['ActualProdDate'].contains('-22089564')?DateTime.fromMillisecondsSinceEpoch(int.parse(scheduleData['ActualProdDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
+                    trailing: Text(!scheduleData['ActualProdDate'].contains('-22089564')?DateTime.fromMillisecondsSinceEpoch(int.parse(scheduleData['ActualProdDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Days to Complete Production"),
-                    subtitle: Text(scheduleData['ProductionDays']!=null?scheduleData['ProductionDays'].toString():''),
+                    trailing: Text(scheduleData['ProductionDays']!=null?scheduleData['ProductionDays'].toString():''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Production Number"),
-                    subtitle: Text(scheduleData['PPANumber']!=null?scheduleData['PPANumber']:''),
+                    trailing: Text(scheduleData['PPANumber']!=null?scheduleData['PPANumber']:''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Production Status"),
-                    subtitle: Text(scheduleData['ScheduleStatus']!=null?scheduleData['ScheduleStatus']:''),
+                    trailing: Text(scheduleData['ScheduleStatus']!=null?scheduleData['ScheduleStatus']:''),
                   ),
                   Divider(),
                 ],
@@ -128,12 +128,12 @@ class _ScheduleDetails extends State<ScheduleDetails>{
                 children: <Widget>[
                   ListTile(
                     title: Text("Production Quantity Requested"),
-                    subtitle: Text(scheduleData['QuantityRequested']!=null?scheduleData['QuantityRequested'].toString():''),
+                    trailing: Text(scheduleData['QuantityRequested']!=null?scheduleData['QuantityRequested'].toString():''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Actual Quantity Produced"),
-                    subtitle: Text(scheduleData['ActualProductionQuantity']!=null?scheduleData['ActualProductionQuantity'].toString():''),
+                    trailing: Text(scheduleData['ActualProductionQuantity']!=null?scheduleData['ActualProductionQuantity'].toString():''),
                   ),
                   Divider(),
                 ],

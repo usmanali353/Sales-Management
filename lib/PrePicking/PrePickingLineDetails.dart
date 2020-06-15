@@ -30,32 +30,32 @@ class _PickingLinesDetailsState extends State<PickingLinesDetails> {
                 children: <Widget>[
                   ListTile(
                     title: Text("Item Number"),
-                    subtitle: Text(prePickingData['ItemNumber']),
+                    trailing: Text(prePickingData['ItemNumber']),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Ordered Quantity"),
-                    subtitle: Text(prePickingData['SalesQuantity'].toString()),
+                    trailing: Text(prePickingData['SalesQuantity'].toString()),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Item Size"),
-                    subtitle: Text(prePickingData['SizeItem']!=null?prePickingData['SizeItem']:''),
+                    trailing: Text(prePickingData['SizeItem']!=null?prePickingData['SizeItem']:''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Inventory Dimension"),
-                    subtitle: Text(prePickingData['InventoryDimension']!=null?prePickingData['InventoryDimension']:''),
+                    trailing: Text(prePickingData['InventoryDimension']!=null?prePickingData['InventoryDimension']:''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Grade"),
-                    subtitle: Text(prePickingData['Grade']!=null?prePickingData['Grade']:''),
+                    trailing: Text(prePickingData['Grade']!=null?prePickingData['Grade']:''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Item Color"),
-                    subtitle: Text(prePickingData['ColorItem']!=null?prePickingData['ColorItem']:''),
+                    trailing: Text(prePickingData['ColorItem']!=null?prePickingData['ColorItem']:''),
                   ),
                   Divider(),
                 ],

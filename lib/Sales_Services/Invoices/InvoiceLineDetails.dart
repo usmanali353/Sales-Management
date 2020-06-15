@@ -46,7 +46,7 @@ class _invoiceLineDetails extends State<invoiceLineDetails>{
                 children: <Widget>[
                   ListTile(
                     title: Text("Item Id"),
-                    subtitle: Text(InvoiceData['ItemNumber']),
+                    trailing: Text(InvoiceData['ItemNumber']),
                   ),
                   Divider(),
                   ListTile(
@@ -76,22 +76,22 @@ class _invoiceLineDetails extends State<invoiceLineDetails>{
                 children: <Widget>[
                   ListTile(
                     title: Text("Order Id"),
-                    subtitle: Text(InvoiceData['SalesOrderId']),
+                    trailing: Text(InvoiceData['SalesOrderId']),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Quantity"),
-                    subtitle: Text(InvoiceData['QtyinSQM'].toString()),
+                    trailing: Text(InvoiceData['QtyinSQM'].toString()),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Pallets #"),
-                    subtitle: Text(InvoiceData['NumOfPallets'].toString()),
+                    trailing: Text(InvoiceData['NumOfPallets'].toString()),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Boxes #"),
-                    subtitle: Text(InvoiceData['NumOfBoxes'].toString()),
+                    trailing: Text(InvoiceData['NumOfBoxes'].toString()),
                   ),
                   Divider(),
                 ],
@@ -116,27 +116,27 @@ class _invoiceLineDetails extends State<invoiceLineDetails>{
                 children: <Widget>[
                   ListTile(
                     title: Text("Invoice Id"),
-                    subtitle: Text(InvoiceData['InvoiceId']),
+                    trailing: Text(InvoiceData['InvoiceId']),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Unit Price"),
-                    subtitle: Text(InvoiceData['SalesUnitPrice'].toString()),
+                    trailing: Text(InvoiceData['SalesUnitPrice'].toString()),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Amount Without Tax"),
-                    subtitle: Text(InvoiceData['LineAmount'].toString()),
+                    trailing: Text(InvoiceData['LineAmount'].toString()),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Sales Tax"),
-                    subtitle: Text(InvoiceData['TaxAmount'].toString()),
+                    trailing: Text(InvoiceData['TaxAmount'].toString()),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Total Amount"),
-                    subtitle: Text(InvoiceData['TotalAmount'].toString()),
+                    trailing: Text(InvoiceData['TotalAmount'].toString()),
                   ),
                   Divider()
                 ],

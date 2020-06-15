@@ -93,7 +93,7 @@ class _RequestDetails extends State<RequestDetails>{
                 children: <Widget>[
                   ListTile(
                     title: Text("Item Number"),
-                    subtitle: Text(requestData['ItemNumber']!=null?requestData['ItemNumber']:''),
+                    trailing: Text(requestData['ItemNumber']!=null?requestData['ItemNumber']:''),
                   ),
                   Divider(),
                   ListTile(
@@ -103,12 +103,12 @@ class _RequestDetails extends State<RequestDetails>{
                   Divider(),
                   ListTile(
                     title: Text("Item Size"),
-                    subtitle: Text(requestData['ItemSize']!=null?requestData['ItemSize']:''),
+                    trailing: Text(requestData['ItemSize']!=null?requestData['ItemSize']:''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Customer Item Code"),
-                    subtitle: Text(requestData['CustomerItemCode']!=null?requestData['CustomerItemCode']:''),
+                    trailing: Text(requestData['CustomerItemCode']!=null?requestData['CustomerItemCode']:''),
                   ),
                   Divider(),
                 ],
@@ -130,37 +130,37 @@ class _RequestDetails extends State<RequestDetails>{
                 children: <Widget>[
                   ListTile(
                     title: Text("Request Id"),
-                    subtitle: Text(requestData['ProductionRequestId']!=null?requestData['ProductionRequestId']:''),
+                    trailing: Text(requestData['ProductionRequestId']!=null?requestData['ProductionRequestId']:''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Request Date"),
-                    subtitle: Text(requestData['RequestedDate']!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(requestData['RequestedDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
+                    trailing: Text(requestData['RequestedDate']!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(requestData['RequestedDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Quantity Requested"),
-                    subtitle: Text(requestData['QuantityRequested'].toString()),
+                    trailing: Text(requestData['QuantityRequested'].toString()),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Approval Date"),
-                    subtitle: Text(!requestData['ApprovalDate'].contains("-22089564")?DateTime.fromMillisecondsSinceEpoch(int.parse(requestData['ApprovalDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
+                    trailing: Text(!requestData['ApprovalDate'].contains("-22089564")?DateTime.fromMillisecondsSinceEpoch(int.parse(requestData['ApprovalDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Planned Production Date"),
-                    subtitle: Text(!requestData['PlannedDate'].contains("-22089564")?DateTime.fromMillisecondsSinceEpoch(int.parse(requestData['PlannedDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
+                    trailing: Text(!requestData['PlannedDate'].contains("-22089564")?DateTime.fromMillisecondsSinceEpoch(int.parse(requestData['PlannedDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Production Number"),
-                    subtitle: Text(requestData['PPANumber']!=null?requestData['PPANumber']:''),
+                    trailing: Text(requestData['PPANumber']!=null?requestData['PPANumber']:''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Request Status"),
-                    subtitle: Text(requestData['ProductionStatus']!=null?requestData['ProductionStatus']:''),
+                    trailing: Text(requestData['ProductionStatus']!=null?requestData['ProductionStatus']:''),
                   ),
                   Divider(),
                 ],
@@ -182,17 +182,17 @@ class _RequestDetails extends State<RequestDetails>{
                 children: <Widget>[
                   ListTile(
                     title: Text("G1 Grade Quantity Produced"),
-                    subtitle: Text(requestData['QuantityG1Produced'].toString()),
+                    trailing: Text(requestData['QuantityG1Produced'].toString()),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("MS Grade Quantity Produced"),
-                    subtitle: Text(requestData['QuantityMSProduced'].toString()),
+                    trailing: Text(requestData['QuantityMSProduced'].toString()),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Total Quantity Produced"),
-                    subtitle: Text(requestData['QuantityProduced'].toString()),
+                    trailing: Text(requestData['QuantityProduced'].toString()),
                   ),
                   Divider(),
                 ],
