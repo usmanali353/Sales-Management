@@ -283,7 +283,6 @@ class _newdashboard extends ResumableState<newdashboard>{
                       elevation: 10,
                       child: Container(
                         height: 130,
-                        width: MediaQuery.of(context).size.width/2.2,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
                           color: Color(0xFF004c4c),
