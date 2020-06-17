@@ -41,7 +41,7 @@ class _PrePickingListState extends ResumableState<PrePickingList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("PrePicking"),
+        title: Text("Stock Delivery"),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){

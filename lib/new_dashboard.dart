@@ -256,7 +256,8 @@ class _newdashboard extends ResumableState<newdashboard>{
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-              Container(margin: EdgeInsets.only(left: 17),
+              Container(
+                  margin: EdgeInsets.only(left: 17),
                   child: Text("Deliveries", style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -282,7 +283,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                       elevation: 10,
                       child: Container(
                         height: 130,
-                        width: 185,
+                        width: MediaQuery.of(context).size.width/2.2,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
                           color: Color(0xFF004c4c),
@@ -305,7 +306,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Container(
-                              margin: EdgeInsets.only(left: 12),
+                              margin: EdgeInsets.only(left:12,right: 12),
                               child: Text("Today's\n(m\u00B2)",
                                 style: TextStyle(
                                     color: Colors.white,
@@ -351,7 +352,8 @@ class _newdashboard extends ResumableState<newdashboard>{
                       elevation: 10,
                       child: Container(
                         height: 130,
-                        width: 185,
+
+                        width: MediaQuery.of(context).size.width/2.5,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
                           color: Color(0xFF004c4c),
@@ -374,7 +376,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Container(
-                              margin: EdgeInsets.only(left: 12),
+                              margin: EdgeInsets.only(left: 12,right: 16),
                               child: Text(DateFormat.MMMM().format(DateTime.now()).toString()+'\n(m\u00B2)',
                                 style: TextStyle(
                                     color: Colors.white,
@@ -426,13 +428,13 @@ class _newdashboard extends ResumableState<newdashboard>{
                   Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList(null,null)));
                 },
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 8.0,right:8.0),
+                  padding: const EdgeInsets.only(left: 14.0,right:14),
                   child: Card(
                     elevation: 10,
                     child: Container(
                       // margin: EdgeInsets.only(left: 12.5,right: 12.5),
                       height: 130,
-                      width: 20,
+                      width: MediaQuery.of(context).size.width/0.9,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
 //                        boxShadow: [
@@ -997,7 +999,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                   visible: olderstockVisible,
                   child: InkWell(
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoiceMainPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>StocksMainPage()));
                     },
                     child: Card(
                       elevation: 10,
