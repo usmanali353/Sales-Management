@@ -25,47 +25,52 @@ class _StockItemDetail extends State<StockItemDetail>{
 
     return Scaffold(
       appBar: AppBar(title: Text("Stock Item Detail"),),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Card(
-          elevation: 10,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-          child: ListView(
-            children: <Widget>[
-              ListTile(
-                title: Text("Item Name"),
-                subtitle: Text(itemData['ItemDescription']!=null?itemData['ItemDescription']:''),
+      body: ListView(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Card(
+              elevation: 10,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
               ),
-              Divider(),
-              ListTile(
-                title: Text("Item Number"),
-                trailing: Text(itemData['ItemNumber']!=null?itemData['ItemNumber']:''),
-              ),
-              Divider(),
-            itemData['Grade']!=null ? ListTile(
-                title: Text("Grade"),
-                trailing: Text(itemData['Grade']!=null?itemData['Grade']:''),
-              ):
-            ListTile(
-                title: Text("Total Quantity Produced"),
-               trailing: Text(itemData['QtyinSQM']!=null?itemData['QtyinSQM'].toString():''),
-              ),
-              Divider(),
-              ListTile(
-                title: Text("Remaining Quantity"),
-                trailing: Text(itemData['OnHandQty']!=null?itemData['OnHandQty'].toString():itemData['QtyAvailablePhysical'].toString()),
-              ),
-              Divider(),
-              itemData['ProductionId']!=null?
+              child: Column(
+                children: <Widget>[
+                  ListTile(
+                    title: Text("Item Name"),
+                    subtitle: Text(itemData['ItemDescription']!=null?itemData['ItemDescription']:''),
+                  ),
+                  Divider(),
+                  ListTile(
+                    title: Text("Item Number"),
+                    trailing: Text(itemData['ItemNumber']!=null?itemData['ItemNumber']:''),
+                  ),
+                  Divider(),
+                  itemData['Grade']!=null ? ListTile(
+                    title: Text("Grade"),
+                    trailing: Text(itemData['Grade']!=null?itemData['Grade']:''),
+                  ):
+                  ListTile(
+                    title: Text("Total Quantity Produced"),
+                    trailing: Text(itemData['QtyinSQM']!=null?itemData['QtyinSQM'].toString():''),
+                  ),
+                  Divider(),
+                  ListTile(
+                    title: Text("Remaining Quantity"),
+                    trailing: Text(itemData['OnHandQty']!=null?itemData['OnHandQty'].toString():itemData['QtyAvailablePhysical'].toString()),
+                  ),
+                  Divider(),
+                  itemData['ProductionId']!=null?
                   ListTile(
                     title: Text("Production Id"),
                     trailing: Text(itemData['ProductionId']!=null?itemData['ProductionId'].toString():''),
                   ):Container(),
-            ],
-          ),
-        ),
+                ],
+              ),
+            ),
+          )
+
+        ],
       ),
     );
   }
