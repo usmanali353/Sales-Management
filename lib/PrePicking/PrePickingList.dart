@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -74,8 +75,14 @@ class _PrePickingListState extends ResumableState<PrePickingList> {
                    pd.dismiss();
                    if(response!=null){
                      setState(() {
+                       if(prePicking!=null){
+                         prePicking.clear();
+                       }
                        this.prePicking=jsonDecode(response);
                        if(prePicking!=null&&prePicking.length>0) {
+                         if(filteredList!=null){
+                           filteredList.clear();
+                         }
                          this.filteredList.addAll(prePicking);
                          this.isVisible = true;
                        }
@@ -85,6 +92,12 @@ class _PrePickingListState extends ResumableState<PrePickingList> {
                }catch(e){
                 pd.dismiss();
                }
+             }else{
+               Flushbar(
+                 message: "Network not Available",
+                 backgroundColor: Colors.red,
+                 duration: Duration(seconds: 5),
+               )..show(context);
              }
           });
         },

@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:need_resume/need_resume.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:salesmanagement/Sales_Services/Invoices/InVoicesList.dart';
 import 'package:salesmanagement/Sales_Services/Invoices/InvoicesMainPage.dart';
 import 'package:salesmanagement/SettingPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -208,7 +209,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                     title: Text("Finance"),
                     leading: Icon(FontAwesomeIcons.dollarSign),
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoiceMainPage(customerId)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoicesList(customerId)));
                     },
                   ),
                   ListTile(
@@ -813,7 +814,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                 padding: const EdgeInsets.all(8.0),
                 child: InkWell(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoiceMainPage(customerId)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoicesList(customerId)));
                   },
                   child: Card(
                     elevation: 10,

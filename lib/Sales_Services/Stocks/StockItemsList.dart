@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:badges/badges.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -10,6 +11,7 @@ import 'package:salesmanagement/Model/sqlite_helper.dart';
 import 'package:salesmanagement/Network_Operations.dart';
 import 'package:salesmanagement/PrePicking/ProductVariations.dart';
 import 'package:salesmanagement/PrePicking/SelectedProductsList.dart';
+import 'package:salesmanagement/Utils.dart';
 import 'StockItemsDetails.dart';
 
 class StockItemsList extends StatefulWidget{
@@ -60,24 +62,40 @@ class _StockItemsList extends ResumableState<StockItemsList>{
         });
       }
     });
-    ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-    pd.show();
-    Network_Operations.GetCustomerOlderStock(customerId).then((response){
-      pd.dismiss();
-      if(response!=null&&response!='[]'){
-        setState(() {
-          if(items!=null){
-            items.clear();
+    Utils.check_connectivity().then((connected) {
+      if(connected){
+        ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
+        pd.show();
+        Network_Operations.GetOnhandStock(customerId).then((response){
+          pd.dismiss();
+          if(response!=null&&response!='[]'){
+            setState(() {
+              if(items!=null){
+                items.clear();
+              }
+              items=jsonDecode(response);
+              isVisible=true;
+              if(filteredList!=null){
+                filteredList.clear();
+              }
+              filteredList.addAll(items);
+              filteredList.sort((a, b) {
+                return double.parse(b['OnhandALL'].toString())
+                    .compareTo(
+                    double.parse(a['OnhandALL'].toString()));
+              });
+            });
           }
-          items=jsonDecode(response);
-          isVisible=true;
-          if(filteredList!=null){
-            filteredList.clear();
-          }
-          filteredList.addAll(items);
         });
+      }else{
+        Flushbar(
+          message: "Network not Available",
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 5),
+        )..show(context);
       }
     });
+
     super.initState();
   }
   @override
@@ -117,15 +135,15 @@ class _StockItemsList extends ResumableState<StockItemsList>{
                                 items.clear();
                               }
                               items = jsonDecode(response);
-                              items.sort((a, b) {
-                                return double.parse(b['OnhandALL'].toString())
-                                    .compareTo(
-                                    double.parse(a['OnhandALL'].toString()));
-                              });
                               if(filteredList!=null){
                                 filteredList.clear();
                               }
                                filteredList.addAll(items);
+                              filteredList.sort((a, b) {
+                                return double.parse(b['OnhandALL'].toString())
+                                    .compareTo(
+                                    double.parse(a['OnhandALL'].toString()));
+                              });
                               isVisible = true;
                             });
                           }
@@ -162,6 +180,11 @@ class _StockItemsList extends ResumableState<StockItemsList>{
                                 filteredList.clear();
                               }
                               filteredList.addAll(items);
+                              filteredList.sort((a, b) {
+                                return double.parse(b['OnhandALL'].toString())
+                                    .compareTo(
+                                    double.parse(a['OnhandALL'].toString()));
+                              });
                             });
                           }
                         });
@@ -291,6 +314,12 @@ class _StockItemsList extends ResumableState<StockItemsList>{
     setState(() {
       _isSearching = false;
       filteredList.addAll(items);
+      filteredList.sort((a, b) {
+        return double.parse(b['OnhandALL'].toString())
+            .compareTo(
+            double.parse(a['OnhandALL'].toString()));
+      });
+
     });
   }
 
@@ -342,10 +371,21 @@ class _StockItemsList extends ResumableState<StockItemsList>{
         for(int i=0;i<items.length;i++){
           if(items[i]['ItemDescription'].toLowerCase().contains(searchQuery)){
             filteredList.add(items[i]);
+            filteredList.sort((a, b) {
+              return double.parse(b['OnhandALL'].toString())
+                  .compareTo(
+                  double.parse(a['OnhandALL'].toString()));
+            });
           }
+
         }
       }else{
         filteredList.addAll(items);
+        filteredList.sort((a, b) {
+          return double.parse(b['OnhandALL'].toString())
+              .compareTo(
+              double.parse(a['OnhandALL'].toString()));
+        });
       }
 
     });

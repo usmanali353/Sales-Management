@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -26,49 +27,12 @@ class _casesList extends State<casesList>{
   static final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   String searchQuery = "Search query";
   TextEditingController _searchQuery;
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
   _casesList(this.customerId,this.caseType,this.title);
   @override
   void initState() {
     _searchQuery=TextEditingController();
-    Utils.check_connectivity().then((connected){
-      if(connected){
-        ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-        pd.show();
-        Network_Operations.FindCustomerCases(customerId).then((response){
-          pd.hide();
-          if(response!=null&&response!='[]'){
-            setState(() {
-              isVisible=true;
-              caseListAll=jsonDecode(response);
-              if(caseType=="Opened"){
-                for(int i=0;i<caseListAll.length;i++){
-                  print(caseListAll[i]['Status']);
-                  if(caseListAll[i]['Status']==1){
-                    caseList.add(caseListAll[i]);
-                    print(caseList.length.toString());
-                  }
-                }
-                filteredList.addAll(caseList);
-              }else if(caseType=="In Process"){
-                for(int i=0;i<caseListAll.length;i++){
-                  print(caseListAll[i]['Status']);
-                  if(caseListAll[i]['Status']==2){
-                    caseList.add(caseListAll[i]);
-                    print(caseList.length.toString());
-                  }
-                }
-                filteredList.addAll(caseList);
-              }else{
-                caseList.addAll(caseListAll);
-                filteredList.addAll(caseList);
-                print(caseList.length.toString());
-              }
-            });
-
-          }
-        });
-      }
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_) => _refreshIndicatorKey.currentState.show());
     super.initState();
   }
 
@@ -87,71 +51,148 @@ class _casesList extends State<casesList>{
         title: _isSearching ? _buildSearchField() : _buildTitle(context),
         actions: _buildActions(),
       ),
-      body: Visibility(
-        visible:isVisible,
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
-            ),
-            elevation: 10,
-            child: ListView.builder(itemCount: filteredList!=null?filteredList.length:temp.length,itemBuilder: (context,int index){
-              return Column(
-                children: <Widget>[
-                  Slidable(
-              actionPane: SlidableDrawerActionPane(),
-              actionExtentRatio: 0.20,
-                actions: <Widget>[
-                  IconSlideAction(
-                    icon: Icons.delete,
-                    color: Colors.red,
-                    caption: 'Delete',
-                    onTap: (){
-                      ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-                      pd.show();
-                      Network_Operations.DeleteCustomerCase(filteredList[index]['CaseNum']).then((response){
-                        pd.dismiss();
-                         if(response!=null){
-                           Scaffold.of(context).showSnackBar(SnackBar(
-                             backgroundColor: Colors.green,
-                             content: Text("Case Deleted Sucessfully"),
-                           ));
-                         }
-                      });
-                    },
-                  ),
-                  IconSlideAction(
-                    icon: Icons.edit,
-                    color: Colors.blue,
-                    caption: 'Update',
-                    onTap: (){
-                     Navigator.push(context, MaterialPageRoute(builder: (context)=>UpdateCases(filteredList[index])));
-                    },
-                  ),
-                ],
-                child: ListTile(
-                    title: Text(filteredList[index]['CaseNum']!=null?filteredList[index]['CaseNum']:''),
-                    subtitle: Text(filteredList[index]['Status']!=null?getCaseType(filteredList[index]['CategoryTypeId']):''),
-                    leading: Material(
-                        borderRadius: BorderRadius.circular(24),
-                        color: Colors.teal.shade100,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top:10,bottom: 15,right: 10,left: 10),
-                          child: Icon(FontAwesomeIcons.angry,size: 30,color: Color(0xFF004c4c),),
-                        )
+      body: RefreshIndicator(
+        key: _refreshIndicatorKey,
+        onRefresh: (){
+          return Utils.check_connectivity().then((connected){
+            if(connected){
+              ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
+              pd.show();
+              Network_Operations.FindCustomerCases(customerId).then((response){
+                pd.hide();
+                if(response!=null&&response!='[]'){
+                  setState(() {
+                    isVisible=true;
+                    if(caseListAll!=null){
+                      caseListAll.clear();
+                    }
+                    if(caseList!=null){
+                      caseList.clear();
+                    }
+                    caseListAll=jsonDecode(response);
+                    if(caseType=="Opened"){
+                      for(int i=0;i<caseListAll.length;i++){
+                        print(caseListAll[i]['Status']);
+                        if(caseListAll[i]['Status']==1){
+                          caseList.add(caseListAll[i]);
+                          print(caseList.length.toString());
+                        }
+                      }
+                      if(filteredList!=null){
+                        filteredList.clear();
+                      }
+                      filteredList.addAll(caseList);
+                    }else if(caseType=="In Process"){
+                      if(caseList!=null){
+                        caseList.clear();
+                      }
+                      for(int i=0;i<caseListAll.length;i++){
+                        print(caseListAll[i]['Status']);
+                        if(caseListAll[i]['Status']==2){
+                          caseList.add(caseListAll[i]);
+                          print(caseList.length.toString());
+                        }
+                      }
+                      if(filteredList!=null){
+                        filteredList.clear();
+                      }
+                      filteredList.addAll(caseList);
+                    }else{
+                      if(caseList!=null){
+                        caseList.clear();
+                      }
+                      caseList.addAll(caseListAll);
+
+                      if(filteredList!=null){
+                        filteredList.clear();
+                      }
+                      filteredList.addAll(caseList);
+                      print(caseList.length.toString());
+                    }
+                  });
+
+                }
+              });
+            }else{
+              Flushbar(
+                message: "Network Not Available",
+                backgroundColor: Colors.red,
+                duration: Duration(seconds: 5),
+              )..show(context);
+            }
+          });
+        },
+        child: Visibility(
+          visible:isVisible,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              elevation: 10,
+              child: ListView.builder(itemCount: filteredList!=null?filteredList.length:temp.length,itemBuilder: (context,int index){
+                return Column(
+                  children: <Widget>[
+                    Slidable(
+                actionPane: SlidableDrawerActionPane(),
+                actionExtentRatio: 0.20,
+                  actions: <Widget>[
+                    IconSlideAction(
+                      icon: Icons.delete,
+                      color: Colors.red,
+                      caption: 'Delete',
+                      onTap: (){
+                        ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
+                        pd.show();
+                        Network_Operations.DeleteCustomerCase(filteredList[index]['CaseNum']).then((response){
+                          pd.dismiss();
+                           if(response!=null){
+
+                             WidgetsBinding.instance
+                                 .addPostFrameCallback((_) =>
+                                 _refreshIndicatorKey.currentState
+                                     .show());
+                             Scaffold.of(context).showSnackBar(SnackBar(
+                               backgroundColor: Colors.green,
+                               content: Text("Case Deleted Sucessfully"),
+                             ));
+                           }
+                        });
+                      },
                     ),
-                    onTap: (){
-                      Navigator.push(context,MaterialPageRoute(builder: (context)=>CaseDetail(filteredList[index])));
-                    },
-              )
-                  ),
+                    IconSlideAction(
+                      icon: Icons.edit,
+                      color: Colors.blue,
+                      caption: 'Update',
+                      onTap: (){
+                       Navigator.push(context, MaterialPageRoute(builder: (context)=>UpdateCases(filteredList[index])));
+                      },
+                    ),
+                  ],
+                  child: ListTile(
+                      title: Text(filteredList[index]['CaseNum']!=null?filteredList[index]['CaseNum']:''),
+                      subtitle: Text(filteredList[index]['Status']!=null?getCaseType(filteredList[index]['CategoryTypeId']):''),
+                      leading: Material(
+                          borderRadius: BorderRadius.circular(24),
+                          color: Colors.teal.shade100,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top:10,bottom: 15,right: 10,left: 10),
+                            child: Icon(FontAwesomeIcons.angry,size: 30,color: Color(0xFF004c4c),),
+                          )
+                      ),
+                      onTap: (){
+                        Navigator.push(context,MaterialPageRoute(builder: (context)=>CaseDetail(filteredList[index])));
+                      },
+                )
+                    ),
 
 
-                  Divider(),
-                ],
-              ) ;
-            }),
+                    Divider(),
+                  ],
+                ) ;
+              }),
+            ),
           ),
         ),
       ),

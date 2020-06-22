@@ -75,8 +75,8 @@ class _ProductVariationsState extends ResumableState<ProductVariations> {
                   children: <Widget>[
                     ListTile(
                       title: Text(variations[index]['ItemSize']),
-                      trailing: Text('Color: '+variations[index]['ItemColor']),
-                      subtitle: Text(variations[index]['Onhand']-variations[index]['OnOrdered']>1?(variations[index]['Onhand']-variations[index]['OnOrdered']).toString():'0'),
+                      subtitle: Text('Color: '+variations[index]['ItemColor']),
+                      trailing: Text(variations[index]['Onhand']-variations[index]['OnOrdered']>1?'Qty:'+(variations[index]['Onhand']-variations[index]['OnOrdered']).toString():'0'),
                       leading:  Material(
                 borderRadius: BorderRadius.circular(24),
                 color: Colors.teal.shade100,

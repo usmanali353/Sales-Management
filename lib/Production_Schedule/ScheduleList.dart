@@ -73,8 +73,11 @@ class _SchedulesList extends State<SchedulesList>{
                Network_Operations.GetProductionSchedules(customerId, 1, 100).then((response){
                  pd.dismiss();
                  if(response!=null&&response!='[]'){
+                   if(schedules!=null){
+                     schedules.clear();
+                   }
+                   schedules=jsonDecode(response);
                    setState(() {
-                     schedules=jsonDecode(response);
                      isVisible=true;
                    });
                  }

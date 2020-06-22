@@ -20,7 +20,7 @@ class _PrePickingDetailsState extends State<PrePickingDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("PrePicking Details"),
+        title: Text("Details"),
         actions: <Widget>[
           InkWell(
             child: Center(child: Padding(
@@ -73,6 +73,7 @@ class _PrePickingDetailsState extends State<PrePickingDetails> {
                         .toString()
                         .split(' ')[0]),
                   ),
+                  Divider(),
                   ListTile(
                     title: Text("Status"),
                     trailing: Text(getStatus(prePickingData['Status'])),

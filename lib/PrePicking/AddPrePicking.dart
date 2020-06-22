@@ -56,7 +56,7 @@ class _AddPrePickingState extends State<AddPrePicking> {
       appBar: AppBar(title: Text("Delivery Details"),),
       body: WillPopScope(
         onWillPop: ()async{
-          Navigator.pop(context,'Close');
+          Navigator.pop(context,'Refresh');
           return false;
         },
         child: ListView(
