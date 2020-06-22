@@ -25,14 +25,7 @@ class _SchedulesList extends State<SchedulesList>{
   _SchedulesList(this.customerId,this.scheduleByRequest);
   @override
   void initState() {
-    Utils.check_connectivity().then((connected){
-      if(connected){
-        WidgetsBinding.instance
-            .addPostFrameCallback((_) =>
-            _refreshIndicatorKey.currentState
-                .show());
-      }
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_) => _refreshIndicatorKey.currentState.show());
     super.initState();
   }
   @override
@@ -83,7 +76,11 @@ class _SchedulesList extends State<SchedulesList>{
                  }
                });
              }else{
-
+                 Flushbar(
+                   message: "Network Not Available",
+                   backgroundColor: Colors.red,
+                   duration: Duration(seconds: 5),
+                 )..show(context);
              }
           });
         },

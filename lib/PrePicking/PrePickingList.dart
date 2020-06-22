@@ -155,8 +155,8 @@ class _PrePickingListState extends ResumableState<PrePickingList> {
                       ],
                       child: ListTile(
                         title: Text(filteredList!=null?filteredList[index]['PickingId']:''),
-                        subtitle: Text(filteredList!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(filteredList[index]['DeliveryDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
-                        trailing: Text(filteredList!=null?getStatus(filteredList[index]['Status']):''),
+                        trailing: Text(filteredList!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(filteredList[index]['DeliveryDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
+                        subtitle: Text(filteredList!=null?getStatus(filteredList[index]['Status']):''),
                         leading:  Material(
                             borderRadius: BorderRadius.circular(24),
                             color: Colors.teal.shade100,
