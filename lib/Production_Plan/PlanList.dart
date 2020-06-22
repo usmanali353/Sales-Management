@@ -135,7 +135,7 @@ class _PlanList extends ResumableState<PlanList>{
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          push(context, MaterialPageRoute(builder: (context)=>CreateProductionPlan()));
+          push(context, MaterialPageRoute(builder: (context)=>CreateProductionPlan(customerId)));
         },
         child: Icon(Icons.add),
       ),
@@ -404,7 +404,7 @@ List<Widget> wholeYear() {
       ),
       onTap: () {
         push(context, MaterialPageRoute(
-            builder: (context) => PlanDetail(planList[index])));
+            builder: (context) => PlanDetail(planList[index],customerId)));
       },
     ));
 
@@ -440,7 +440,7 @@ List<Widget> wholeYear() {
           ),
           onTap: () {
             push(context, MaterialPageRoute(
-                builder: (context) => PlanDetail(planList[index])));
+                builder: (context) => PlanDetail(planList[index],customerId)));
           },
         ));
       }
@@ -477,7 +477,7 @@ List<Widget> wholeYear() {
           ),
           onTap: () {
             push(context, MaterialPageRoute(
-                builder: (context) => PlanDetail(planList[index])));
+                builder: (context) => PlanDetail(planList[index],customerId)));
           },
         ));
       }
@@ -514,7 +514,7 @@ List<Widget> wholeYear() {
           ),
           onTap: () {
             push(context, MaterialPageRoute(
-                builder: (context) => PlanDetail(planList[index])));
+                builder: (context) => PlanDetail(planList[index],customerId)));
           },
         ));
       }
@@ -551,7 +551,7 @@ List<Widget> wholeYear() {
           ),
           onTap: () {
             push(context, MaterialPageRoute(
-                builder: (context) => PlanDetail(planList[index])));
+                builder: (context) => PlanDetail(planList[index],customerId)));
           },
         ));
       }
@@ -588,7 +588,7 @@ List<Widget> wholeYear() {
           ),
           onTap: () {
             push(context, MaterialPageRoute(
-                builder: (context) => PlanDetail(planList[index])));
+                builder: (context) => PlanDetail(planList[index],customerId)));
           },
         ));
       }
@@ -625,7 +625,7 @@ List<Widget> wholeYear() {
           ),
           onTap: () {
             push(context, MaterialPageRoute(
-                builder: (context) => PlanDetail(planList[index])));
+                builder: (context) => PlanDetail(planList[index],customerId)));
           },
         ));
       }
@@ -662,7 +662,7 @@ List<Widget> wholeYear() {
           ),
           onTap: () {
             push(context, MaterialPageRoute(
-                builder: (context) => PlanDetail(planList[index])));
+                builder: (context) => PlanDetail(planList[index],customerId)));
           },
         ));
       }
@@ -699,7 +699,7 @@ List<Widget> wholeYear() {
           ),
           onTap: () {
             push(context, MaterialPageRoute(
-                builder: (context) => PlanDetail(planList[index])));
+                builder: (context) => PlanDetail(planList[index],customerId)));
           },
         ));
       }
@@ -736,7 +736,7 @@ List<Widget> wholeYear() {
           ),
           onTap: () {
             push(context, MaterialPageRoute(
-                builder: (context) => PlanDetail(planList[index])));
+                builder: (context) => PlanDetail(planList[index],customerId)));
           },
         ));
       }
@@ -773,7 +773,7 @@ List<Widget> wholeYear() {
           ),
           onTap: () {
             push(context, MaterialPageRoute(
-                builder: (context) => PlanDetail(planList[index])));
+                builder: (context) => PlanDetail(planList[index],customerId)));
           },
         ));
       }
@@ -810,7 +810,7 @@ List<Widget> wholeYear() {
           ),
           onTap: () {
             push(context, MaterialPageRoute(
-                builder: (context) => PlanDetail(planList[index])));
+                builder: (context) => PlanDetail(planList[index],customerId)));
           },
         ));
       }
@@ -847,7 +847,7 @@ List<Widget> wholeYear() {
           ),
           onTap: () {
             push(context, MaterialPageRoute(
-                builder: (context) => PlanDetail(planList[index])));
+                builder: (context) => PlanDetail(planList[index],customerId)));
           },
         ));
       }

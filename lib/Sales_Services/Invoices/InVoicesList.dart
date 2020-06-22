@@ -60,8 +60,8 @@ class _InvoicesList extends State<InvoicesList>{
                     children: <Widget>[
                      ListTile(
                        title: Text(InvoiceList[index]['InvoiceId']!=null?InvoiceList[index]['InvoiceId']:''),
-                       subtitle: Text(InvoiceList[index]['InvoiceDate']!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(InvoiceList[index]['InvoiceDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
-                       trailing: Text(InvoiceList[index]['InvoiceAmount']!=null?'Total:'+InvoiceList[index]['InvoiceAmount'].toString():''),
+                       trailing: Text(InvoiceList[index]['InvoiceDate']!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(InvoiceList[index]['InvoiceDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
+                       subtitle: Text('Sales Id:'+InvoiceList[index]['SalesOrderId']+'\n'+'Quantity Sold: '+InvoiceList[index]['QuantitySold'].toString()),
                        leading: Material(
                            borderRadius: BorderRadius.circular(24),
                            color: Colors.teal.shade100,

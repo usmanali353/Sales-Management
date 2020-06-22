@@ -4,14 +4,21 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import '../Network_Operations.dart';
 class CreateProductionPlan extends StatefulWidget {
+  var customerId;
+
+  CreateProductionPlan(this.customerId);
+
   @override
-  _CreateProductionPlanState createState() => _CreateProductionPlanState();
+  _CreateProductionPlanState createState() => _CreateProductionPlanState(customerId);
 }
 
 class _CreateProductionPlanState extends State<CreateProductionPlan> {
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey();
   TextEditingController customerId,quantity;
-  var itemSizesJson,selectedValue,selectedYear,selectedMonth,isVisible=false;
+  var itemSizesJson,selectedValue,selectedYear,selectedMonth,isVisible=false,CustomerId;
+
+  _CreateProductionPlanState(this.CustomerId);
+
   List<String> itemSizes=[],months=['January','Febuary','March','April','May','June','July','August','September','October','November','December'];
   @override
   void initState() {
@@ -122,7 +129,7 @@ class _CreateProductionPlanState extends State<CreateProductionPlan> {
                           this.selectedMonth=months.indexOf(value)+1;
                         });
                       },
-                      style: Theme.of(context).textTheme.body1,
+                      style: Theme.of(context).textTheme.bodyText1,
                       decoration: InputDecoration(contentPadding: EdgeInsets.all(16)
 //                        border: OutlineInputBorder(
 //                            borderRadius: BorderRadius.circular(9.0),
@@ -162,7 +169,7 @@ class _CreateProductionPlanState extends State<CreateProductionPlan> {
                           if(_fbKey.currentState.validate()){
                             ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
                             pd.show();
-                            Network_Operations.CreateCustomerPlan('LC0001', selectedValue, selectedMonth, int.parse(selectedYear),int.parse(quantity.text)).then((response){
+                            Network_Operations.CreateCustomerPlan(CustomerId, selectedValue, selectedMonth, int.parse(selectedYear),int.parse(quantity.text)).then((response){
                               pd.dismiss();
                               if(response!=null){
                                 Scaffold.of(context).showSnackBar(SnackBar(

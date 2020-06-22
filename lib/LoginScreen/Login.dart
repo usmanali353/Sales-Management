@@ -23,12 +23,10 @@ class _LoginScreenState extends State<LoginScreen> {
             Column(
               children: <Widget>[
                 Image.asset('assets/img/login.png',width: 230,height: 230,),
-
                 Padding(
                   padding: const EdgeInsets.all(20),
                   child: TextField(
                       style: TextStyle(color: Colors.white),
-
                     decoration: new InputDecoration(
                       prefixIcon: Icon(Icons.person,color: Colors.white,),
                         border: new OutlineInputBorder(
@@ -106,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                      padding: EdgeInsets.all(16),
                     minWidth: MediaQuery.of(context).size.width,
                     onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>newdashboard()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>newdashboard('LC0001')));
                     },
                     color: Colors.white,
                     child: Text("SIGN IN",style: TextStyle(

@@ -7,7 +7,11 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:need_resume/need_resume.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:salesmanagement/Model/Products.dart';
+import 'package:salesmanagement/Model/sqlite_helper.dart';
 import 'package:salesmanagement/Network_Operations.dart';
+import 'package:salesmanagement/PrePicking/AddPrePicking.dart';
+import 'package:salesmanagement/PrePicking/SelectedProductsList.dart';
 import 'package:salesmanagement/Production_Request/CreateProductionRequest.dart';
 import 'package:salesmanagement/Production_Request/RequestDetails.dart';
 import 'package:salesmanagement/Production_Request/UpdateProductionRequest.dart';
@@ -15,20 +19,22 @@ import 'package:salesmanagement/Production_Request/UpdateProductionRequest.dart'
 import '../Utils.dart';
 
 class RequestList extends StatefulWidget {
-  var size,month;
+  var size,month,customerId;
 
-  RequestList(this.size,this.month);
+  RequestList(this.size,this.month,this.customerId);
 
   @override
   State<StatefulWidget> createState() {
-    return _RequestsList(size,month);
+    return _RequestsList(size,month,customerId);
   }
 }
 class _RequestsList extends ResumableState<RequestList>{
-  var requests,temp=['',''],isVisible=false,itemSizes,selectedValue,size,month;
-  _RequestsList(this.size,this.month);
+  var requests,temp=['',''],isVisible=false,itemSizes,selectedValue,size,month,customerId,itemStock;
+  _RequestsList(this.size,this.month,this.customerId);
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
-
+  final GlobalKey<FormBuilderState> _fbKey=GlobalKey();
+  TextEditingController quantity;
+  sqlite_helper db;
   @override
   void onResume() {
     print("Data "+resume.data.toString());
@@ -41,6 +47,8 @@ class _RequestsList extends ResumableState<RequestList>{
   }
   @override
   void initState() {
+    quantity=TextEditingController();
+    db=sqlite_helper();
     WidgetsBinding.instance
         .addPostFrameCallback((_) =>
         _refreshIndicatorKey.currentState
@@ -53,7 +61,7 @@ class _RequestsList extends ResumableState<RequestList>{
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          push(context, MaterialPageRoute(builder: (context)=>CreateProductionRequest()));
+          push(context, MaterialPageRoute(builder: (context)=>CreateProductionRequest(customerId)));
         },
         child: Icon(Icons.add),
       ),
@@ -84,7 +92,7 @@ class _RequestsList extends ResumableState<RequestList>{
                 }else if(choice=='Filter by Item') {
                   ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
                   pd.show();
-                    Network_Operations.GetOnhandStock("LC0001").then((value) {
+                    Network_Operations.GetOnhandStock(customerId).then((value) {
                       pd.dismiss();
                       if (value != null) {
                         setState(() {
@@ -122,7 +130,7 @@ class _RequestsList extends ResumableState<RequestList>{
                   if(size!=null&&month!=null){
                     ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
                     pd.show();
-                    Network_Operations.GetProdRequestListBySize('LC0001',size, 1, 100).then((response){
+                    Network_Operations.GetProdRequestListBySize(customerId,size, 1, 100).then((response){
                       pd.dismiss();
                       if(response!=null&&response!=''&&response!='[]'){
                         setState(() {
@@ -156,7 +164,7 @@ class _RequestsList extends ResumableState<RequestList>{
                   }else{
                     ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
                     pd.show();
-                    Network_Operations.GetProdRequestList('LC0001', 1, 100).then((response){
+                    Network_Operations.GetProdRequestList(customerId, 1, 100).then((response){
                       pd.dismiss();
                       if(response!=null&&response!=''&&response!='[]'){
                         setState(() {
@@ -241,7 +249,33 @@ class _RequestsList extends ResumableState<RequestList>{
                   )
                   ),
                           onTap: (){
-                            push(context,MaterialPageRoute(builder: (context)=>RequestDetails(requests[index])));
+                            if(requests[index]['ProductionStatus']=='Produced'){
+                              ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
+                              pd.show();
+                              Network_Operations.GetOnhandStock(customerId).then((response){
+                                pd.dismiss();
+                                if(response!=null){
+                                  setState(() {
+                                    var items=jsonDecode(response);
+                                  if(items!=null&&items.length>0){
+                                    itemStock=0;
+                                    for(int i=0;i<items.length;i++){
+                                       if(items[i]['ItemDescription']==requests[index]['ItemDescription']){
+                                         this.itemStock=items[i]['OnhandALL'];
+                                         showOrderAlertDialog( context,requests[index],itemStock);
+                                       }
+                                    }
+                                  }
+
+
+                                  });
+
+                                }
+                              });
+
+                            }else {
+                              push(context,MaterialPageRoute(builder: (context)=>RequestDetails(requests[index])));
+                            }
                           },
                         ),
                       ),
@@ -260,7 +294,7 @@ class _RequestsList extends ResumableState<RequestList>{
     Widget cancelButton = FlatButton(
       child: Text("Ok"),
       onPressed:  () {
-        Network_Operations.GetProdRequestListByItem("LC0001",items[selectedValue]['ItemNumber'], 1, 100).then((value){
+        Network_Operations.GetProdRequestListByItem(customerId,items[selectedValue]['ItemNumber'], 1, 100).then((value){
           if(value!=null){
             setState(() {
               var requestsByItem=jsonDecode(value);
@@ -361,7 +395,7 @@ class _RequestsList extends ResumableState<RequestList>{
                       Navigator.pop(context);
                       ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
                       pd.show();
-                      Network_Operations.GetProdRequestListBySize("LC0001",selectedValue, 1, 100).then((value){
+                      Network_Operations.GetProdRequestListBySize(customerId,selectedValue, 1, 100).then((value){
                         pd.dismiss();
                         if(value!=null){
                           setState(() {
@@ -417,6 +451,124 @@ class _RequestsList extends ResumableState<RequestList>{
       content:typeFieldWidget(sizeNames),
       actions: [
         launchButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+  showOrderAlertDialog(BuildContext context,var request,var quantity) {
+   var producedAmount=request['QuantityProduced'];
+    // set up the buttons
+    Widget remindButton = FlatButton(
+      child: Text("Order"),
+      onPressed:  () {
+       Navigator.pop(context);
+       showQuantityAlertDialog(context,producedAmount,request);
+      },
+    );
+    Widget cancelButton = FlatButton(
+      child: Text("Request Details"),
+      onPressed:  () {
+        Navigator.pop(context);
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestDetails(request)));
+      },
+    );
+    Widget launchButton = FlatButton(
+      child: Text("Cancel"),
+      onPressed:  () {
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(request['ItemDescription']),
+      content: RichText(
+        text: TextSpan(
+            children: [
+              TextSpan(text: "You have ",style: Theme.of(context).textTheme.bodyText1),
+              TextSpan(text: "$quantity",style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(color: Colors.teal))),
+              TextSpan(text: " SQM available for this item and Produced ",style: Theme.of(context).textTheme.bodyText1),
+              TextSpan(text: "$producedAmount",style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(color: Colors.teal))),
+            ]
+        ),
+      ), //Text("You have $selectedItemStock SQM available for this item"),
+      actions: [
+        remindButton,
+        cancelButton,
+        launchButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+  showQuantityAlertDialog(BuildContext context,var producedQuantity,var request) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Cancel"),
+      onPressed:  () {
+        Navigator.pop(context);
+      },
+    );
+    Widget search = FlatButton(
+      child: Text("Add"),
+      onPressed:  () {
+        if(_fbKey.currentState.validate()) {
+           if(int.parse(quantity.text)>producedQuantity){
+             Flushbar(
+               message: "Order Quantity should be less then Produced Quantity",
+               backgroundColor: Colors.red,
+               duration: Duration(seconds: 5),
+             )..show(context);
+           }else{
+              Products p=Products(request['ItemDescription'],request['ItemNumber'],request['ItemSize'],null,null,null,null,double.parse(quantity.text));
+              db.addProducts(p).then((value){
+                if(value>0){
+                  Navigator.pop(context);
+                  push(context, MaterialPageRoute(builder: (context)=>AddPrePicking(customerId)));
+                }
+              });
+           }
+        }
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Enter Quantity"),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          FormBuilder(
+            key: _fbKey,
+            child: FormBuilderTextField(
+              attribute: 'Quantity',
+              controller: quantity,
+              keyboardType: TextInputType.numberWithOptions(),
+              validators: [FormBuilderValidators.required()],
+              decoration: InputDecoration(
+                hintText: "Quantity to Order",
+              ),
+            ),
+          )
+
+        ],
+      ),
+      actions: [
+        cancelButton,
+        search
       ],
     );
 

@@ -79,9 +79,9 @@ class _DeliveryList extends State<DeliveryList>{
                     trailing:  Text(filteredList[index]['deliveryDateField']!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(filteredList[index]['deliveryDateField'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
                     subtitle:  Text((() {
                       if(filteredList[index]['packingSlipNumField']!=null){
-                        return 'Quantity:'+filteredList[index]['quantityInSQMField'].toString()+' SQM'+'\n'+'Packing Slip:'+filteredList[index]['packingSlipNumField'];
+                        return 'Qty:'+filteredList[index]['quantityInSQMField'].toString()+' SQM'+'\n'+'Packing Slip:'+filteredList[index]['packingSlipNumField'];
                       }else
-                        return 'Quantity:'+filteredList[index]['quantityInSQMField'].toString()+' SQM';
+                        return 'Qty:'+filteredList[index]['quantityInSQMField'].toString()+' SQM';
                     })()),
                     leading: Material(
                         borderRadius: BorderRadius.circular(24),

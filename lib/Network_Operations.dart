@@ -321,6 +321,22 @@ class Network_Operations {
     } else
       return null;
   }
+  static Future<String> GetCustomerPlanForecast(String customerId, int year,int month) async {
+    final response = await http.get(
+        'http://sales.arabianceramics.com/AcmcMobileServices/ProdPlanService.svc/GetMonthlyForcastSummary/' +
+            customerId +
+            '/' +
+            year.toString() +
+            '/' +
+            month.toString()
+        ,
+        headers: {'authorization': basicAuth});
+    debugPrint(response.body);
+    if (response.statusCode == 200) {
+      return response.body;
+    } else
+      return null;
+  }
 
   static Future<String> GetCustomerPlanBySize(
       String customerId, String size, String year) async {
@@ -706,7 +722,7 @@ class Network_Operations {
   }
   static Future<String> GetAllPrePicking(String customerId) async {
     final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/PrePickingService.svc/GetAllPrePickings/'+customerId, headers: {'authorization': basicAuth});
-    print(response.body);
+    debugPrint(response.body);
     if (response.statusCode == 200) {
       return response.body;
     } else

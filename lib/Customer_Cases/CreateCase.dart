@@ -5,16 +5,23 @@ import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/Network_Operations.dart';
 
 class CreateCase extends StatefulWidget{
+  var customerId;
+
+  CreateCase(this.customerId);
+
   @override
   State<StatefulWidget> createState() {
-    return _CreateCase();
+    return _CreateCase(customerId);
   }
 
 }
 class _CreateCase extends State<CreateCase>{
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey();
   TextEditingController description;
-  var selectedValue,caseType;
+  var selectedValue,caseType,customerId;
+
+  _CreateCase(this.customerId);
+
   @override
   void initState() {
     description=TextEditingController();
@@ -114,7 +121,7 @@ class _CreateCase extends State<CreateCase>{
                           if(_fbKey.currentState.validate()){
                             ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
                             pd.show();
-                            Network_Operations.CreateCustomerCase('LC0001', description.text, 1, caseType, selectedValue, 'some customer', 0, 'caseMemo').then((response){
+                            Network_Operations.CreateCustomerCase(customerId, description.text, 1, caseType, selectedValue, 'some customer', 0, 'caseMemo').then((response){
                               pd.hide();
                               if(response!=null){
                                 Scaffold.of(context).showSnackBar(SnackBar(

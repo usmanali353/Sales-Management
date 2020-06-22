@@ -7,7 +7,6 @@ import 'package:intl/intl.dart';
 import 'package:need_resume/need_resume.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/Sales_Services/Invoices/InvoicesMainPage.dart';
-import 'package:salesmanagement/Sales_Services/Stocks/StocksMainPage.dart';
 import 'package:salesmanagement/SettingPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Customer_Cases/casesList.dart';
@@ -17,21 +16,28 @@ import 'Production_Plan/PlanList.dart';
 import 'Production_Request/RequestList.dart';
 import 'Production_Schedule/ScheduleList.dart';
 import 'Sales_Services/Deliveries/DeliveriesList.dart';
-import 'Sales_Services/Invoices/InVoicesList.dart';
 import 'Sales_Services/SalesOrders/SalesOrdersList.dart';
+import 'Sales_Services/Stocks/StockItemsList.dart';
 import 'Utils.dart';
 
 class newdashboard extends StatefulWidget{
+  var customerId;
+
+  newdashboard(this.customerId);
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _newdashboard();
+    return _newdashboard(customerId);
   }
 
 }
 
 class _newdashboard extends ResumableState<newdashboard>{
-  var todayDeliveryCardVisible=false,weeklyDeliveryCardVisible=false,prodRequestCardVisible=false,financeVisible=false,totalOlderStock=0.0,olderstockVisible=false,currentTheme=true;
+  var todayDeliveryCardVisible=false,weeklyDeliveryCardVisible=false,prodRequestCardVisible=false,financeVisible=false,totalOlderStock=0.0,olderstockVisible=false,currentTheme=true,customerId;
+
+  _newdashboard(this.customerId);
+
   var caseNumbers,caseCardsVisible=false,productionRequestCardVisible=false,productionRequestNumbers,deliveryCardVisible=false,deliveryNumber,weeklyDelivery,financeCardVisible=false,finance,totalOnhandStock=0.0,onhandVisible=false;
   List<double> onHandValues=[];
 
@@ -53,7 +59,7 @@ class _newdashboard extends ResumableState<newdashboard>{
       if(connected){
         ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
         pd.show();
-        Network_Operations.GetDeliveryDailySummary("LC0001","2019-05-15").then((response){
+        Network_Operations.GetDeliveryDailySummary(customerId,"2019-05-15").then((response){
           if(response!=null&&response!='[]'){
             setState(() {
               deliveryNumber=jsonDecode(response);
@@ -61,7 +67,7 @@ class _newdashboard extends ResumableState<newdashboard>{
             });
           }
         });
-//        Network_Operations.GetDeliveryDailySummary("LC0001",DateFormat("yyyy-MM-dd").format(DateTime.now())).then((response){
+//        Network_Operations.GetDeliveryDailySummary("customerId",DateFormat("yyyy-MM-dd").format(DateTime.now())).then((response){
 //          if(response!=null){
 //            setState(() {
 ////              productionRequestNumbers=jsonDecode(response);
@@ -69,7 +75,7 @@ class _newdashboard extends ResumableState<newdashboard>{
 //            });
 //          }
 //        });
-        Network_Operations.GetCustomerOlderStock("LC0001").then((response){
+        Network_Operations.GetCustomerOlderStock(customerId).then((response){
           if(response!=null){
             setState(() {
               var olderStock=jsonDecode(response);
@@ -83,7 +89,7 @@ class _newdashboard extends ResumableState<newdashboard>{
 
           }
         });
-        Network_Operations.GetDeliveryInDatesSummary("LC0001","2018-10-01","2018-10-02").then((response){
+        Network_Operations.GetDeliveryInDatesSummary(customerId,"2018-10-01","2018-10-02").then((response){
           if(response!=null&&response!='[]'){
             setState(() {
               weeklyDelivery=jsonDecode(response);
@@ -91,7 +97,7 @@ class _newdashboard extends ResumableState<newdashboard>{
             });
           }
         });
-        Network_Operations.GetOnhandStock("LC0001").then((response){
+        Network_Operations.GetOnhandStock(customerId).then((response){
           if(response!=null){
             setState(() {
               var onHand=jsonDecode(response);
@@ -109,7 +115,7 @@ class _newdashboard extends ResumableState<newdashboard>{
             });
           }
         });
-//        Network_Operations.GetDeliveryInDatesSummary("LC0001",DateFormat("yyyy-MM-dd").format(DateTime.now()),DateFormat("yyyy-MM-dd").format(DateTime.now().add(Duration(days: 7)))).then((response){
+//        Network_Operations.GetDeliveryInDatesSummary("customerId",DateFormat("yyyy-MM-dd").format(DateTime.now()),DateFormat("yyyy-MM-dd").format(DateTime.now().add(Duration(days: 7)))).then((response){
 //          if(response!=null){
 //            setState(() {
 ////              productionRequestNumbers=jsonDecode(response);
@@ -117,7 +123,7 @@ class _newdashboard extends ResumableState<newdashboard>{
 //            });
 //          }
 //        });
-        Network_Operations.getProductionRequestsSummary("LC0001").then((response){
+        Network_Operations.getProductionRequestsSummary(customerId).then((response){
           if(response!=null){
             setState(() {
               productionRequestNumbers=jsonDecode(response);
@@ -125,7 +131,7 @@ class _newdashboard extends ResumableState<newdashboard>{
             });
           }
         });
-        Network_Operations.GetCustomerBalanceOnhand("LC0001").then((response){
+        Network_Operations.GetCustomerBalanceOnhand(customerId).then((response){
           if(response!=null){
             setState(() {
               this.financeCardVisible=true;
@@ -134,7 +140,7 @@ class _newdashboard extends ResumableState<newdashboard>{
           }
         });
 
-        Network_Operations.getCasesSummary("LC0001").then((response){
+        Network_Operations.getCasesSummary(customerId).then((response){
           pd.hide();
           if(response!=null){
             setState(() {
@@ -174,49 +180,49 @@ class _newdashboard extends ResumableState<newdashboard>{
                     title: Text("Dashboard"),
                     leading: Icon(Icons.dashboard),
                     onTap: (){
-                     // Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoicesList('LC0001')));
+                     // Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoicesList('customerId')));
                     },
                   ),
                   ListTile(
                     title: Text("Production Plan"),
                     leading: Icon(FontAwesomeIcons.tasks),
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>PlanList("All",'2020',null,null,"LC0001")));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>PlanList("All",'2020',null,null,customerId)));
                     },
                   ),
                   ListTile(
                     title: Text("Production Order"),
                     leading: Icon(FontAwesomeIcons.calendar),
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>SchedulesList("LC0001",null)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>SchedulesList(customerId,null)));
                     },
                   ),
                   ListTile(
                     title: Text("Stock Delivery"),
                     leading: Icon(FontAwesomeIcons.truckLoading),
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>PrePickingList()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>PrePickingList(customerId)));
                     },
                   ),
                   ListTile(
                     title: Text("Finance"),
                     leading: Icon(FontAwesomeIcons.dollarSign),
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoiceMainPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoiceMainPage(customerId)));
                     },
                   ),
                   ListTile(
                     title: Text("Products"),
                     leading: Icon(FontAwesomeIcons.boxes),
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>StocksMainPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>StockItemsList('Available Stock',customerId)));
                     },
                   ),
                   ListTile(
                     title: Text("Complaints"),
                     leading: Icon(FontAwesomeIcons.angry),
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>casesList('LC0001','All','Customer Complains')));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>casesList(customerId,'All','Customer Complains')));
                     },
                   ),
                   ListTile(
@@ -276,7 +282,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                   visible: todayDeliveryCardVisible,
                   child: InkWell(
                     onTap:(){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>DeliveryList("2019-05-15","LC0001")));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>DeliveryList("2019-05-15",customerId)));
                     },
                     child: Card(
                       elevation: 10,
@@ -325,7 +331,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                                 color: Colors.grey.shade100,
                               ),
                               child: Container(margin: EdgeInsets.only(left: 10,top: 5),
-                                child: Text(deliveryNumber!=null?deliveryNumber[0]['quantityField'].toString():'0', style: TextStyle(color:Color(0xFF004c4c),
+                                child: Text(deliveryNumber!=null&&deliveryNumber.length>0?deliveryNumber[0]['quantityField'].toString():'0', style: TextStyle(color:Color(0xFF004c4c),
 
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold
@@ -345,7 +351,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                   visible: weeklyDeliveryCardVisible,
                   child: InkWell(
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>SalesOrdersList('2018-10-01','2018-10-02',"LC0001",DateFormat.MMMM().format(DateTime.now()).toString()+' Deliveries')));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>SalesOrdersList('2018-10-01','2018-10-02',customerId,DateFormat.MMMM().format(DateTime.now()).toString()+' Deliveries')));
                     },
                     child: Card(
                       elevation: 10,
@@ -395,7 +401,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                                 color: Colors.grey.shade100,
                               ),
                               child: Container(margin: EdgeInsets.only(left: 10,top: 5),
-                                child: Text(weeklyDelivery!=null?weeklyDelivery[0]['quantityField'].toString():'0',
+                                child: Text(weeklyDelivery!=null&&weeklyDelivery.length>0?weeklyDelivery[0]['quantityField'].toString():'0',
                                   style: TextStyle(
                                       color:Colors.teal.shade800,
                                       //Color(0xFF004c4c),
@@ -423,7 +429,7 @@ class _newdashboard extends ResumableState<newdashboard>{
               visible: prodRequestCardVisible,
               child: InkWell(
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList(null,null)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList(null,null,customerId)));
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(left: 8.0,right:8.0),
@@ -464,7 +470,6 @@ class _newdashboard extends ResumableState<newdashboard>{
                           ),
                           Container(
                             //margin: EdgeInsets.only(left: 10, top: 5,bottom: 5),
-
                             height: 30,
                             width: 100,
                             decoration: BoxDecoration(
@@ -490,7 +495,7 @@ class _newdashboard extends ResumableState<newdashboard>{
 //                              ]
                             ),
                             child: Container(margin: EdgeInsets.only(left: 10,top: 5),
-                              child: Text(productionRequestNumbers!=null?productionRequestNumbers[4]['OtherValue'].toString():'0',
+                              child: Text(productionRequestNumbers!=null&&productionRequestNumbers.length>4?productionRequestNumbers[4]['OtherValue'].toString():'0',
                                 style: TextStyle(
                                     color:currentTheme?Colors.white:Colors.teal.shade800,
                                     //Color(0xFF004c4c),
@@ -529,7 +534,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                   //Status Requested
                   InkWell(
                     onTap:(){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList(null,null)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList(null,null,customerId)));
                     },
                     child: Card(
                       elevation: 10,
@@ -593,7 +598,7 @@ class _newdashboard extends ResumableState<newdashboard>{
 //                                  ]
                               ),
                               child: Container(margin: EdgeInsets.only(left: 10,top: 5),
-                                child: Text(productionRequestNumbers!=null?productionRequestNumbers[0]['OtherValue'].toString():'0',
+                                child: Text(productionRequestNumbers!=null&&productionRequestNumbers.length>0?productionRequestNumbers[0]['OtherValue'].toString():'0',
                                   style: TextStyle(
                                       color:!currentTheme?Color(0xFF004c4c):Colors.white,
                                       //Color(0xFF004c4c),
@@ -613,7 +618,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                   //Status Approved for Production
                   InkWell(
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList(null,null)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList(null,null,customerId)));
                     },
                     child: Card(
                       elevation: 10,
@@ -677,7 +682,7 @@ class _newdashboard extends ResumableState<newdashboard>{
 //                                ]
                               ),
                               child: Container(margin: EdgeInsets.only(left: 10,top: 5),
-                                child: Text(productionRequestNumbers!=null?productionRequestNumbers[3]['OtherValue'].toString():'0',
+                                child: Text(productionRequestNumbers!=null&&productionRequestNumbers.length>3?productionRequestNumbers[3]['OtherValue'].toString():'0',
                                   style: TextStyle(
                                       color:!currentTheme?Color(0xFF004c4c):Colors.white,
                                       fontSize: 15,
@@ -703,7 +708,7 @@ class _newdashboard extends ResumableState<newdashboard>{
               visible: prodRequestCardVisible,
               child: InkWell(
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList(null,null)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>RequestList(null,null,customerId)));
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(left: 8.0,right:8.0),
@@ -769,7 +774,7 @@ class _newdashboard extends ResumableState<newdashboard>{
 //                              ]
                             ),
                             child: Container(margin: EdgeInsets.only(left: 10,top: 5),
-                              child: Text(productionRequestNumbers!=null?productionRequestNumbers[4]['OtherValue'].toString():'0',
+                              child: Text(productionRequestNumbers!=null&&productionRequestNumbers.length>4?productionRequestNumbers[4]['OtherValue'].toString():'0',
                                 style: TextStyle(
                                     color:!currentTheme?Colors.teal.shade800:Colors.white,
                                     //Color(0xFF004c4c),
@@ -808,7 +813,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                 padding: const EdgeInsets.all(8.0),
                 child: InkWell(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoiceMainPage()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoiceMainPage(customerId)));
                   },
                   child: Card(
                     elevation: 10,
@@ -912,7 +917,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                   visible: onhandVisible,
                   child: InkWell(
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>StocksMainPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>StockItemsList('Available Stock',customerId)));
                     },
                     child: Card(
                       elevation: 10,
@@ -997,7 +1002,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                   visible: olderstockVisible,
                   child: InkWell(
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>StocksMainPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>StockItemsList('Older Stock',customerId)));
                     },
                     child: Card(
                       elevation: 10,
@@ -1107,7 +1112,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                 children: <Widget>[
                   InkWell(
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>casesList("LC0001","Opened","Opened Cases")));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>casesList(customerId,"Opened","Opened Cases")));
                     },
                     child: Card(
                       elevation: 10,
@@ -1175,7 +1180,7 @@ class _newdashboard extends ResumableState<newdashboard>{
 //                              ]
                               ),
                               child: Container(margin: EdgeInsets.only(left: 10,top: 5),
-                                child: Text(caseNumbers!=null?caseNumbers[0]['SummaryValue'].toString():'0',
+                                child: Text(caseNumbers!=null&&caseNumbers.length>0?caseNumbers[0]['SummaryValue'].toString():'0',
                                   style: TextStyle(
                                       color:Color(0xFF9B3340),
                                       //Color(0xFF004c4c),
@@ -1193,7 +1198,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                   ),
                   InkWell(
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>casesList("LC0001","In Process","In Process Cases")));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>casesList(customerId,"In Process","In Process Cases")));
                     },
                     child: Card(
                       elevation: 10,
@@ -1242,7 +1247,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                                 color: Colors.grey.shade100,
                               ),
                               child: Container(margin: EdgeInsets.only(left: 10,top: 5, bottom: 5),
-                                child: Text(caseNumbers!=null&&caseNumbers.length>1?caseNumbers[0]['SummaryValue'].toString():'0',
+                                child: Text(caseNumbers!=null&&caseNumbers.length>0?caseNumbers[0]['SummaryValue'].toString():'0',
                                   style: TextStyle(
                                       color:Color(0xFF004c4c),
                                       //Color(0xFF004c4c),

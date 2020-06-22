@@ -8,20 +8,21 @@ import 'package:salesmanagement/Network_Operations.dart';
 import 'package:salesmanagement/PrePicking/VariationsDetails.dart';
 import '../Utils.dart';
 class ProductVariations extends StatefulWidget {
-  var itemNumber,deliveryDate, driverName, truckNumber,address,mobileNo,forDetail;
+  var itemNumber,customerId;
 
-  ProductVariations(this.itemNumber,this.deliveryDate, this.driverName, this.truckNumber,this.address,this.mobileNo,this.forDetail);
+  ProductVariations(this.itemNumber,this.customerId);
 
   @override
-  _ProductVariationsState createState() => _ProductVariationsState(itemNumber,deliveryDate, driverName, truckNumber,address,mobileNo,forDetail);
+  _ProductVariationsState createState() => _ProductVariationsState(itemNumber,customerId);
 }
 
 class _ProductVariationsState extends ResumableState<ProductVariations> {
-  var itemNumber,total,totalProductionRequests=0,deliveryDate, driverName, truckNumber,address,mobileNo,forDetail;
+  var itemNumber,total,totalProductionRequests=0,deliveryDate, driverName, truckNumber,address,mobileNo,forDetail,customerId;
+
   var isVisible=false;
   var variations;
   TextEditingController quantity;
-  _ProductVariationsState(this.itemNumber,this.deliveryDate, this.driverName, this.truckNumber,this.address,this.mobileNo,this.forDetail);
+  _ProductVariationsState(this.itemNumber,this.customerId);
 
   @override
   void onResume() {
@@ -36,7 +37,7 @@ class _ProductVariationsState extends ResumableState<ProductVariations> {
       if(connected){
         ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
         pd.show();
-        Network_Operations.GetOnhandStockByItem("LC0001",itemNumber).then((response){
+        Network_Operations.GetOnhandStockByItem(customerId,itemNumber).then((response){
           pd.dismiss();
           if(response!=null){
             setState(() {
@@ -86,7 +87,7 @@ class _ProductVariationsState extends ResumableState<ProductVariations> {
                 )
                 ),
                       onTap: (){
-                      push(context, MaterialPageRoute(builder: (context)=>VariationDetails(variations[index],forDetail)));
+                      push(context, MaterialPageRoute(builder: (context)=>VariationDetails(variations[index],customerId)));
                       },
                     )
                   ],

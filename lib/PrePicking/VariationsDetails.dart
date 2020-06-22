@@ -1,28 +1,26 @@
 import 'dart:convert';
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:need_resume/need_resume.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:salesmanagement/Model/Products.dart';
 import 'package:salesmanagement/Model/sqlite_helper.dart';
 import 'package:salesmanagement/Network_Operations.dart';
 import 'package:salesmanagement/PrePicking/OrderedProductQty.dart';
 import 'package:salesmanagement/Production_Request/CreateProductionRequest.dart';
 import 'package:salesmanagement/Utils.dart';
 class VariationDetails extends StatefulWidget {
-  var variationData,forDetail;
+  var variationData,customerId;
 
-  VariationDetails(this.variationData,this.forDetail);
+  VariationDetails(this.variationData,this.customerId);
 
   @override
-  _VariationDetailsState createState() => _VariationDetailsState(variationData,forDetail);
+  _VariationDetailsState createState() => _VariationDetailsState(variationData,customerId);
 }
 
 class _VariationDetailsState extends ResumableState<VariationDetails> {
-  var variationData,pendingRequests=0,selectedPreference,forDetail;
+  var variationData,pendingRequests=0,selectedPreference,forDetail,customerId;
  sqlite_helper db;
  TextEditingController quantity;
-  _VariationDetailsState(this.variationData,this.forDetail);
+  _VariationDetailsState(this.variationData,this.customerId);
 
   @override
   void onResume() {
@@ -39,7 +37,7 @@ class _VariationDetailsState extends ResumableState<VariationDetails> {
       if(connected){
         ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
         pd.show();
-        Network_Operations.GetProdRequestListByItemNotFinished('LC0001', variationData['ItemNumber'], 1, 100).then((response){
+        Network_Operations.GetProdRequestListByItemNotFinished(customerId, variationData['ItemNumber'], 1, 100).then((response){
           pd.dismiss();
           if(response!=null){
             setState(() {
@@ -62,7 +60,7 @@ class _VariationDetailsState extends ResumableState<VariationDetails> {
       appBar: AppBar(
         title: Text("Variation Details"),
         actions: <Widget>[
-        !forDetail? Padding(
+        Padding(
             padding: const EdgeInsets.all(16),
             child: InkWell(
               onTap: (){
@@ -70,7 +68,7 @@ class _VariationDetailsState extends ResumableState<VariationDetails> {
               },
               child: Center(child: Text("Order")),
             ),
-          ):Container(),
+          )
         ],
       ),
       body: ListView(
@@ -211,7 +209,7 @@ class _VariationDetailsState extends ResumableState<VariationDetails> {
                      this.selectedPreference=choice;
                      Navigator.pop(context);
                      selectedPreference=null;
-                     Navigator.push(context,MaterialPageRoute(builder: (context)=>CreateProductionRequest(),
+                     Navigator.push(context,MaterialPageRoute(builder: (context)=>CreateProductionRequest(customerId),
                          settings: RouteSettings(
                              arguments: {'itemName':variationData['ItemDescription'].toString(),'ItemSize':variationData['ItemSize'].toString()}
                          )));

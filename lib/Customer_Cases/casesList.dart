@@ -78,7 +78,7 @@ class _casesList extends State<casesList>{
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>CreateCase()));
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>CreateCase(customerId)));
         },
         child: Icon(Icons.add),
       ),

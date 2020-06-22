@@ -106,7 +106,7 @@ class _UpdatePrePickingState extends State<UpdatePrePicking> {
                     child: FormBuilderDateTimePicker(
                       attribute: "date",
                       initialValue: DateTime.parse(DateTime.fromMillisecondsSinceEpoch(int.parse(prePicking['DeliveryDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]),
-                      style: Theme.of(context).textTheme.body1,
+                      style: Theme.of(context).textTheme.bodyText1,
                       inputType: InputType.date,
                       validators: [FormBuilderValidators.required()],
                       format: DateFormat("MM-dd-yyyy"),

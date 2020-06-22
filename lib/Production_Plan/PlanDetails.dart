@@ -5,18 +5,18 @@ import 'package:salesmanagement/Network_Operations.dart';
 import 'package:salesmanagement/Production_Request/CreateProductionRequest.dart';
 import 'package:salesmanagement/Production_Request/RequestList.dart';
 class PlanDetail extends StatefulWidget {
- var planData;
+ var planData,customerId;
 
- PlanDetail(this.planData);
+ PlanDetail(this.planData,this.customerId);
 
  @override
-  _PlanDetailState createState() => _PlanDetailState(planData);
+  _PlanDetailState createState() => _PlanDetailState(planData,customerId);
 }
 
 class _PlanDetailState extends State<PlanDetail> {
-  var planData;
+  var planData,customerId;
 
-  _PlanDetailState(this.planData);
+  _PlanDetailState(this.planData,this.customerId);
  @override
   void initState() {
 
@@ -31,12 +31,12 @@ class _PlanDetailState extends State<PlanDetail> {
           PopupMenuButton<String>(
             onSelected: (choice){
               if(choice=='Create Production Request'){
-                Navigator.push(context,MaterialPageRoute(builder: (context)=>CreateProductionRequest(),
+                Navigator.push(context,MaterialPageRoute(builder: (context)=>CreateProductionRequest(customerId),
                     settings: RouteSettings(
                         arguments: {'month':planData['MonthOfYear'].toString()}
                     )));
               }else if(choice=='View Production Requests') {
-                Navigator.push(context, MaterialPageRoute(builder:(context)=>RequestList(planData['ItemSize'],planData['MonthOfYear'])));
+                Navigator.push(context, MaterialPageRoute(builder:(context)=>RequestList(planData['ItemSize'],planData['MonthOfYear'],customerId)));
               }
             },
             itemBuilder: (BuildContext context){

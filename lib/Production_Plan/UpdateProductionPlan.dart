@@ -76,7 +76,7 @@ class _UpdateProductionPlanState extends State<UpdateProductionPlan> {
                             this.selectedValue=value;
                           });
                         },
-                        style: Theme.of(context).textTheme.body1,
+                        style: Theme.of(context).textTheme.bodyText1,
                         decoration: InputDecoration(contentPadding: EdgeInsets.all(16),
 //                          border: OutlineInputBorder(
 //                              borderRadius: BorderRadius.circular(9.0),

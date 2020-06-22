@@ -1,36 +1,58 @@
 import 'dart:convert';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/Network_Operations.dart';
 import 'package:salesmanagement/PrePicking/AddPrePicking.dart';
 
+import '../Utils.dart';
+
 class CreateProductionRequest extends StatefulWidget {
+  var customerId;
+
+  CreateProductionRequest(this.customerId);
+
   @override
-  _CreateProductionRequestState createState() => _CreateProductionRequestState();
+  _CreateProductionRequestState createState() => _CreateProductionRequestState(customerId);
 }
 
 class _CreateProductionRequestState extends State<CreateProductionRequest> {
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey();
   TextEditingController customerItemCode,quantity;
-  var selectedMonth,onHand,isVisible=false,selectedItemId,selectedItemStock;
+  var selectedMonth,onHand,isVisible=false,selectedItemId,selectedItemStock,customerId,monthlyPlanForecast=0,monthlyRequested=0;
+
+  _CreateProductionRequestState(this.customerId);
+
   List<String> months=['January','Febuary','March','April','May','June','July','August','September','October','November','December'],itemName=[];
   @override
   void initState() {
     customerItemCode=TextEditingController();
     quantity=TextEditingController();
-    Network_Operations.GetOnhandStock('LC0001').then((response){
-      if(response!=null&&response!='[]'){
-        setState(() {
-          isVisible=true;
-           this.onHand=jsonDecode(response);
-           for(int i=0;i<onHand.length;i++){
-             itemName.add(onHand[i]['ItemDescription']);
+    Utils.check_connectivity().then((connected){
+       if(connected){
+         Network_Operations.GetOnhandStock(customerId).then((response){
+           if(response!=null&&response!='[]'){
+             setState(() {
+               isVisible=true;
+               this.onHand=jsonDecode(response);
+               for(int i=0;i<onHand.length;i++){
+                 itemName.add(onHand[i]['ItemDescription']);
+               }
+             });
            }
-        });
-      }
+         });
+       }else{
+         Flushbar(
+           message: "Network not Available",
+           backgroundColor: Colors.red,
+           duration: Duration(seconds: 5),
+         )..show(context);
+       }
     });
+
   }
   @override
   Widget build(BuildContext context) {
@@ -74,7 +96,7 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
                             this.selectedItemStock=onHand[itemName.indexOf(value)]['OnhandALL'];
                           });
                         },
-                        style: Theme.of(context).textTheme.body1,
+                        style: Theme.of(context).textTheme.bodyText1,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.all(16)
 //                          border: OutlineInputBorder(
@@ -111,7 +133,7 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
                           this.selectedMonth=months.indexOf(value)+1;
                         });
                       },
-                      style: Theme.of(context).textTheme.body1,
+                      style: Theme.of(context).textTheme.bodyText1,
                       decoration: InputDecoration(contentPadding: EdgeInsets.all(16),
 //                        border: OutlineInputBorder(
 //                            borderRadius: BorderRadius.circular(9.0),
@@ -165,7 +187,38 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
                         child: Text("Create Production Request",style: TextStyle(color: Colors.white),),
                         onPressed: (){
                           _fbKey.currentState.save();
-                         showAlertDialog(context);
+                          ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
+                          pd.show();
+                          Network_Operations.GetCustomerPlanForecast(customerId,2020,selectedMonth).then((value){
+                             pd.dismiss();
+                             if(value!=null){
+                               setState(() {
+                                 monthlyPlanForecast=0;
+                                 monthlyRequested=0;
+                                 var forecast=jsonDecode(value);
+                                 if(forecast!=null&&forecast.length>0){
+                                   for(int i=0;i<forecast.length;i++){
+                                     monthlyPlanForecast+=forecast[i]['QuantityForcasted'];
+                                     monthlyRequested+=forecast[i]['QuantityRequested'];
+                                   }
+                                   if(int.parse(quantity.text)+monthlyRequested>monthlyPlanForecast){
+                                     Flushbar(
+                                       message: "Quantity Requested exceeding your Overall monthly Forecast which is "+monthlyPlanForecast.toString(),
+                                       backgroundColor: Colors.red,
+                                       duration: Duration(seconds: 5),
+                                     )..show(context);
+                                   }else{
+                                     showAlertDialog(context);
+                                   }
+                                 }else{
+                                   showAlertDialog(context);
+                                 }
+                               });
+
+                             }
+                          });
+
+
                         },
                       ),
                     );
@@ -186,7 +239,7 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
         if(_fbKey.currentState.validate()){
           ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
           pd.show();
-          Network_Operations.CreateProductionRequest('LC0001', selectedItemId, customerItemCode.text, selectedMonth, int.parse(quantity.text)).then((response){
+          Network_Operations.CreateProductionRequest(customerId, selectedItemId, customerItemCode.text, selectedMonth, int.parse(quantity.text)).then((response){
             pd.dismiss();
             if(response!=null){
               Scaffold.of(context).showSnackBar(SnackBar(
@@ -207,7 +260,7 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
     Widget cancelButton = FlatButton(
       child: Text("Place Order"),
       onPressed:  () {
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>AddPrePicking()));
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>AddPrePicking(customerId)));
       },
     );
     Widget launchButton = FlatButton(

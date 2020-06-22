@@ -11,21 +11,21 @@ import 'package:salesmanagement/PrePicking/ProductVariations.dart';
 import 'package:salesmanagement/PrePicking/SelectedProductsList.dart';
 import '../Utils.dart';
 class AddProducts extends StatefulWidget {
- var  truckNumber,deliveryDate,mobileNo,address,driverName;
- AddProducts(this.deliveryDate, this.driverName, this.truckNumber,this.address,this.mobileNo);
+ var  customerId;
+ AddProducts(this.customerId);
   @override
-  _AddProductsState createState() => _AddProductsState(deliveryDate,driverName,truckNumber,address,mobileNo);
+  _AddProductsState createState() => _AddProductsState(customerId);
 }
 
 class _AddProductsState extends ResumableState<AddProducts> {
-  var counter=0,stockItems=[],isVisible=false,truckNumber,deliveryDate,mobileNo,address,driverName,_isSearching=false;
+  var counter=0,stockItems=[],isVisible=false,truckNumber,deliveryDate,mobileNo,address,driverName,_isSearching=false,customerId;
   sqlite_helper db;
  String searchQuery = "Search query";
   var filteredList=[];
   static final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   var productsList=[];
   TextEditingController _searchQuery;
-  _AddProductsState(this.deliveryDate, this.driverName, this.truckNumber,this.address,this.mobileNo);
+  _AddProductsState(this.customerId);
 
   @override
   void onResume() {
@@ -61,14 +61,14 @@ class _AddProductsState extends ResumableState<AddProducts> {
         ProgressDialog dialog=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
         try{
           dialog.show();
-        Network_Operations.GetOnhandStock("LC0001").then((response){
+        Network_Operations.GetOnhandStock(customerId).then((response){
           dialog.dismiss();
           if(response!=null){
             setState(() {
               stockItems=jsonDecode(response);
               if(stockItems!=null&&stockItems.length>0){
                 stockItems.sort((a,b){
-                  return double.parse(a['OnhandALL'].toString()).compareTo(double.parse(b['OnhandALL'].toString()));
+                  return double.parse(b['OnhandALL'].toString()).compareTo(double.parse(a['OnhandALL'].toString()));
                 });
                 filteredList.addAll(stockItems);
                 isVisible=true;
@@ -115,7 +115,7 @@ class _AddProductsState extends ResumableState<AddProducts> {
                         )
                     ),
                     onTap: (){
-                      push(context, MaterialPageRoute(builder: (context)=>ProductVariations(filteredList[index]['ItemNumber'],deliveryDate, driverName, truckNumber,address,mobileNo,false)));
+                      push(context, MaterialPageRoute(builder: (context)=>ProductVariations(filteredList[index]['ItemNumber'],customerId)));
                     },
                   ),
                   Divider(),
@@ -229,7 +229,7 @@ class _AddProductsState extends ResumableState<AddProducts> {
         padding: const EdgeInsets.all(16),
         child: InkWell(
           onTap: (){
-            push(context, MaterialPageRoute(builder: (context)=>SelectedProducts(deliveryDate,driverName,truckNumber,address,mobileNo)));
+            push(context, MaterialPageRoute(builder: (context)=>SelectedProducts(customerId)));
           },
           child: Badge(
             badgeContent: Text('$counter',style: TextStyle(color: Colors.white),),
@@ -237,7 +237,7 @@ class _AddProductsState extends ResumableState<AddProducts> {
             showBadge: counter==0?false:true,
           ),
         ),
-      )
+      ),
     ];
   }
 }
