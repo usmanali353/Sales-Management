@@ -11,7 +11,6 @@ import 'package:salesmanagement/Model/Products.dart';
 import 'package:salesmanagement/Model/sqlite_helper.dart';
 import 'package:salesmanagement/Network_Operations.dart';
 import 'package:salesmanagement/PrePicking/AddPrePicking.dart';
-import 'package:salesmanagement/PrePicking/SelectedProductsList.dart';
 import 'package:salesmanagement/Production_Request/CreateProductionRequest.dart';
 import 'package:salesmanagement/Production_Request/RequestDetails.dart';
 import 'package:salesmanagement/Production_Request/UpdateProductionRequest.dart';
@@ -21,7 +20,7 @@ import '../Utils.dart';
 class RequestList extends StatefulWidget {
   var size,month,customerId;
 
-  RequestList(this.size,this.month,this.customerId);
+  RequestList(this.size,this.month,this.customerId,);
 
   @override
   State<StatefulWidget> createState() {
@@ -30,7 +29,7 @@ class RequestList extends StatefulWidget {
 }
 class _RequestsList extends ResumableState<RequestList>{
   var requests,temp=['',''],isVisible=false,itemSizes,selectedValue,size,month,customerId,itemStock;
-  _RequestsList(this.size,this.month,this.customerId);
+  _RequestsList(this.size,this.month,this.customerId,);
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
   final GlobalKey<FormBuilderState> _fbKey=GlobalKey();
   TextEditingController quantity;
@@ -61,7 +60,7 @@ class _RequestsList extends ResumableState<RequestList>{
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          push(context, MaterialPageRoute(builder: (context)=>CreateProductionRequest(customerId)));
+          push(context, MaterialPageRoute(builder: (context)=>CreateProductionRequest(customerId,null)));
         },
         child: Icon(Icons.add),
       ),
@@ -96,6 +95,7 @@ class _RequestsList extends ResumableState<RequestList>{
                       pd.dismiss();
                       if (value != null) {
                         setState(() {
+
                           var items = jsonDecode(value);
                           List<String> itemNames = [];
                           if (items != null && items.length > 0) {
@@ -135,6 +135,9 @@ class _RequestsList extends ResumableState<RequestList>{
                       if(response!=null&&response!=''&&response!='[]'){
                         setState(() {
                           var filteredRequest=[];
+                          if(requests!=null){
+                            requests.clear();
+                          }
                           this.requests=jsonDecode(response);
                           if(requests!=null&&requests.length>0){
                             for(int i=0;i<requests.length;i++){
@@ -168,6 +171,9 @@ class _RequestsList extends ResumableState<RequestList>{
                       pd.dismiss();
                       if(response!=null&&response!=''&&response!='[]'){
                         setState(() {
+                          if(requests!=null){
+                            requests.clear();
+                          }
                           this.requests=jsonDecode(response);
                           this.isVisible=true;
                         });
@@ -408,7 +414,6 @@ class _RequestsList extends ResumableState<RequestList>{
                             }else if(requestsByItem!=null&&requestsByItem.length>0) {
                               requests.clear();
                               requests.addAll(requestsByItem);
-
                             }else{
                               Navigator.pop(context);
                               Flushbar(

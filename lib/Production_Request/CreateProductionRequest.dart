@@ -11,20 +11,20 @@ import 'package:salesmanagement/PrePicking/AddPrePicking.dart';
 import '../Utils.dart';
 
 class CreateProductionRequest extends StatefulWidget {
-  var customerId;
+  var customerId,itemName;
 
-  CreateProductionRequest(this.customerId);
+  CreateProductionRequest(this.customerId,this.itemName);
 
   @override
-  _CreateProductionRequestState createState() => _CreateProductionRequestState(customerId);
+  _CreateProductionRequestState createState() => _CreateProductionRequestState(customerId,itemName);
 }
 
 class _CreateProductionRequestState extends State<CreateProductionRequest> {
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey();
   TextEditingController customerItemCode,quantity;
-  var selectedMonth,onHand,isVisible=false,selectedItemId,selectedItemStock,customerId,monthlyPlanForecast=0,monthlyRequested=0;
-
-  _CreateProductionRequestState(this.customerId);
+  var selectedMonth,onHand,isVisible=false,selectedItemId,selectedItemStock,customerId,monthlyPlanForecast=0,monthlyRequested=0,itemNam,sizeMonthlyForecast=0,sizeMonthlyRequested=0;
+  Map<String, Object> params;
+  _CreateProductionRequestState(this.customerId,this.itemNam);
 
   List<String> months=['January','Febuary','March','April','May','June','July','August','September','October','November','December'],itemName=[];
   @override
@@ -33,7 +33,10 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
     quantity=TextEditingController();
     Utils.check_connectivity().then((connected){
        if(connected){
+         ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
+         pd.show();
          Network_Operations.GetOnhandStock(customerId).then((response){
+           pd.dismiss();
            if(response!=null&&response!='[]'){
              setState(() {
                isVisible=true;
@@ -56,7 +59,7 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
   }
   @override
   Widget build(BuildContext context) {
-    final  Map<String, Object> params = ModalRoute.of(context).settings.arguments;
+     params = ModalRoute.of(context).settings.arguments;
     print(params);
     return Scaffold(
       appBar: AppBar(
@@ -77,7 +80,7 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
                       child: FormBuilderDropdown(
                         attribute: "Select Item",
                         hint: Text("Select Item"),
-                        initialValue: params!=null&&params['itemName']!=null?itemName[itemName.indexOf(params['itemName'])]:null,
+                        initialValue: itemNam,
                         items: itemName!=null?itemName.map((plans)=>DropdownMenuItem(
                           child: Text(plans),
                           value: plans,
@@ -195,13 +198,19 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
                                setState(() {
                                  monthlyPlanForecast=0;
                                  monthlyRequested=0;
+                                 sizeMonthlyForecast=0;
+                                 sizeMonthlyRequested=0;
                                  var forecast=jsonDecode(value);
                                  if(forecast!=null&&forecast.length>0){
                                    for(int i=0;i<forecast.length;i++){
                                      monthlyPlanForecast+=forecast[i]['QuantityForcasted'];
                                      monthlyRequested+=forecast[i]['QuantityRequested'];
+                                     if(forecast['ItemSize']==params['ItemSize']){
+                                       sizeMonthlyForecast+=forecast[i]['QuantityForcasted'];
+                                       sizeMonthlyRequested+=forecast[i]['QuantityRequested'];
+                                     }
                                    }
-                                   if(int.parse(quantity.text)+monthlyRequested>monthlyPlanForecast){
+                                   if(int.parse(quantity.text)+monthlyRequested>monthlyPlanForecast||int.parse(quantity.text)+sizeMonthlyRequested>sizeMonthlyForecast){
                                      Flushbar(
                                        message: "Quantity Requested exceeding your Overall monthly Forecast which is "+monthlyPlanForecast.toString(),
                                        backgroundColor: Colors.red,
@@ -223,7 +232,7 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
                       ),
                     );
                   },
-                )
+                ),
               ],
             ),
           ),
@@ -237,16 +246,17 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
       child: Text("Add Production"),
       onPressed:  () {
         if(_fbKey.currentState.validate()){
+          var size=params!=null&&params['ItemSize']!=null?params['ItemSize']:'';
           ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
           pd.show();
-          Network_Operations.CreateProductionRequest(customerId, selectedItemId, customerItemCode.text, selectedMonth, int.parse(quantity.text)).then((response){
+          Network_Operations.CreateProductionRequest(customerId, selectedItemId, customerItemCode.text, selectedMonth, int.parse(quantity.text),size).then((response){
             pd.dismiss();
             if(response!=null){
+              Navigator.pop(context,'Refresh');
               Scaffold.of(context).showSnackBar(SnackBar(
                 backgroundColor: Colors.green,
                 content: Text("Production Request added"),
               ));
-              Navigator.pop(context,'Refresh');
             }else{
               Scaffold.of(context).showSnackBar(SnackBar(
                 backgroundColor: Colors.red,
@@ -276,9 +286,9 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
       content: RichText(
          text: TextSpan(
            children: [
-             TextSpan(text: "You have ",style: Theme.of(context).textTheme.body1),
-             TextSpan(text: "$selectedItemStock",style: Theme.of(context).textTheme.body1.merge(TextStyle(color: Colors.teal))),
-             TextSpan(text: " SQM available for this item",style: Theme.of(context).textTheme.body1),
+             TextSpan(text: "You have ",style: Theme.of(context).textTheme.bodyText1),
+             TextSpan(text: "$selectedItemStock",style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(color: Colors.teal))),
+             TextSpan(text: " SQM available for this item",style: Theme.of(context).textTheme.bodyText1),
            ]
          ),
       ), //Text("You have $selectedItemStock SQM available for this item"),

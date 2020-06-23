@@ -84,7 +84,7 @@ class _UpdateProductionRequestState extends State<UpdateProductionRequest> {
                           this.selectedMonth=months.indexOf(value)+1;
                         });
                       },
-                      style: Theme.of(context).textTheme.body1,
+                      style: Theme.of(context).textTheme.bodyText1,
                       decoration: InputDecoration(contentPadding: EdgeInsets.all(16),
 
 //                      border: OutlineInputBorder(
@@ -148,11 +148,11 @@ class _UpdateProductionRequestState extends State<UpdateProductionRequest> {
                             Network_Operations.UpdateProductionRequest(requestData['CustomerAccount'], itemNumber.text, customerItemCode.text, selectedMonth, int.parse(quantity.text), requestData['RequestedDate'],requestData['CustomerPONum'],requestData['ProductionRequestId']).then((response){
                               pd.dismiss();
                               if(response!=null){
+                                Navigator.pop(context,'Refresh');
                                 Scaffold.of(context).showSnackBar(SnackBar(
                                   backgroundColor: Colors.green,
                                   content: Text("Production Request Updated"),
                                 ));
-                                Navigator.pop(context,'Refresh');
                               }else{
                                 Scaffold.of(context).showSnackBar(SnackBar(
                                   backgroundColor: Colors.red,
@@ -165,7 +165,7 @@ class _UpdateProductionRequestState extends State<UpdateProductionRequest> {
                       ),
                     );
                   },
-                )
+                ),
               ],
             ),
           ),

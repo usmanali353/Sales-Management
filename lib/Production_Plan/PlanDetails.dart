@@ -31,7 +31,7 @@ class _PlanDetailState extends State<PlanDetail> {
           PopupMenuButton<String>(
             onSelected: (choice){
               if(choice=='Create Production Request'){
-                Navigator.push(context,MaterialPageRoute(builder: (context)=>CreateProductionRequest(customerId),
+                Navigator.push(context,MaterialPageRoute(builder: (context)=>CreateProductionRequest(customerId,null),
                     settings: RouteSettings(
                         arguments: {'month':planData['MonthOfYear'].toString()}
                     )));

@@ -305,32 +305,15 @@ class Network_Operations {
   }
 
   static Future<String> GetCustomerPlan(String customerId, String year) async {
-    final response = await http.get(
-        'http://sales.arabianceramics.com/AcmcMobileServices/ProdPlanService.svc/GetCustomerPlan/' +
-            customerId +
-            '/' +
-            year,
-        headers: {'authorization': basicAuth});
-    print(
-        'http://sales.arabianceramics.com/AcmcMobileServices/ProdPlanService.svc/GetCustomerPlan/' +
-            customerId +
-            '/' +
-            year);
+    final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/ProdPlanService.svc/GetCustomerPlan/' + customerId + '/' + year, headers: {'authorization': basicAuth});
+    print(response.body);
     if (response.statusCode == 200) {
       return response.body;
     } else
       return null;
   }
   static Future<String> GetCustomerPlanForecast(String customerId, int year,int month) async {
-    final response = await http.get(
-        'http://sales.arabianceramics.com/AcmcMobileServices/ProdPlanService.svc/GetMonthlyForcastSummary/' +
-            customerId +
-            '/' +
-            year.toString() +
-            '/' +
-            month.toString()
-        ,
-        headers: {'authorization': basicAuth});
+    final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/ProdPlanService.svc/GetMonthlyForcastSummary/' + customerId + '/' + year.toString() + '/' + month.toString(), headers: {'authorization': basicAuth});
     debugPrint(response.body);
     if (response.statusCode == 200) {
       return response.body;
@@ -514,10 +497,12 @@ class Network_Operations {
       String itemNumber,
       String customerItemCode,
       int productionMonth,
-      int requestedQuantity) async {
+      int requestedQuantity,
+      String itemSize) async {
     final body = jsonEncode({
       'CustomerAccount': customerAccount,
       'ItemNumber': itemNumber,
+      'ItemSize':itemSize,
       'CustomerItemCode': customerItemCode,
       'ProductionMonth': productionMonth,
       'QuantityRequested': requestedQuantity,

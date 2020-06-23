@@ -209,7 +209,7 @@ class _VariationDetailsState extends ResumableState<VariationDetails> {
                      this.selectedPreference=choice;
                      Navigator.pop(context);
                      selectedPreference=null;
-                     Navigator.push(context,MaterialPageRoute(builder: (context)=>CreateProductionRequest(customerId),
+                     Navigator.push(context,MaterialPageRoute(builder: (context)=>CreateProductionRequest(customerId,variationData['ItemDescription']),
                          settings: RouteSettings(
                              arguments: {'itemName':variationData['ItemDescription'].toString(),'ItemSize':variationData['ItemSize'].toString()}
                          )));
