@@ -15,10 +15,10 @@ void main(){
   WidgetsFlutterBinding.ensureInitialized();
 
   SharedPreferences.getInstance().then((prefs) {
-    var lightModeOn = prefs.getBool('LightMode') ?? true;
+    var darkModeOn = prefs.getBool('darkMode') ?? true;
     runApp(
       ChangeNotifierProvider<ThemeNotifier>(
-        create: (_) => ThemeNotifier(lightModeOn ? lightTheme : darkTheme),
+        create: (_) => ThemeNotifier(darkModeOn ? darkTheme : lightTheme),
         child: myApp(),
       )
     );

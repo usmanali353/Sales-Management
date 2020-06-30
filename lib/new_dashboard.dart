@@ -35,7 +35,7 @@ class newdashboard extends StatefulWidget{
 }
 
 class _newdashboard extends ResumableState<newdashboard>{
-  var todayDeliveryCardVisible=false,weeklyDeliveryCardVisible=false,prodRequestCardVisible=false,financeVisible=false,totalOlderStock=0.0,olderstockVisible=false,currentTheme=true,customerId;
+  var todayDeliveryCardVisible=false,weeklyDeliveryCardVisible=false,prodRequestCardVisible=false,financeVisible=false,totalOlderStock=0.0,olderstockVisible=false,currentTheme=false,customerId;
 
   _newdashboard(this.customerId);
 
@@ -48,7 +48,7 @@ class _newdashboard extends ResumableState<newdashboard>{
     if(resume.data.toString()=='Refresh'){
       SharedPreferences.getInstance().then((prefs){
         setState(() {
-          this.currentTheme=prefs.getBool("LightMode");
+          this.currentTheme=prefs.getBool("darkMode");
         });
       });
     }
@@ -222,7 +222,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                   ),
                   ListTile(
                     title: Text("Complaints"),
-                    leading: Icon(FontAwesomeIcons.angry),
+                    leading: Icon(FontAwesomeIcons.exclamationTriangle),
                     onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>casesList(customerId,'All','Customer Complains')));
                     },
@@ -255,6 +255,7 @@ class _newdashboard extends ResumableState<newdashboard>{
         title: Text("Dashboard"),
        ),
       body: Container(
+        width:MediaQuery.of(context).size.width,
         margin: EdgeInsets.only(bottom: 15),
         child: ListView(
           children: <Widget>[
@@ -287,10 +288,12 @@ class _newdashboard extends ResumableState<newdashboard>{
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>DeliveryList("2019-05-15",customerId)));
                     },
                     child: Card(
+
                       elevation: 10,
                       child: Container(
                         height: 130,
-                        width: 185,
+                        //width: 185,
+                        width: MediaQuery.of(context).size.width * 0.45 ,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
                           color: Color(0xFF004c4c),
@@ -309,12 +312,12 @@ class _newdashboard extends ResumableState<newdashboard>{
 //                            ),
                             ]
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             Container(
-                              margin: EdgeInsets.only(left: 12),
-                              child: Text("Today's\n(m\u00B2)",
+                              //margin: EdgeInsets.only(left: 12),
+                              child: Text("Today's (m\u00B2)",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold
@@ -322,23 +325,23 @@ class _newdashboard extends ResumableState<newdashboard>{
                               ),
                             ),
                             Container(
-                              //margin: EdgeInsets.only(left: 10, top: 5,bottom: 5),
+                              margin: EdgeInsets.only(left: 5, right: 5),
                               height: 30,
-                              width: 95,
+                              width: 150,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(15),
-                                    bottomLeft: Radius.circular(15)
-                                ),
+                                borderRadius: BorderRadius.circular(15),
                                 color: Colors.grey.shade100,
                               ),
-                              child: Container(margin: EdgeInsets.only(left: 10,top: 5),
-                                child: Text(deliveryNumber!=null&&deliveryNumber.length>0?deliveryNumber[0]['quantityField'].toString():'0', style: TextStyle(color:Color(0xFF004c4c),
+                              child: Center(
+                                child: Container(
+                                  //margin: EdgeInsets.only(left: 10,top: 5),
+                                  child: Text(deliveryNumber!=null&&deliveryNumber.length>0?deliveryNumber[0]['quantityField'].toString():'0', style: TextStyle(color:Color(0xFF004c4c),
 
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold
+                                    ),
+
                                   ),
-
                                 ),
                               ),
                             ),
@@ -359,7 +362,9 @@ class _newdashboard extends ResumableState<newdashboard>{
                       elevation: 10,
                       child: Container(
                         height: 130,
-                        width: 185,
+                        width: MediaQuery.of(context).size.width * 0.45 ,
+                        //width: MediaQuery.of(context).size.width /2.2 ,
+                        //width: 185,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
                           color: Color(0xFF004c4c),
@@ -378,12 +383,12 @@ class _newdashboard extends ResumableState<newdashboard>{
 //                            ),
 //                          ]
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             Container(
-                              margin: EdgeInsets.only(left: 12),
-                              child: Text(DateFormat.MMMM().format(DateTime.now()).toString()+'\n(m\u00B2)',
+                              //margin: EdgeInsets.only(left: 12),
+                              child: Text(DateFormat.MMMM().format(DateTime.now()).toString()+' (m\u00B2)',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold
@@ -391,26 +396,27 @@ class _newdashboard extends ResumableState<newdashboard>{
                               ),
                             ),
                             Container(
-                              //margin: EdgeInsets.only(left: 10, top: 5,bottom: 5),
+                              //padding: EdgeInsets.all(3),
+                              margin: EdgeInsets.only(left: 5, right: 5),
 
                               height: 30,
-                              width: 95,
+                              width: 145,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(15),
-                                    bottomLeft: Radius.circular(15)
-                                ),
+                                borderRadius: BorderRadius.circular(15),
                                 color: Colors.grey.shade100,
                               ),
-                              child: Container(margin: EdgeInsets.only(left: 10,top: 5),
-                                child: Text(weeklyDelivery!=null&&weeklyDelivery.length>0?weeklyDelivery[0]['quantityField'].toString():'0',
-                                  style: TextStyle(
-                                      color:Colors.teal.shade800,
-                                      //Color(0xFF004c4c),
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold
-                                  ),
+                              child: Center(
+                                child: Container(
+                                  //margin: EdgeInsets.only(left: 10,top: 5),
+                                  child: Text(weeklyDelivery!=null&&weeklyDelivery.length>0?weeklyDelivery[0]['quantityField'].toString():'0',
+                                    style: TextStyle(
+                                        color:Colors.teal.shade800,
+                                        //Color(0xFF004c4c),
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold
+                                    ),
 
+                                  ),
                                 ),
                               ),
                             )
@@ -473,7 +479,8 @@ class _newdashboard extends ResumableState<newdashboard>{
                           Container(
                             //margin: EdgeInsets.only(left: 10, top: 5,bottom: 5),
                             height: 30,
-                            width: 100,
+                            width: MediaQuery.of(context).size.width *0.35,
+                            //width: 145,
                             decoration: BoxDecoration(
 
                               borderRadius: BorderRadius.only(
@@ -542,7 +549,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                       elevation: 10,
                       child: Container(
                         height: 130,
-                        width: 185,
+                        width: MediaQuery.of(context).size.width * 0.45 ,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
 //                          boxShadow: [
@@ -561,26 +568,32 @@ class _newdashboard extends ResumableState<newdashboard>{
 //                          ]
                         ),
 
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             Container(
-                              margin: EdgeInsets.only(left: 12),
-                              child: Text("Requested\n(m\u00B2)",
+                              //margin: EdgeInsets.only(left: 7),
+                              child: Text("Requested (m\u00B2)",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold
                                 ),
                               ),
                             ),
+//                            Padding(
+//                              padding: EdgeInsets.all(2),
+//                            ),
                             Container(
-                              //margin: EdgeInsets.only(left: 10, top: 5,bottom: 5),
 
+                              //padding: EdgeInsets.only(left: 15, right: 15),
+                              margin: EdgeInsets.only(left: 5, right: 5),
                               height: 30,
-                              width: 95,
+                              width: 145,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(15),
-                                    bottomLeft: Radius.circular(15)
+                                    bottomLeft: Radius.circular(15),
+                                    topRight: Radius.circular(15),
+                                    bottomRight: Radius.circular(15),
                                 ),
 
                                 color:currentTheme?Color(0xFF004c4c):Colors.grey.shade200,
@@ -599,15 +612,18 @@ class _newdashboard extends ResumableState<newdashboard>{
 //                                    ),
 //                                  ]
                               ),
-                              child: Container(margin: EdgeInsets.only(left: 10,top: 5),
-                                child: Text(productionRequestNumbers!=null&&productionRequestNumbers.length>0?productionRequestNumbers[0]['OtherValue'].toString():'0',
-                                  style: TextStyle(
-                                      color:!currentTheme?Color(0xFF004c4c):Colors.white,
-                                      //Color(0xFF004c4c),
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold
-                                  ),
+                              child: Center(
+                                child: Container(
+                                  //margin: EdgeInsets.only(left: 10,top: 5),
+                                  child: Text(productionRequestNumbers!=null&&productionRequestNumbers.length>0?productionRequestNumbers[0]['OtherValue'].toString():'0',
+                                    style: TextStyle(
+                                        color:!currentTheme?Color(0xFF004c4c):Colors.white,
+                                        //Color(0xFF004c4c),
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold
+                                    ),
 
+                                  ),
                                 ),
                               ),
                             )
@@ -626,7 +642,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                       elevation: 10,
                       child: Container(
                         height: 130,
-                        width: 185,
+                        width: MediaQuery.of(context).size.width * 0.45 ,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
 
@@ -645,12 +661,12 @@ class _newdashboard extends ResumableState<newdashboard>{
 //                            ),
 //                          ]
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             Container(
-                              margin: EdgeInsets.only(left: 12),
-                              child: Text("Approved\nProduction",
+                              //margin: EdgeInsets.only(left: 12),
+                              child: Text("Approved Production",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
 
@@ -658,14 +674,11 @@ class _newdashboard extends ResumableState<newdashboard>{
                               ),
                             ),
                             Container(
-                              //margin: EdgeInsets.only(left: 10, top: 5,bottom: 5),
+                              margin: EdgeInsets.only(left: 5, right: 5),
                               height: 30,
-                              width: 95,
+                              width: 145,
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(15),
-                                      bottomLeft: Radius.circular(15)
-                                  ),
+                                  borderRadius: BorderRadius.circular(15),
 
                                   color: currentTheme?Color(0xFF004c4c):Colors.grey.shade200,
 //                                boxShadow: [
@@ -683,14 +696,17 @@ class _newdashboard extends ResumableState<newdashboard>{
 //                                  ),
 //                                ]
                               ),
-                              child: Container(margin: EdgeInsets.only(left: 10,top: 5),
-                                child: Text(productionRequestNumbers!=null&&productionRequestNumbers.length>3?productionRequestNumbers[3]['OtherValue'].toString():'0',
-                                  style: TextStyle(
-                                      color:!currentTheme?Color(0xFF004c4c):Colors.white,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold
-                                  ),
+                              child: Center(
+                                child: Container(
+                                  //margin: EdgeInsets.only(left: 10,top: 5),
+                                  child: Text(productionRequestNumbers!=null&&productionRequestNumbers.length>3?productionRequestNumbers[3]['OtherValue'].toString():'0',
+                                    style: TextStyle(
+                                        color:!currentTheme?Color(0xFF004c4c):Colors.white,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold
+                                    ),
 
+                                  ),
                                 ),
                               ),
                             )
@@ -752,7 +768,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                             //margin: EdgeInsets.only(left: 10, top: 5,bottom: 5),
 
                             height: 30,
-                            width: 100,
+                            width: MediaQuery.of(context).size.width *0.35,
                             decoration: BoxDecoration(
 
                               borderRadius: BorderRadius.only(
@@ -846,7 +862,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                         children: <Widget>[
                         Container(
                           margin: EdgeInsets.only(left: 12),
-                          child: Text("Customer Balance Amount",
+                          child: Text("Balance Amount",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white
@@ -867,7 +883,8 @@ class _newdashboard extends ResumableState<newdashboard>{
                           Container(
                             //margin: EdgeInsets.only(left: 10, top: 5,bottom: 5),
                             height: 30,
-                            width: 100,
+                            width: MediaQuery.of(context).size.width *0.35,
+
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(15),
@@ -925,7 +942,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                       elevation: 10,
                       child: Container(
                         height: 130,
-                        width: 185,
+                        width: MediaQuery.of(context).size.width * 0.45 ,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
 
@@ -944,26 +961,26 @@ class _newdashboard extends ResumableState<newdashboard>{
 //                        ),
 //                      ]
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             Container(
-                              margin: EdgeInsets.only(left: 12),
-                              child: Text("On-Hand\nStock\n(m\u00B2)",
+                              margin: EdgeInsets.only(left: 5, right: 5),
+                              //margin: EdgeInsets.only(left: 12),
+                              child: Text("On-Hand Stock (m\u00B2)",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold
                                 ),
                               ),
                             ),
                             Container(
+                              margin: EdgeInsets.only(left: 5, right: 5),
+
                               //margin: EdgeInsets.only(left: 10, top: 5,bottom: 5),
                               height: 30,
-                              width: 95,
+                              width:145,
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(15),
-                                      bottomLeft: Radius.circular(15)
-                                  ),
+                                  borderRadius: BorderRadius.circular(15),
 
                                   color: currentTheme?Color(0xFF004c4c):Colors.grey.shade200,
 //                            boxShadow: [
@@ -981,15 +998,18 @@ class _newdashboard extends ResumableState<newdashboard>{
 //                              ),
 //                            ]
                               ),
-                              child: Container(margin: EdgeInsets.only(left: 10,top: 5),
-                                child: Text(totalOnhandStock.toString()??'0',
-                                  style: TextStyle(
-                                      color:!currentTheme?Color(0xFF004c4c):Colors.white,
-                                      //Color(0xFF004c4c),
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold
-                                  ),
+                              child: Center(
+                                child: Container(
+                                  //margin: EdgeInsets.only(left: 10,top: 5),
+                                  child: Text(totalOnhandStock.toString()??'0',
+                                    style: TextStyle(
+                                        color:!currentTheme?Color(0xFF004c4c):Colors.white,
+                                        //Color(0xFF004c4c),
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold
+                                    ),
 
+                                  ),
                                 ),
                               ),
                             )
@@ -1010,7 +1030,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                       elevation: 10,
                       child: Container(
                         height: 130,
-                        width: 185,
+                        width: MediaQuery.of(context).size.width * 0.45 ,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
 //                      boxShadow: [
@@ -1028,13 +1048,14 @@ class _newdashboard extends ResumableState<newdashboard>{
 //                        ),
 //                      ]
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             //OnHand Stock
                             Container(
-                              margin: EdgeInsets.only(left: 12),
-                              child: Text("Old Stock\n(m\u00B2)",
+                              margin: EdgeInsets.only(left: 5, right: 5),
+                              //margin: EdgeInsets.only(left: 12),
+                              child: Text("Old Stock (m\u00B2)",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold
                                 ),
@@ -1043,14 +1064,11 @@ class _newdashboard extends ResumableState<newdashboard>{
                             //Older Stock
                             Container(
                               //margin: EdgeInsets.only(left: 10, top: 5,bottom: 5),
-
+                              margin: EdgeInsets.only(left: 5, right: 5),
                               height: 30,
-                              width: 95,
+                              width: 145,
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(15),
-                                      bottomLeft: Radius.circular(15)
-                                  ),
+                                  borderRadius: BorderRadius.circular(15),
 
                                   color: currentTheme?Color(0xFF004c4c):Colors.grey.shade200,
 //                              boxShadow: [
@@ -1068,15 +1086,18 @@ class _newdashboard extends ResumableState<newdashboard>{
 //                                ),
 //                              ]
                               ),
-                              child: Container(margin: EdgeInsets.only(left: 10,top: 5),
-                                child: Text(totalOlderStock!=null?totalOlderStock.toString():'0.0',
-                                  style: TextStyle(
-                                      color:!currentTheme?Color(0xFF004c4c):Colors.white,
-                                      //Color(0xFF004c4c),
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold
-                                  ),
+                              child: Center(
+                                child: Container(
+                                  //margin: EdgeInsets.only(left: 10,top: 5),
+                                  child: Text(totalOlderStock!=null?totalOlderStock.toString():'0.0',
+                                    style: TextStyle(
+                                        color:!currentTheme?Color(0xFF004c4c):Colors.white,
+                                        //Color(0xFF004c4c),
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold
+                                    ),
 
+                                  ),
                                 ),
                               ),
                             ),
@@ -1120,7 +1141,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                       elevation: 10,
                       child: Container(
                         height: 130,
-                        width: 185,
+                        width: MediaQuery.of(context).size.width * 0.45 ,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             color: Color(0xFF9B3340),
@@ -1140,11 +1161,12 @@ class _newdashboard extends ResumableState<newdashboard>{
 //                          ]
                         ),
 
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             Container(
-                              margin: EdgeInsets.only(left: 12),
+                              margin: EdgeInsets.only(left: 5, right: 5),
+                              //margin: EdgeInsets.only(left: 12),
                               child: Text("Opened",
                                 style: TextStyle(
                                     color: Colors.white,
@@ -1156,14 +1178,12 @@ class _newdashboard extends ResumableState<newdashboard>{
                             ),
                             Container(
                               //margin: EdgeInsets.only(left: 10, top: 5,bottom: 5),
+                              margin: EdgeInsets.only(left: 5, right: 5),
 
                               height: 30,
-                              width: 95,
+                              width: 145,
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(15),
-                                      bottomLeft: Radius.circular(15)
-                                  ),
+                                  borderRadius: BorderRadius.circular(15),
 
                                   color: Colors.grey.shade200,
 //                              boxShadow: [
@@ -1181,15 +1201,18 @@ class _newdashboard extends ResumableState<newdashboard>{
 //                                ),
 //                              ]
                               ),
-                              child: Container(margin: EdgeInsets.only(left: 10,top: 5),
-                                child: Text(caseNumbers!=null&&caseNumbers.length>0?caseNumbers[0]['SummaryValue'].toString():'0',
-                                  style: TextStyle(
-                                      color:Color(0xFF9B3340),
-                                      //Color(0xFF004c4c),
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold
-                                  ),
+                              child: Center(
+                                child: Container(
+                                  //margin: EdgeInsets.only(left: 10,top: 5),
+                                  child: Text(caseNumbers!=null&&caseNumbers.length>0?caseNumbers[0]['SummaryValue'].toString():'0',
+                                    style: TextStyle(
+                                        color:Color(0xFF9B3340),
+                                        //Color(0xFF004c4c),
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold
+                                    ),
 
+                                  ),
                                 ),
                               ),
                             ),
@@ -1206,7 +1229,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                       elevation: 10,
                       child: Container(
                         height: 130,
-                        width: 185,
+                        width: MediaQuery.of(context).size.width * 0.45 ,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             color: Color(0xFF004c4c),
@@ -1225,11 +1248,12 @@ class _newdashboard extends ResumableState<newdashboard>{
 //                            ),
 //                          ]
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             Container(
-                              margin: EdgeInsets.only(left: 12),
+                              //margin: EdgeInsets.only(left: 5, right: 5),
+                              //margin: EdgeInsets.only(left: 12),
                               child: Text("In-process",
                                 style: TextStyle(
                                     color: Colors.white,
@@ -1238,25 +1262,27 @@ class _newdashboard extends ResumableState<newdashboard>{
                               ),
                             ),
                             Container(
+                              margin: EdgeInsets.only(left: 5, right: 5),
+
                               //margin: EdgeInsets.only(left: 10, top: 5,bottom: 5),
                               height: 30,
-                              width: 95,
+                              width: 145,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(15),
-                                    bottomLeft: Radius.circular(15)
-                                ),
+                                borderRadius: BorderRadius.circular(15),
                                 color: Colors.grey.shade100,
                               ),
-                              child: Container(margin: EdgeInsets.only(left: 10,top: 5, bottom: 5),
-                                child: Text(caseNumbers!=null&&caseNumbers.length>0?caseNumbers[0]['SummaryValue'].toString():'0',
-                                  style: TextStyle(
-                                      color:Color(0xFF004c4c),
-                                      //Color(0xFF004c4c),
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold
-                                  ),
+                              child: Center(
+                                child: Container(
+                                  //margin: EdgeInsets.only(left: 10,top: 5, bottom: 5),
+                                  child: Text(caseNumbers!=null&&caseNumbers.length>0?caseNumbers[0]['SummaryValue'].toString():'0',
+                                    style: TextStyle(
+                                        color:Color(0xFF004c4c),
+                                        //Color(0xFF004c4c),
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold
+                                    ),
 
+                                  ),
                                 ),
                               ),
                             ),

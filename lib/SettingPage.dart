@@ -12,11 +12,11 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  var _lightTheme = true;
+  var _darkTheme = true;
   @override
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
-    _lightTheme = (themeNotifier.getTheme() == lightTheme);
+    _darkTheme = (themeNotifier.getTheme() == darkTheme);
     return Scaffold(
       appBar: AppBar(title: Text("Settings"),),
       body: WillPopScope(
@@ -27,15 +27,15 @@ class _SettingsPageState extends State<SettingsPage> {
         child: ListView(
           children: <Widget>[
             ListTile(
-              title: Text('Theme'),
+              title: Text('Dark Theme'),
               contentPadding: const EdgeInsets.only(left: 16.0),
               trailing: Transform.scale(
                 scale: 0.4,
                 child: DayNightSwitch(
-                  value: _lightTheme,
+                  value: _darkTheme,
                   onChanged: (val) {
                     setState(() {
-                      _lightTheme = val;
+                      _darkTheme = val;
                     });
                     onThemeChanged(val, themeNotifier);
                   },
@@ -52,7 +52,7 @@ class _SettingsPageState extends State<SettingsPage> {
             Divider(),
             ListTile(
               title: Text("About US"),
-              trailing: Icon(Icons.web),
+              trailing: Icon(Icons.contact_mail),
               onTap: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context)=>WebBrowser('https://www.arabian-ceramics.com/en-us/about-us')));
               },
@@ -65,8 +65,8 @@ class _SettingsPageState extends State<SettingsPage> {
   }
   void onThemeChanged(bool value, ThemeNotifier themeNotifier) async {
     (value)
-        ? themeNotifier.setTheme(lightTheme)
-        : themeNotifier.setTheme(darkTheme);
+        ? themeNotifier.setTheme(darkTheme)
+        : themeNotifier.setTheme(lightTheme);
     var prefs = await SharedPreferences.getInstance();
     prefs.setBool('LightMode', value);
   }

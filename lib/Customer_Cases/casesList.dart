@@ -183,11 +183,13 @@ void onResume() {
                       title: Text(filteredList[index]['CaseNum']!=null?filteredList[index]['CaseNum']:''),
                       subtitle: Text(filteredList[index]['Status']!=null?getCaseType(filteredList[index]['CategoryTypeId']):''),
                       leading: Material(
-                          borderRadius: BorderRadius.circular(24),
-                          color: Colors.teal.shade100,
+                          borderRadius: BorderRadius.circular(25),
+                          color: Color(0xFF9B3340)
+                          ,
                           child: Padding(
-                            padding: const EdgeInsets.only(top:10,bottom: 15,right: 10,left: 10),
-                            child: Icon(FontAwesomeIcons.angry,size: 30,color: Color(0xFF004c4c),),
+                            padding: EdgeInsets.all(12),
+                            //padding: const EdgeInsets.only(top:11,bottom: 15,right: 10,left: 10),
+                            child: Icon(FontAwesomeIcons.exclamation,size: 25,color: Colors.white,),
                           )
                       ),
                       onTap: (){
