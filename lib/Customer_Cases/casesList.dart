@@ -184,8 +184,7 @@ void onResume() {
                       subtitle: Text(filteredList[index]['Status']!=null?getCaseType(filteredList[index]['CategoryTypeId']):''),
                       leading: Material(
                           borderRadius: BorderRadius.circular(25),
-                          color: Color(0xFF9B3340)
-                          ,
+                          color: Color(0xFF9B3340),
                           child: Padding(
                             padding: EdgeInsets.all(12),
                             //padding: const EdgeInsets.only(top:11,bottom: 15,right: 10,left: 10),
