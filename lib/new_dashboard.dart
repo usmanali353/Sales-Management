@@ -35,7 +35,7 @@ class newdashboard extends StatefulWidget{
 }
 
 class _newdashboard extends ResumableState<newdashboard>{
-  var todayDeliveryCardVisible=false,weeklyDeliveryCardVisible=false,prodRequestCardVisible=false,financeVisible=false,totalOlderStock=0.0,olderstockVisible=false,currentTheme=false,customerId;
+  var todayDeliveryCardVisible=false,weeklyDeliveryCardVisible=false,prodRequestCardVisible=false,financeVisible=false,totalOlderStock=0.0,olderstockVisible=false,currentTheme=true,customerId;
 
   _newdashboard(this.customerId);
 
