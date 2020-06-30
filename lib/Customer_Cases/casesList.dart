@@ -4,6 +4,7 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:need_resume/need_resume.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/Customer_Cases/CaseDetail.dart';
 import 'package:salesmanagement/Customer_Cases/CreateCase.dart';
@@ -22,7 +23,7 @@ class casesList extends StatefulWidget{
   }
 
 }
-class _casesList extends State<casesList>{
+class _casesList extends ResumableState<casesList>{
   var caseListAll=[],customerId,temp=['',''],isVisible=false,caseList=[],caseType,title,_isSearching=false,filteredList=[];
   static final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   String searchQuery = "Search query";
@@ -35,14 +36,23 @@ class _casesList extends State<casesList>{
     WidgetsBinding.instance.addPostFrameCallback((_) => _refreshIndicatorKey.currentState.show());
     super.initState();
   }
-
+@override
+void onResume() {
+    if(resume.data.toString()=='Refresh'){
+      WidgetsBinding.instance
+          .addPostFrameCallback((_) =>
+          _refreshIndicatorKey.currentState
+              .show());
+    }
+    super.onResume();
+  }
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>CreateCase(customerId)));
+          push(context, MaterialPageRoute(builder: (context)=>CreateCase(customerId)));
         },
         child: Icon(Icons.add),
       ),
@@ -148,7 +158,6 @@ class _casesList extends State<casesList>{
                         Network_Operations.DeleteCustomerCase(filteredList[index]['CaseNum']).then((response){
                           pd.dismiss();
                            if(response!=null){
-
                              WidgetsBinding.instance
                                  .addPostFrameCallback((_) =>
                                  _refreshIndicatorKey.currentState
@@ -166,7 +175,7 @@ class _casesList extends State<casesList>{
                       color: Colors.blue,
                       caption: 'Update',
                       onTap: (){
-                       Navigator.push(context, MaterialPageRoute(builder: (context)=>UpdateCases(filteredList[index])));
+                       push(context, MaterialPageRoute(builder: (context)=>UpdateCases(filteredList[index])));
                       },
                     ),
                   ],

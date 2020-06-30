@@ -142,6 +142,7 @@ class _UpdateCasesState extends State<UpdateCases> {
                                   backgroundColor: Colors.green,
                                   content: Text("Case Updated Sucessfully"),
                                 ));
+                                Navigator.pop(context,'Refresh');
                               }else{
                                 Scaffold.of(context).showSnackBar(SnackBar(
                                   backgroundColor: Colors.red,

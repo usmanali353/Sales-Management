@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -66,7 +68,7 @@ class _CreateCase extends State<CreateCase>{
                         child: Text(trainer),
                         value: trainer,
                       )).toList(),
-                      style: Theme.of(context).textTheme.body1,
+                      style: Theme.of(context).textTheme.bodyText1,
                       decoration: InputDecoration(contentPadding: EdgeInsets.all(16),
 //                        border: OutlineInputBorder(
 //                            borderRadius: BorderRadius.circular(9.0),
@@ -93,7 +95,7 @@ class _CreateCase extends State<CreateCase>{
                         child: Text(trainer),
                         value: trainer,
                       )).toList(),
-                      style: Theme.of(context).textTheme.body1,
+                      style: Theme.of(context).textTheme.bodyText1,
                       decoration: InputDecoration(contentPadding: EdgeInsets.all(16),
 //                        border: OutlineInputBorder(
 //                            borderRadius: BorderRadius.circular(9.0),
@@ -128,6 +130,7 @@ class _CreateCase extends State<CreateCase>{
                                   backgroundColor: Colors.green,
                                   content: Text("Case Added Sucessfully"),
                                 ));
+                                Navigator.pop(context,'Refresh');
                               }else{
                                 Scaffold.of(context).showSnackBar(SnackBar(
                                   backgroundColor: Colors.red,
