@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -48,6 +49,7 @@ class _newdashboard extends ResumableState<newdashboard>{
     if(resume.data.toString()=='Refresh'){
       SharedPreferences.getInstance().then((prefs){
         setState(() {
+          if(prefs.getBool("DarkMode")!=null)
           this.currentTheme=prefs.getBool("DarkMode");
         });
       });
@@ -59,15 +61,16 @@ class _newdashboard extends ResumableState<newdashboard>{
     Utils.check_connectivity().then((connected){
       if(connected){
         ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-        pd.show();
-        Network_Operations.GetDeliveryDailySummary(customerId,"2019-05-15").then((response){
-          if(response!=null&&response!='[]'){
-            setState(() {
-              deliveryNumber=jsonDecode(response);
-              this.todayDeliveryCardVisible=true;
-            });
-          }
-        });
+        try{
+          pd.show();
+          Network_Operations.GetDeliveryDailySummary(customerId,"2019-05-15").then((response){
+            if(response!=null&&response!='[]'){
+              setState(() {
+                deliveryNumber=jsonDecode(response);
+                this.todayDeliveryCardVisible=true;
+              });
+            }
+          });
 //        Network_Operations.GetDeliveryDailySummary("customerId",DateFormat("yyyy-MM-dd").format(DateTime.now())).then((response){
 //          if(response!=null){
 //            setState(() {
@@ -76,46 +79,46 @@ class _newdashboard extends ResumableState<newdashboard>{
 //            });
 //          }
 //        });
-        Network_Operations.GetCustomerOlderStock(customerId).then((response){
-          if(response!=null){
-            setState(() {
-              var olderStock=jsonDecode(response);
-              if(olderStock!=null&&olderStock.length>0){
-                this.olderstockVisible=true;
-                for(int i=0;i<olderStock.length;i++){
-                  totalOlderStock=totalOlderStock+olderStock[i]['QtyAvailablePhysical'];
-                }
-              }
-            });
-
-          }
-        });
-        Network_Operations.GetDeliveryInDatesSummary(customerId,"2018-10-01","2018-10-02").then((response){
-          if(response!=null&&response!='[]'){
-            setState(() {
-              weeklyDelivery=jsonDecode(response);
-              this.weeklyDeliveryCardVisible=true;
-            });
-          }
-        });
-        Network_Operations.GetOnhandStock(customerId).then((response){
-          if(response!=null){
-            setState(() {
-              var onHand=jsonDecode(response);
-              this.onhandVisible=true;
-              if(onHand!=null){
-                for(int i=0;i<onHand.length;i++){
-                  onHandValues.add(double.parse(onHand[i]['OnhandALL'].toString()));
-                }
-                if(onHandValues.length>0){
-                  for(int i=0;i<onHandValues.length;i++){
-                    totalOnhandStock=totalOnhandStock+onHandValues[i];
+          Network_Operations.GetCustomerOlderStock(customerId).then((response){
+            if(response!=null){
+              setState(() {
+                var olderStock=jsonDecode(response);
+                if(olderStock!=null&&olderStock.length>0){
+                  this.olderstockVisible=true;
+                  for(int i=0;i<olderStock.length;i++){
+                    totalOlderStock=totalOlderStock+olderStock[i]['QtyAvailablePhysical'];
                   }
                 }
-              }
-            });
-          }
-        });
+              });
+
+            }
+          });
+          Network_Operations.GetDeliveryInDatesSummary(customerId,"2018-10-01","2018-10-02").then((response){
+            if(response!=null&&response!='[]'){
+              setState(() {
+                weeklyDelivery=jsonDecode(response);
+                this.weeklyDeliveryCardVisible=true;
+              });
+            }
+          });
+          Network_Operations.GetOnhandStock(customerId).then((response){
+            if(response!=null){
+              setState(() {
+                var onHand=jsonDecode(response);
+                this.onhandVisible=true;
+                if(onHand!=null){
+                  for(int i=0;i<onHand.length;i++){
+                    onHandValues.add(double.parse(onHand[i]['OnhandALL'].toString()));
+                  }
+                  if(onHandValues.length>0){
+                    for(int i=0;i<onHandValues.length;i++){
+                      totalOnhandStock=totalOnhandStock+onHandValues[i];
+                    }
+                  }
+                }
+              });
+            }
+          });
 //        Network_Operations.GetDeliveryInDatesSummary("customerId",DateFormat("yyyy-MM-dd").format(DateTime.now()),DateFormat("yyyy-MM-dd").format(DateTime.now().add(Duration(days: 7)))).then((response){
 //          if(response!=null){
 //            setState(() {
@@ -124,38 +127,52 @@ class _newdashboard extends ResumableState<newdashboard>{
 //            });
 //          }
 //        });
-        Network_Operations.getProductionRequestsSummary(customerId).then((response){
-          if(response!=null){
-            setState(() {
-              productionRequestNumbers=jsonDecode(response);
-              this.prodRequestCardVisible=true;
-            });
-          }
-        });
-        Network_Operations.GetCustomerBalanceOnhand(customerId).then((response){
-          if(response!=null){
-            setState(() {
-              this.financeCardVisible=true;
-              this.finance=response;
-            });
-          }
-        });
-
-        Network_Operations.getCasesSummary(customerId).then((response){
-          pd.hide();
-          if(response!=null){
-            setState(() {
-              caseNumbers=jsonDecode(response);
-              this.caseCardsVisible=true;
-            });
-          }
-        });
-        SharedPreferences.getInstance().then((prefs){
-          setState(() {
-            if(prefs.getBool("DarkMode")!=null)
-            this.currentTheme=prefs.getBool("DarkMode");
+          Network_Operations.getProductionRequestsSummary(customerId).then((response){
+            if(response!=null){
+              setState(() {
+                productionRequestNumbers=jsonDecode(response);
+                this.prodRequestCardVisible=true;
+              });
+            }
           });
-        });
+          Network_Operations.GetCustomerBalanceOnhand(customerId).then((response){
+            if(response!=null){
+              setState(() {
+                this.financeCardVisible=true;
+                this.finance=response;
+              });
+            }
+          });
+
+          Network_Operations.getCasesSummary(customerId).then((response){
+            pd.hide();
+            if(response!=null){
+              setState(() {
+                caseNumbers=jsonDecode(response);
+                this.caseCardsVisible=true;
+              });
+            }
+          });
+          SharedPreferences.getInstance().then((prefs){
+            setState(() {
+              if(prefs.getBool("DarkMode")!=null)
+                this.currentTheme=prefs.getBool("DarkMode");
+            });
+          });
+        }catch(e){
+          Flushbar(
+            message: "Unable to Fetch Data",
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 5),
+          )..show(context);
+        }
+
+      }else{
+        Flushbar(
+          message: "Network not Available",
+          duration: Duration(seconds: 5),
+          backgroundColor: Colors.red,
+        )..show(context);
       }
     });
     super.initState();
@@ -1001,7 +1018,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                               child: Center(
                                 child: Container(
                                   //margin: EdgeInsets.only(left: 10,top: 5),
-                                  child: Text(totalOnhandStock.toString()??'0',
+                                  child: Text(totalOnhandStock.toStringAsFixed(2).toString()??'0',
                                     style: TextStyle(
                                         color:currentTheme?Color(0xFF004c4c):Colors.white,
                                         //Color(0xFF004c4c),
@@ -1089,7 +1106,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                               child: Center(
                                 child: Container(
                                   //margin: EdgeInsets.only(left: 10,top: 5),
-                                  child: Text(totalOlderStock!=null?totalOlderStock.toString():'0.0',
+                                  child: Text(totalOlderStock!=null?totalOlderStock.toStringAsFixed(2).toString():'0.0',
                                     style: TextStyle(
                                         color:currentTheme?Color(0xFF004c4c):Colors.white,
                                         //Color(0xFF004c4c),
@@ -1274,7 +1291,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                               child: Center(
                                 child: Container(
                                   //margin: EdgeInsets.only(left: 10,top: 5, bottom: 5),
-                                  child: Text(caseNumbers!=null&&caseNumbers.length>0?caseNumbers[0]['SummaryValue'].toString():'0',
+                                  child: Text(caseNumbers!=null&&caseNumbers.length>1?caseNumbers[1]['SummaryValue'].toString():'0',
                                     style: TextStyle(
                                         color:Color(0xFF004c4c),
                                         //Color(0xFF004c4c),

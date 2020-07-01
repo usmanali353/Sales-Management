@@ -82,6 +82,12 @@ class _PlanList extends ResumableState<PlanList>{
                       });
                     }
                   });
+                }else{
+                  Flushbar(
+                    message: "Network not Available",
+                    backgroundColor: Colors.red,
+                    duration: Duration(seconds: 5),
+                  )..show(context);
                 }
               });
             },

@@ -99,6 +99,7 @@ class _SchedulesList extends State<SchedulesList>{
                     return Column(
                       children: <Widget>[
                         ListTile(
+
                           title: Text(schedules[index]['ItemDescription']!=null?schedules[index]['ItemDescription']:''),
                           subtitle: Text(schedules[index]['PlannedProdDate']!=null?'Planned Production Date:'+DateTime.fromMillisecondsSinceEpoch(int.parse(schedules[index]['PlannedProdDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
                           leading:  Material(

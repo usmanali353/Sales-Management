@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:need_resume/need_resume.dart';
@@ -46,6 +47,12 @@ class _ProductVariationsState extends ResumableState<ProductVariations> {
             });
           }
         });
+      }else{
+        Flushbar(
+          message: "Network not Available",
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 5),
+        )..show(context);
       }
     });
     super.initState();

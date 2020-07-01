@@ -205,7 +205,7 @@ class _AddPrePickingState extends State<AddPrePicking> {
                                       });
                                     }
                                   });
-
+                                  Navigator.pop(context,'Refresh');
                                   Flushbar(
                                     message:  "Sales Order Created",
                                     backgroundColor: Colors.green,

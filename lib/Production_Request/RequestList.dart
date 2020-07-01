@@ -70,45 +70,67 @@ class _RequestsList extends ResumableState<RequestList>{
             PopupMenuButton<String>(
               onSelected: (choice){
                 if(choice=='Filter by Size'){
-                  ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
-                  pd.show();
-                 Network_Operations.GetItemSizes().then((value){
-                   pd.dismiss();
-                   if(value!=null){
-                     setState(() {
-                       var size=jsonDecode(value);
-                       List<String> sizeNames=[];
-                       if(size!=null&&size.length>0){
-                         sizeNames.insert(0, 'All');
-                         for(int i=1;i<size.length;i++){
-                           sizeNames.add(size[i]['ItemSize']);
-                         }
-                         showSizeAlertDialog(context, sizeNames);
-                       }
-                     });
-                   }
-                 });
-                }else if(choice=='Filter by Item') {
-                  ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
-                  pd.show();
-                    Network_Operations.GetOnhandStock(customerId).then((value) {
-                      pd.dismiss();
-                      if (value != null) {
-                        setState(() {
-
-                          var items = jsonDecode(value);
-                          List<String> itemNames = [];
-                          if (items != null && items.length > 0) {
-                            itemNames.insert(0, 'All');
-                            for (int i = 1; i < items.length; i++) {
-                              itemNames.add(items[i]['ItemDescription']);
+                  Utils.check_connectivity().then((connected){
+                    if(connected){
+                      ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
+                      pd.show();
+                      Network_Operations.GetItemSizes().then((value){
+                        pd.dismiss();
+                        if(value!=null){
+                          setState(() {
+                            var size=jsonDecode(value);
+                            List<String> sizeNames=[];
+                            if(size!=null&&size.length>0){
+                              sizeNames.insert(0, 'All');
+                              for(int i=1;i<size.length;i++){
+                                sizeNames.add(size[i]['ItemSize']);
+                              }
+                              showSizeAlertDialog(context, sizeNames);
                             }
+                          });
+                        }
+                      });
+                    }else{
+                      Flushbar(
+                        message: "Network not Available",
+                        backgroundColor: Colors.red,
+                        duration: Duration(seconds: 5),
+                      )..show(context);
+                    }
+                  });
 
-                            showAlertDialog(context, itemNames, items);
-                          }
-                        });
-                      }
-                    });
+                }else if(choice=='Filter by Item') {
+                  Utils.check_connectivity().then((connected){
+                    if(connected){
+                      ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
+                      pd.show();
+                      Network_Operations.GetOnhandStock(customerId).then((value) {
+                        pd.dismiss();
+                        if (value != null) {
+                          setState(() {
+
+                            var items = jsonDecode(value);
+                            List<String> itemNames = [];
+                            if (items != null && items.length > 0) {
+                              itemNames.insert(0, 'All');
+                              for (int i = 1; i < items.length; i++) {
+                                itemNames.add(items[i]['ItemDescription']);
+                              }
+
+                              showAlertDialog(context, itemNames, items);
+                            }
+                          });
+                        }
+                      });
+                    }else{
+                      Flushbar(
+                        message: "Network not Available",
+                        backgroundColor: Colors.red,
+                        duration: Duration(seconds: 5),
+                      )..show(context);
+                    }
+                  });
+
                   }
               },
               itemBuilder: (BuildContext context){
@@ -181,6 +203,12 @@ class _RequestsList extends ResumableState<RequestList>{
                     });
                   }
 
+                }else{
+                  Flushbar(
+                    message: "Network not Available",
+                    backgroundColor: Colors.red,
+                    duration: Duration(seconds: 5),
+                  )..show(context);
                 }
               });
           },

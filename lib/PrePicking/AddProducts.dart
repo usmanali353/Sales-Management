@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:badges/badges.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:need_resume/need_resume.dart';
@@ -79,6 +80,12 @@ class _AddProductsState extends ResumableState<AddProducts> {
       }catch(e){
           dialog.dismiss();
         }
+      }else{
+        Flushbar(
+          message: "Network not Available",
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 5),
+        )..show(context);
       }
     });
     super.initState();

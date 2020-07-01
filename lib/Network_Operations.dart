@@ -611,14 +611,14 @@ class Network_Operations {
 
   static Future<String> getCasesSummary(String CustomerId) async {
     final response = await http.get(
-        'http://sales.arabianceramics.com/AcmcMobileServices/SummaryService.svc/SummaryCases/' +
-            CustomerId,
-        headers: {'authorization': basicAuth});
-     debugPrint(response.body);
-    if (response.statusCode == 200) {
-      return response.body;
-    } else
-      return null;
+          'http://sales.arabianceramics.com/AcmcMobileServices/SummaryService.svc/SummaryCases/' +
+              CustomerId,
+          headers: {'authorization': basicAuth});
+      debugPrint(response.body);
+      if (response.statusCode == 200) {
+        return response.body;
+      } else
+        return null;
   }
 
   static Future<String> getProductionRequestsSummary(String CustomerId) async {
