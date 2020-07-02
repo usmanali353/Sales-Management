@@ -229,7 +229,6 @@ class Network_Operations {
       String description,
       int statusField,
       int categoryTypeField,
-      String priorityField,
       customerName,
       int resolutionType,
       String caseMemo) async {
@@ -240,7 +239,6 @@ class Network_Operations {
       'CaseMemo': caseMemo,
       'Status': statusField,
       'ResolutionType': resolutionType,
-      'Priority': priorityField,
       'CategoryTypeId': categoryTypeField
     }, toEncodable: Utils.myEncode);
     final response = await http.post(
@@ -263,7 +261,6 @@ class Network_Operations {
       String description,
       int statusField,
       int categoryTypeField,
-      String priorityField,
       customerName,
       int resolutionType,
       String caseMemo) async {
@@ -274,7 +271,6 @@ class Network_Operations {
       'CaseMemo': caseMemo,
       'Status': statusField,
       'ResolutionType': resolutionType,
-      'Priority': priorityField,
       'CategoryTypeId': categoryTypeField
     }, toEncodable: Utils.myEncode);
     print(body);

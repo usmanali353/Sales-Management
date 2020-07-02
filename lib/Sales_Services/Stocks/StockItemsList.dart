@@ -342,7 +342,7 @@ class _StockItemsList extends ResumableState<StockItemsList>{
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: horizontalTitleAlignment,
           children: <Widget>[
-            const Text('Products'),
+            const Text('Inventory'),
           ],
         ),
       ),

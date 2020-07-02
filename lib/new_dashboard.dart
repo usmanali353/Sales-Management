@@ -107,14 +107,6 @@ class _newdashboard extends ResumableState<newdashboard>{
               });
             }
           });
-//        Network_Operations.GetDeliveryInDatesSummary("customerId",DateFormat("yyyy-MM-dd").format(DateTime.now()),DateFormat("yyyy-MM-dd").format(DateTime.now().add(Duration(days: 7)))).then((response){
-//          if(response!=null){
-//            setState(() {
-////              productionRequestNumbers=jsonDecode(response);
-////              productionRequestCardVisible=true;
-//            });
-//          }
-//        });
           Network_Operations.getProductionRequestsSummary(customerId).then((response){
             if(response!=null){
               setState(() {
@@ -212,14 +204,14 @@ class _newdashboard extends ResumableState<newdashboard>{
                     },
                   ),
                   ListTile(
-                    title: Text("Products"),
+                    title: Text("Inventory"),
                     leading: Icon(FontAwesomeIcons.boxes),
                     onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>StockItemsList('Available Stock',customerId)));
                     },
                   ),
                   ListTile(
-                    title: Text("Complaints"),
+                    title: Text("Complaints & Inquiries"),
                     leading: Icon(FontAwesomeIcons.exclamationTriangle),
                     onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>casesList(customerId,'All','Complaints & Inquiries')));
@@ -264,10 +256,13 @@ class _newdashboard extends ResumableState<newdashboard>{
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
               Container(margin: EdgeInsets.only(left: 17),
-                  child: Text("Deliveries", style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),)
+                  child: Visibility(
+                    visible: todayDeliveryCardVisible||weeklyDeliveryCardVisible,
+                    child: Text("Deliveries", style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),),
+                  )
               ),
             ],
             ),
@@ -524,10 +519,13 @@ class _newdashboard extends ResumableState<newdashboard>{
               padding: EdgeInsets.only(top: 15),
             ),
             Container(margin: EdgeInsets.only(left: 17),
-                child: Text("Production Request", style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),)
+                child: Visibility(
+                  visible: prodRequestCardVisible,
+                  child: Text("Production Requests", style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),),
+                )
             ),
             Padding(
               padding: EdgeInsets.only(top: 15),
@@ -812,10 +810,13 @@ class _newdashboard extends ResumableState<newdashboard>{
               padding: EdgeInsets.only(top: 15),
             ),
             Container(margin: EdgeInsets.only(left: 17),
-                child: Text("Finance", style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+                child: Visibility(
+                  visible: financeCardVisible,
+                  child: Text("Finance", style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  ),
                 )
             ),
             Padding(
@@ -916,10 +917,13 @@ class _newdashboard extends ResumableState<newdashboard>{
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Container(margin: EdgeInsets.only(left: 17),
-                    child: Text("Products", style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),)
+                    child: Visibility(
+                      visible: onhandVisible,
+                      child: Text("Inventory", style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),),
+                    )
                 ),
               ],
             ),
@@ -1114,10 +1118,13 @@ class _newdashboard extends ResumableState<newdashboard>{
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Container(margin: EdgeInsets.only(left: 17),
-                    child: Text("Complaints & Inquiries", style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),)
+                    child: Visibility(
+                      visible: caseCardsVisible,
+                      child: Text("Complaints & Inquiries", style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),),
+                    )
                 ),
               ],
             ),

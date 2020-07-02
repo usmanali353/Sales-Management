@@ -61,34 +61,6 @@ class _UpdateCasesState extends State<UpdateCases> {
                   child: Card(
                     elevation: 10,
                     child: FormBuilderDropdown(
-                      attribute: "Priority",
-                      validators: [FormBuilderValidators.required()],
-                      hint: Text("Priority"),
-                      initialValue: caseData['Priority'],
-                      items: ['High','Medium','Low'].map((trainer)=>DropdownMenuItem(
-                        child: Text(trainer),
-                        value: trainer,
-                      )).toList(),
-                      style: Theme.of(context).textTheme.body1,
-                      decoration: InputDecoration(contentPadding: EdgeInsets.all(16),
-//                        border: OutlineInputBorder(
-//                            borderRadius: BorderRadius.circular(9.0),
-//                            borderSide: BorderSide(color: Colors.teal, width: 1.0)
-//                        ),
-                      ),
-                      onChanged: (value){
-                        setState(() {
-                          this.selectedValue=value;
-                        });
-                      },
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top:16,left: 16,right: 16),
-                  child: Card(
-                    elevation: 10,
-                    child: FormBuilderDropdown(
                       attribute: "Case Type",
                       validators: [FormBuilderValidators.required()],
                       hint: Text("Case Type"),
@@ -135,7 +107,7 @@ class _UpdateCasesState extends State<UpdateCases> {
                             _fbKey.currentState.save();
                             ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
                             pd.show();
-                            Network_Operations.UpdateCustomerCase(caseData['CaseNum'],caseData['CustomerAccount'], description.text, 1, caseType, selectedValue, caseData['CustomerName'], 0, 'caseMemo').then((response){
+                            Network_Operations.UpdateCustomerCase(caseData['CaseNum'],caseData['CustomerAccount'], description.text, 1, caseType, caseData['CustomerName'], 0, 'caseMemo').then((response){
                               pd.hide();
                               if(response!=null){
                                 Scaffold.of(context).showSnackBar(SnackBar(
