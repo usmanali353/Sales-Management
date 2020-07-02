@@ -234,7 +234,7 @@ class _PrePickingListState extends ResumableState<PrePickingList> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: horizontalTitleAlignment,
           children: <Widget>[
-            const Text('Sales Orders'),
+            const Text('Stock Delivery'),
           ],
         ),
       ),

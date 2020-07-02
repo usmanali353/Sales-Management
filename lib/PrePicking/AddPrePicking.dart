@@ -92,6 +92,7 @@ class _AddPrePickingState extends State<AddPrePicking> {
                       child: FormBuilderTextField(
                         controller: mobileNo,
                         attribute: "Mobile No",
+                        keyboardType: TextInputType.phone,
                         validators: [FormBuilderValidators.required()],
                         decoration: InputDecoration(
                           hintText: "Mobile No",

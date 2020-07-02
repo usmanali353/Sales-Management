@@ -36,7 +36,7 @@ class newdashboard extends StatefulWidget{
 }
 
 class _newdashboard extends ResumableState<newdashboard>{
-  var todayDeliveryCardVisible=false,weeklyDeliveryCardVisible=false,prodRequestCardVisible=false,financeVisible=false,totalOlderStock=0.0,olderstockVisible=false,currentTheme=true,customerId;
+  var todayDeliveryCardVisible=false,weeklyDeliveryCardVisible=false,prodRequestCardVisible=false,financeVisible=false,totalOlderStock=0.0,olderstockVisible=false,currentTheme=false,customerId;
 
   _newdashboard(this.customerId);
 
@@ -63,22 +63,12 @@ class _newdashboard extends ResumableState<newdashboard>{
         ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
         try{
           pd.show();
-          Network_Operations.GetDeliveryDailySummary(customerId,"2019-05-15").then((response){
-            if(response!=null&&response!='[]'){
+          Network_Operations.GetDeliveryDailySummary(customerId,DateFormat("yyyy-MM-dd").format(DateTime.now())).then((response){
               setState(() {
                 deliveryNumber=jsonDecode(response);
                 this.todayDeliveryCardVisible=true;
               });
-            }
           });
-//        Network_Operations.GetDeliveryDailySummary("customerId",DateFormat("yyyy-MM-dd").format(DateTime.now())).then((response){
-//          if(response!=null){
-//            setState(() {
-////              productionRequestNumbers=jsonDecode(response);
-////              productionRequestCardVisible=true;
-//            });
-//          }
-//        });
           Network_Operations.GetCustomerOlderStock(customerId).then((response){
             if(response!=null){
               setState(() {
@@ -93,13 +83,11 @@ class _newdashboard extends ResumableState<newdashboard>{
 
             }
           });
-          Network_Operations.GetDeliveryInDatesSummary(customerId,"2018-10-01","2018-10-02").then((response){
-            if(response!=null&&response!='[]'){
+          Network_Operations.GetDeliveryInDatesSummary(customerId,DateFormat("yyyy-MM-dd").format(DateTime.now()),DateFormat("yyyy-MM-dd").format(DateTime.now().add(Duration(days: 7)))).then((response){
               setState(() {
                 weeklyDelivery=jsonDecode(response);
                 this.weeklyDeliveryCardVisible=true;
               });
-            }
           });
           Network_Operations.GetOnhandStock(customerId).then((response){
             if(response!=null){
@@ -196,13 +184,6 @@ class _newdashboard extends ResumableState<newdashboard>{
                 padding: EdgeInsets.zero,
                 children: <Widget>[
                   ListTile(
-                    title: Text("Dashboard"),
-                    leading: Icon(Icons.dashboard),
-                    onTap: (){
-                     // Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoicesList('customerId')));
-                    },
-                  ),
-                  ListTile(
                     title: Text("Production Plan"),
                     leading: Icon(FontAwesomeIcons.tasks),
                     onTap: (){
@@ -241,7 +222,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                     title: Text("Complaints"),
                     leading: Icon(FontAwesomeIcons.exclamationTriangle),
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>casesList(customerId,'All','Customer Complains')));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>casesList(customerId,'All','Complaints & Inquiries')));
                     },
                   ),
                   ListTile(
@@ -302,10 +283,9 @@ class _newdashboard extends ResumableState<newdashboard>{
                   visible: todayDeliveryCardVisible,
                   child: InkWell(
                     onTap:(){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>DeliveryList("2019-05-15",customerId)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>DeliveryList((DateFormat("yyyy-MM-dd").format(DateTime.now())),customerId)));
                     },
                     child: Card(
-
                       elevation: 10,
                       child: Container(
                         height: 130,
@@ -373,7 +353,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                   visible: weeklyDeliveryCardVisible,
                   child: InkWell(
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>SalesOrdersList('2018-10-01','2018-10-02',customerId,DateFormat.MMMM().format(DateTime.now()).toString()+' Deliveries')));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>SalesOrdersList(DateFormat("yyyy-MM-dd").format(DateTime.now()),DateFormat("yyyy-MM-dd").format(DateTime.now().add(Duration(days: 30))),customerId,DateFormat.MMMM().format(DateTime.now()).toString()+' Deliveries')));
                     },
                     child: Card(
                       elevation: 10,
@@ -1134,7 +1114,7 @@ class _newdashboard extends ResumableState<newdashboard>{
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Container(margin: EdgeInsets.only(left: 17),
-                    child: Text("Customer Complaints", style: TextStyle(
+                    child: Text("Complaints & Inquiries", style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),)

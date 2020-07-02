@@ -364,7 +364,7 @@ class _RequestsList extends ResumableState<RequestList>{
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Notice"),
+      title: Text("Filter by Item"),
       content:FormBuilder(
             child: Column(
               mainAxisSize: MainAxisSize.min,

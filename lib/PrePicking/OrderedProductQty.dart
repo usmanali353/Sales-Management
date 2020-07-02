@@ -33,7 +33,7 @@ class _OrderedProductQtyState extends State<OrderedProductQty> {
           Padding(
             padding: const EdgeInsets.only(top:8.0),
             child: Center(
-                child: Text(variationData['Onhand']-variationData['OnOrdered']>1?'Available Quantity: '+(variationData['Onhand']-variationData['OnOrdered']).toString():'0.0',style: TextStyle(fontSize: 20))
+                child: Text(variationData['Onhand']-variationData['OnOrdered']>1?'Available Quantity: '+(variationData['Onhand']-variationData['OnOrdered']).toStringAsFixed(2).toString():'0.0',style: TextStyle(fontSize: 20))
             ),
           ),
           FormBuilder(
