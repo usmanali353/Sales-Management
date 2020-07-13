@@ -112,7 +112,7 @@ class _AddProductsState extends ResumableState<AddProducts> {
                 children: <Widget>[
                   ListTile(
                     title: Text(filteredList[index]['ItemDescription']),
-                    subtitle: Text('onHand: '+filteredList[index]['OnhandALL'].toString()),
+                    subtitle: Text('onHand: '+filteredList[index]['OnhandALL'].toStringAsFixed(2).toString()),
                     leading:  Material(
                         borderRadius: BorderRadius.circular(24),
                         color: Colors.teal.shade100,
