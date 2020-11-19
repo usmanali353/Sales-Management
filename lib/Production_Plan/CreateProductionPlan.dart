@@ -24,10 +24,7 @@ class _CreateProductionPlanState extends State<CreateProductionPlan> {
   void initState() {
     customerId=TextEditingController();
     quantity=TextEditingController();
-    ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-    pd.show();
-    Network_Operations.GetItemSizes().then((response){
-      pd.dismiss();
+    Network_Operations.GetItemSizes(context).then((response){
       if(response!=null){
         setState(() {
           itemSizesJson=json.decode(response);
@@ -170,7 +167,7 @@ class _CreateProductionPlanState extends State<CreateProductionPlan> {
                             ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
                             pd.show();
                             Network_Operations.CreateCustomerPlan(CustomerId, selectedValue, selectedMonth, int.parse(selectedYear),int.parse(quantity.text)).then((response){
-                              pd.dismiss();
+                              pd.hide();
                               if(response!=null){
                                 Scaffold.of(context).showSnackBar(SnackBar(
                                   backgroundColor: Colors.green,

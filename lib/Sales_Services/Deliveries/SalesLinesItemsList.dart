@@ -26,10 +26,7 @@ class _SalesLinesItemsListState extends State<SalesLinesItemsList> {
   void initState() {
     Utils.check_connectivity().then((connected){
       if(connected){
-        ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
-        pd.show();
-          Network_Operations.find_orders(orderNumber).then((response){
-            pd.dismiss();
+          Network_Operations.find_orders(context,orderNumber).then((response){
             if(response!=null){
               setState(() {
                 this.salesLinesData=jsonDecode(response);

@@ -36,7 +36,7 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
          ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
          pd.show();
          Network_Operations.GetOnhandStock(customerId).then((response){
-           pd.dismiss();
+           pd.hide();
            if(response!=null&&response!='[]'){
              setState(() {
                isVisible=true;
@@ -193,7 +193,7 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
                           ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
                           pd.show();
                           Network_Operations.GetCustomerPlanForecast(customerId,2020,selectedMonth).then((value){
-                             pd.dismiss();
+                             pd.hide();
                              if(value!=null){
                                setState(() {
                                  monthlyPlanForecast=0;
@@ -250,7 +250,7 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
           ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
           pd.show();
           Network_Operations.CreateProductionRequest(customerId, selectedItemId, customerItemCode.text, selectedMonth, int.parse(quantity.text),size).then((response){
-            pd.dismiss();
+            pd.hide();
             if(response!=null){
               Navigator.pop(context,'Refresh');
               Scaffold.of(context).showSnackBar(SnackBar(

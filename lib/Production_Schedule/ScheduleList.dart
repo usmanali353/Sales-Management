@@ -64,7 +64,7 @@ class _SchedulesList extends State<SchedulesList>{
                ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
                pd.show();
                Network_Operations.GetProductionSchedules(customerId, 1, 100).then((response){
-                 pd.dismiss();
+                 pd.hide();
                  if(response!=null&&response!='[]'){
                    if(schedules!=null){
                      schedules.clear();

@@ -69,7 +69,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                 this.todayDeliveryCardVisible=true;
               });
           });
-          Network_Operations.GetCustomerOlderStock(customerId).then((response){
+          Network_Operations.GetCustomerOlderStock(context,customerId).then((response){
             if(response!=null){
               setState(() {
                 var olderStock=jsonDecode(response);

@@ -74,10 +74,7 @@ class _GetProductInfo extends State<GetProductInfo>{
                   color: Colors.teal,
                   onPressed: (){
                     if(_fbKey.currentState.validate()){
-                      ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
-                      pd.show();
-                      Network_Operations.GetProductInfo(itemNumber.text).then((response){
-                        pd.dismiss();
+                      Network_Operations.GetProductInfo(context,itemNumber.text).then((response){
                         if(response!=null){
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductDetails(jsonDecode(response))));
                         }

@@ -146,7 +146,7 @@ class _UpdateProductionRequestState extends State<UpdateProductionRequest> {
                             ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
                             pd.show();
                             Network_Operations.UpdateProductionRequest(requestData['CustomerAccount'], itemNumber.text, customerItemCode.text, selectedMonth, int.parse(quantity.text), requestData['RequestedDate'],requestData['CustomerPONum'],requestData['ProductionRequestId']).then((response){
-                              pd.dismiss();
+                              pd.hide();
                               if(response!=null){
                                 Navigator.pop(context,'Refresh');
                                 Scaffold.of(context).showSnackBar(SnackBar(

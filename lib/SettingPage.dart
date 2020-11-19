@@ -1,10 +1,9 @@
-import 'package:day_night_switch/day_night_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:salesmanagement/Model/Theme.dart';
 import 'package:salesmanagement/webBrowser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:day_night_switch/day_night_switch.dart';
 import 'Model/ThemeNotifier.dart';
 class SettingsPage extends StatefulWidget {
   @override

@@ -20,10 +20,7 @@ class _ItemStockDetail extends State<ItemStockDetail>{
   _ItemStockDetail(this.itemNumber);
   @override
   void initState() {
-    ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
-    pd.show();
-    Network_Operations.GetOnHandByItem(itemNumber).then((response){
-      pd.dismiss();
+    Network_Operations.GetOnHandByItem(context,itemNumber).then((response){
        if(response!=null){
          setState(() {
            this.itemStockData=json.decode(response);

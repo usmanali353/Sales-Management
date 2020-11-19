@@ -101,11 +101,8 @@ class _GetStock extends State<GetStock>{
                         color: Colors.teal,
                         onPressed: (){
                           if(_fbKey.currentState.validate()) {
-                            ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-                            pd.show();
                             if(selectedValue=='Available Stock'){
-                              Network_Operations.GetCustomerOnHand(customerId.text, 1, 10).then((response){
-                                pd.dismiss();
+                              Network_Operations.GetCustomerOnHand(context,customerId.text, 1, 10).then((response){
                                 if(response!=null&&response!=''&&response!='[]'){
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => StockItemsList(selectedValue, jsonDecode(response))));
                                 }else{
@@ -116,20 +113,14 @@ class _GetStock extends State<GetStock>{
                                 }
                               });
                             }else if(selectedValue=='Finished Stock'){
-                              Network_Operations.GetCustomerOnHandNoStock(customerId.text, 1, 10).then((response){
-                                pd.dismiss();
+                              Network_Operations.GetCustomerOnHandNoStock(context,customerId.text, 1, 10).then((response){
                                 if(response!=null&&response!=''&&response!='[]'){
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => StockItemsList(selectedValue, jsonDecode(response))));
-                                }else{
-                                  Scaffold.of(context).showSnackBar(SnackBar(
-                                    backgroundColor: Colors.red,
-                                    content: Text("Stock Not Found"),
-                                  ));
                                 }
                               });
                             }else{
 //                              Network_Operations.GetCustomerOlderStock(customerId.text, 1, 10).then((response){
-//                                pd.dismiss();
+//                                pd.hide();
 //                                if(response!=null&&response!=''&&response!='[]'){
 //                                  Navigator.push(context, MaterialPageRoute(builder: (context) => StockItemsList(selectedValue, jsonDecode(response))));
 //                                }else{

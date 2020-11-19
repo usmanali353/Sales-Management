@@ -21,16 +21,12 @@ class _SearchedOrderDetail extends State<SearchedOrderDetail>{
   _SearchedOrderDetail(this.query);
   @override
   void initState() {
-ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
-pd.show();
-   Network_Operations.find_orders(query).then((response){
-     pd.dismiss();
+   Network_Operations.find_orders(context,query).then((response){
      if(response!=null){
        setState(() {
          this.orders_data=json.decode(response);
          this.TableVisible=true;
        });
-
      }
    });
   }

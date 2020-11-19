@@ -66,10 +66,7 @@ class _PlanList extends ResumableState<PlanList>{
             onPressed: (){
               Utils.check_connectivity().then((connected){
                 if(connected){
-                  ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
-                  pd.show();
-                  Network_Operations.GetItemSizes().then((response){
-                    pd.dismiss();
+                  Network_Operations.GetItemSizes(context).then((response){
                     if(response!=null){
                       setState(() {
                         var sizes=jsonDecode(response);
@@ -99,10 +96,7 @@ class _PlanList extends ResumableState<PlanList>{
           onRefresh: (){
             return  Utils.check_connectivity().then((connected){
               if(connected){
-                ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
-                pd.show();
-                Network_Operations.GetCustomerPlan(customerId,year).then((response){
-                  pd.dismiss();
+                Network_Operations.GetCustomerPlan(context,customerId,year).then((response){
                   if(response!=null){
                     setState(() {
                       if(planList!=null){
@@ -270,7 +264,7 @@ List<Widget> wholeYear() {
                   ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
                   pd.show();
                   Network_Operations.DeleteCustomerPlan(planList[index]['RecordId']).then((response){
-                    pd.dismiss();
+                    pd.hide();
                     if(response!=null){
                       WidgetsBinding.instance
                           .addPostFrameCallback((_) =>
@@ -353,7 +347,7 @@ List<Widget> wholeYear() {
                 ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
                 pd.show();
                 Network_Operations.DeleteCustomerPlan(planList[index]['RecordId']).then((response){
-                  pd.dismiss();
+                  pd.hide();
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -436,7 +430,7 @@ List<Widget> wholeYear() {
                 ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
                 pd.show();
                 Network_Operations.DeleteCustomerPlan(planList[index]['RecordId']).then((response){
-                  pd.dismiss();
+                  pd.hide();
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -519,7 +513,7 @@ List<Widget> wholeYear() {
                 ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
                 pd.show();
                 Network_Operations.DeleteCustomerPlan(planList[index]['RecordId']).then((response){
-                  pd.dismiss();
+                  pd.hide();
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -602,7 +596,7 @@ List<Widget> wholeYear() {
                 ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
                 pd.show();
                 Network_Operations.DeleteCustomerPlan(planList[index]['RecordId']).then((response){
-                  pd.dismiss();
+                  pd.hide();
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -682,10 +676,7 @@ List<Widget> wholeYear() {
               caption: "Delete",
               closeOnTap: true,
               onTap: (){
-                ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-                pd.show();
                 Network_Operations.DeleteCustomerPlan(planList[index]['RecordId']).then((response){
-                  pd.dismiss();
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -768,7 +759,7 @@ List<Widget> wholeYear() {
                 ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
                 pd.show();
                 Network_Operations.DeleteCustomerPlan(planList[index]['RecordId']).then((response){
-                  pd.dismiss();
+                  pd.hide();
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -851,7 +842,7 @@ List<Widget> wholeYear() {
                 ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
                 pd.show();
                 Network_Operations.DeleteCustomerPlan(planList[index]['RecordId']).then((response){
-                  pd.dismiss();
+                  pd.hide();
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -934,7 +925,7 @@ List<Widget> wholeYear() {
                 ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
                 pd.show();
                 Network_Operations.DeleteCustomerPlan(planList[index]['RecordId']).then((response){
-                  pd.dismiss();
+                  pd.hide();
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -1017,7 +1008,7 @@ List<Widget> wholeYear() {
                 ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
                 pd.show();
                 Network_Operations.DeleteCustomerPlan(planList[index]['RecordId']).then((response){
-                  pd.dismiss();
+                  pd.hide();
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -1100,7 +1091,7 @@ List<Widget> wholeYear() {
                 ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
                 pd.show();
                 Network_Operations.DeleteCustomerPlan(planList[index]['RecordId']).then((response){
-                  pd.dismiss();
+                  pd.hide();
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -1183,7 +1174,7 @@ List<Widget> wholeYear() {
                 ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
                 pd.show();
                 Network_Operations.DeleteCustomerPlan(planList[index]['RecordId']).then((response){
-                  pd.dismiss();
+                  pd.hide();
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -1266,7 +1257,7 @@ List<Widget> wholeYear() {
                 ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
                 pd.show();
                 Network_Operations.DeleteCustomerPlan(planList[index]['RecordId']).then((response){
-                  pd.dismiss();
+                  pd.hide();
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>

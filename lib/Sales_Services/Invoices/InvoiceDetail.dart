@@ -35,10 +35,7 @@ class _InvoiceDetails extends State<InvoiceDetails>{
         actions: <Widget>[
           InkWell(
             onTap: (){
-              ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
-              pd.show();
-              Network_Operations.GetInvoice(InvoiceData['InvoiceId']).then((response){
-                pd.dismiss();
+              Network_Operations.GetInvoice(context,InvoiceData['InvoiceId']).then((response){
                 if(response!=null&&response!=''&&response!='[]'){
                   setState(() {
                   Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoiceLines(jsonDecode(response))));

@@ -72,10 +72,7 @@ class _RequestsList extends ResumableState<RequestList>{
                 if(choice=='Filter by Size'){
                   Utils.check_connectivity().then((connected){
                     if(connected){
-                      ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
-                      pd.show();
-                      Network_Operations.GetItemSizes().then((value){
-                        pd.dismiss();
+                      Network_Operations.GetItemSizes(context).then((value){
                         if(value!=null){
                           setState(() {
                             var size=jsonDecode(value);
@@ -105,7 +102,7 @@ class _RequestsList extends ResumableState<RequestList>{
                       ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
                       pd.show();
                       Network_Operations.GetOnhandStock(customerId).then((value) {
-                        pd.dismiss();
+                        pd.hide();
                         if (value != null) {
                           setState(() {
 
@@ -153,7 +150,7 @@ class _RequestsList extends ResumableState<RequestList>{
                     ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
                     pd.show();
                     Network_Operations.GetProdRequestListBySize(customerId,size, 1, 100).then((response){
-                      pd.dismiss();
+                      pd.hide();
                       if(response!=null&&response!=''&&response!='[]'){
                         setState(() {
                           var filteredRequest=[];
@@ -190,7 +187,7 @@ class _RequestsList extends ResumableState<RequestList>{
                     ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
                     pd.show();
                     Network_Operations.GetProdRequestList(customerId, 1, 100).then((response){
-                      pd.dismiss();
+                      pd.hide();
                       if(response!=null&&response!=''&&response!='[]'){
                         setState(() {
                           if(requests!=null){
@@ -287,7 +284,7 @@ class _RequestsList extends ResumableState<RequestList>{
                               ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
                               pd.show();
                               Network_Operations.GetOnhandStock(customerId).then((response){
-                                pd.dismiss();
+                                pd.hide();
                                 if(response!=null){
                                   setState(() {
                                     var items=jsonDecode(response);
@@ -430,7 +427,7 @@ class _RequestsList extends ResumableState<RequestList>{
                       ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
                       pd.show();
                       Network_Operations.GetProdRequestListBySize(customerId,selectedValue, 1, 100).then((value){
-                        pd.dismiss();
+                        pd.hide();
                         if(value!=null){
                           setState(() {
                             var requestsByItem=jsonDecode(value);

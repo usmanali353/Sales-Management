@@ -35,7 +35,7 @@ dependencies:
   badges: ^1.1.1
   webview_flutter:
   provider:
-  day_night_switch: ^0.0.2+1
+  day_night_switch:
   shared_preferences: ^0.5.6+1
   flushbar: ^1.10.4
 dev_dependencies:

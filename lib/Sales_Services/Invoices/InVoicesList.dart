@@ -31,10 +31,7 @@ class _InvoicesList extends State<InvoicesList>{
     invoiceNumber=TextEditingController();
     Utils.check_connectivity().then((connected){
       if(connected){
-        ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
-        pd.show();
-        Network_Operations.GetCustomerInvoices(CustomerId, 1, 10).then((response){
-          pd.hide();
+        Network_Operations.GetCustomerInvoices(context,CustomerId, 1, 10).then((response){
           if(response!=null){
             setState(() {
               this.InvoiceList=json.decode(response);
@@ -88,10 +85,7 @@ class _InvoicesList extends State<InvoicesList>{
                       paidChecked=true;
                       unpaidChecked=false;
                     });
-                    ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
-                    pd.show();
-                    Network_Operations.GetCustomerInvoices(CustomerId, 1, 10).then((response){
-                      pd.hide();
+                    Network_Operations.GetCustomerInvoices(context,CustomerId, 1, 10).then((response){
                       if(response!=null){
                         setState(() {
                           if(InvoiceList!=null){
@@ -114,10 +108,7 @@ class _InvoicesList extends State<InvoicesList>{
                       paidChecked=false;
                       unpaidChecked=true;
                     });
-                    ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
-                    pd.show();
-                    Network_Operations.GetCustomerInvoices(CustomerId, 1, 10).then((response){
-                      pd.hide();
+                    Network_Operations.GetCustomerInvoices(context,CustomerId, 1, 10).then((response){
                       if(response!=null){
                         setState(() {
                           if(InvoiceList!=null){
@@ -189,7 +180,7 @@ class _InvoicesList extends State<InvoicesList>{
       onPressed:  () {
         if(_fbKey.currentState.validate()) {
           Navigator.pop(context);
-          Network_Operations.GetInvoice(invoiceNumber.text).then((response) {
+          Network_Operations.GetInvoice(context,invoiceNumber.text).then((response) {
             if (response != null) {
               var detail = jsonDecode(response);
               if (detail['DueDate'] != "/Date(-2208956400000+0300)/") {

@@ -66,10 +66,7 @@ void onResume() {
         onRefresh: (){
           return Utils.check_connectivity().then((connected){
             if(connected){
-              ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-              pd.show();
-              Network_Operations.FindCustomerCases(customerId).then((response){
-                pd.hide();
+              Network_Operations.FindCustomerCases(context,customerId).then((response){
                 if(response!=null&&response!='[]'){
                   setState(() {
                     isVisible=true;
@@ -153,10 +150,7 @@ void onResume() {
                       color: Colors.red,
                       caption: 'Delete',
                       onTap: (){
-                        ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-                        pd.show();
-                        Network_Operations.DeleteCustomerCase(filteredList[index]['CaseNum']).then((response){
-                          pd.dismiss();
+                        Network_Operations.DeleteCustomerCase(context,filteredList[index]['CaseNum']).then((response){
                            if(response!=null){
                              WidgetsBinding.instance
                                  .addPostFrameCallback((_) =>

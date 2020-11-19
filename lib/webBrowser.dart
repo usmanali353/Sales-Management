@@ -30,7 +30,7 @@ class _WebBrowserState extends State<WebBrowser> {
               pd.show();
             }),
             onPageFinished: ((str){
-              pd.dismiss();
+              pd.hide();
             }),
             onWebViewCreated: ((webviewController){
               webviewController.canGoBack().then((value){

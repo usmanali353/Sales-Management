@@ -29,10 +29,7 @@ class _SalesOrdersList extends State<SalesOrdersList>{
    _searchQuery=TextEditingController();
    Utils.check_connectivity().then((connected){
      if(connected){
-       ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
-       pd.show();
-       Network_Operations.GetSalesOrders(startDate,endDate,CustomerId).then((response){
-         pd.hide();
+       Network_Operations.GetSalesOrders(context,startDate,endDate,CustomerId).then((response){
          if(response!=null){
            setState(() {
              this.order_data=json.decode(response);

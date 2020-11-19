@@ -32,10 +32,7 @@ class _DeliveryList extends State<DeliveryList>{
     _searchQuery=TextEditingController();
     Utils.check_connectivity().then((connected){
       if(connected){
-        ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-        pd.show();
-        Network_Operations.get_deliveries(date,CustomerId).then((response){
-          pd.hide();
+        Network_Operations.get_deliveries(context,date,CustomerId).then((response){
           if(response!=null&&response!='[]'){
             setState(() {
               orders_list=json.decode(response);

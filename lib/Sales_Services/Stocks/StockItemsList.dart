@@ -67,7 +67,7 @@ class _StockItemsList extends ResumableState<StockItemsList>{
         ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
         pd.show();
         Network_Operations.GetOnhandStock(customerId).then((response){
-          pd.dismiss();
+          pd.hide();
           if(response!=null&&response!='[]'){
             setState(() {
               if(items!=null){
@@ -128,7 +128,7 @@ class _StockItemsList extends ResumableState<StockItemsList>{
                         pd.show();
                         Network_Operations.GetOnhandStock(customerId).then((
                             response) {
-                          pd.dismiss();
+                          pd.hide();
                           if (response != null && response != '[]') {
                             setState(() {
                               if (items != null) {
@@ -166,9 +166,9 @@ class _StockItemsList extends ResumableState<StockItemsList>{
                             context, isDismissible: true,
                             type: ProgressDialogType.Normal);
                         pd.show();
-                        Network_Operations.GetCustomerOlderStock(customerId)
+                        Network_Operations.GetCustomerOlderStock(context,customerId)
                             .then((response) {
-                          pd.dismiss();
+                          pd.hide();
                           if (response != null && response != '[]') {
                             setState(() {
                               if (items != null) {
@@ -202,13 +202,7 @@ class _StockItemsList extends ResumableState<StockItemsList>{
                           olderExpanded = false;
                           finishedExpanded = true;
                         });
-                        ProgressDialog pd = ProgressDialog(
-                            context, isDismissible: true,
-                            type: ProgressDialogType.Normal);
-                        pd.show();
-                        Network_Operations.GetCustomerOnHandNoStock(customerId,1,50)
-                            .then((response) {
-                          pd.dismiss();
+                        Network_Operations.GetCustomerOnHandNoStock(context,customerId,1,50).then((response) {
                           if (response != null && response != '[]') {
                             setState(() {
                               if (items != null) {

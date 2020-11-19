@@ -47,7 +47,7 @@ class _VariationDetailsState extends ResumableState<VariationDetails> {
         Network_Operations.GetProdRequestListByItemNotFinished(
                 customerId, variationData['ItemNumber'], 1, 100)
             .then((response) {
-          pd.dismiss();
+          pd.hide();
           if (response != null) {
             setState(() {
               var requests = jsonDecode(response);

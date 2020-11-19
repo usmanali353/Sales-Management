@@ -63,7 +63,7 @@ class _AddProductsState extends ResumableState<AddProducts> {
         try{
           dialog.show();
         Network_Operations.GetOnhandStock(customerId).then((response){
-          dialog.dismiss();
+          dialog.hide();
           if(response!=null){
             setState(() {
               stockItems=jsonDecode(response);
@@ -78,7 +78,7 @@ class _AddProductsState extends ResumableState<AddProducts> {
           }
         });
       }catch(e){
-          dialog.dismiss();
+          dialog.hide();
         }
       }else{
         Flushbar(

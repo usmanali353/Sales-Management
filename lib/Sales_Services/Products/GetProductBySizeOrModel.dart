@@ -26,10 +26,7 @@ class _GetProductBySizeOrModel extends State<GetProductBySizeOrModel>{
  @override
   void initState() {
      this.customerId=TextEditingController();
-     ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-     pd.show();
-     Network_Operations.GetItemSizes().then((response){
-       pd.dismiss();
+     Network_Operations.GetItemSizes(context).then((response){
        if(response!=null){
          setState(() {
            itemSizesJson=json.decode(response);
@@ -102,19 +99,13 @@ class _GetProductBySizeOrModel extends State<GetProductBySizeOrModel>{
                       onPressed: (){
                         if(_fbKey.currentState.validate()){
                           if(sizeOrModel){
-                            ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
-                            pd.show();
-                           Network_Operations.GetProductsBySize(customerId.text, selectedValue,'ItemSize', 1, 10).then((response){
-                             pd.dismiss();
+                           Network_Operations.GetProductsBySize(context,customerId.text, selectedValue,'ItemSize', 1, 10).then((response){
                              if(response!=null){
                                Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductsList(json.decode(response))));
                              }
                            });
                           }else{
-                            ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
-                            pd.show();
-                            Network_Operations.GetProductsByModel(customerId.text, selectedValue,'ItemSize', 1, 10).then((response){
-                              pd.dismiss();
+                            Network_Operations.GetProductsByModel(context,customerId.text, selectedValue,'ItemSize', 1, 10).then((response){
                               if(response!=null){
                                 Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductsList(jsonDecode(response))));
                               }

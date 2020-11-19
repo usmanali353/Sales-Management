@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/Utils.dart';
 
 class Network_Operations {
@@ -8,305 +9,422 @@ class Network_Operations {
   static String password = 'Aujc?468';
   static String basicAuth =
       'Basic ' + base64Encode(utf8.encode('$username:$password'));
-  static Future<String> find_orders(String order_number) async {
-    final response = await http.get(
-        'http://sales.arabianceramics.com/AcmcMobileServices/SalesService.svc/FindSalesOrder/' +
-            order_number,
-        headers: {'authorization': basicAuth});
-    print(response.body);
-    if (response.statusCode == 200) {
-      return response.body;
-    } else
-      return null;
+  static Future<String> find_orders(BuildContext context,String order_number) async {
+    ProgressDialog pd= ProgressDialog(context);
+    try{
+      pd.show();
+      final response = await http.get(Utils.getBaseUrl()+'SalesService.svc/FindSalesOrder/' + order_number, headers: {'authorization': Utils.apiAuthentication()});
+      print(response.body);
+      if (response.statusCode == 200) {
+        pd.hide();
+        return response.body;
+      } else
+        pd.hide();
+        Utils.showError(context,response.statusCode.toString());
+        return null;
+    }catch(e){
+      pd.hide();
+      Utils.showError(context,e.toString());
+    }
+    return null;
   }
-
-  static Future<String> get_deliveries(String date, String CustomerId) async {
-    final response = await http.get(
-        'http://sales.arabianceramics.com/AcmcMobileServices/SalesService.svc/GetDeliveries/' +
-            CustomerId +
-            '/' +
-            date,
-        headers: {'authorization': basicAuth});
-    //debugPrint(response.body);
-    if (response.statusCode == 200) {
-      return response.body;
-    } else
-      return null;
+  static Future<String> get_deliveries(BuildContext context,String date, String CustomerId) async {
+    ProgressDialog pd= ProgressDialog(context);
+    try{
+      pd.show();
+      final response = await http.get(Utils.getBaseUrl()+'SalesService.svc/GetDeliveries/' + CustomerId + '/' + date,
+          headers: {'authorization': Utils.apiAuthentication()});
+      //debugPrint(response.body);
+      if (response.statusCode == 200) {
+        pd.hide();
+        return response.body;
+      } else
+        pd.hide();
+        Utils.showError(context,response.statusCode.toString());
+        return null;
+    }catch(e){
+      pd.hide();
+      Utils.showError(context,e.toString());
+    }
+    return null;
   }
-
-  static Future<String> GetSalesOrders(
-      String start_date, String end_date, String CustomerId) async {
-    final response = await http.get(
-        'http://sales.arabianceramics.com/AcmcMobileServices/SalesService.svc/GetSalesOrders/' +
-            CustomerId +
-            '/' +
-            start_date +
-            '/' +
-            end_date,
-        headers: {'authorization': basicAuth});
-    //debugPrint(response.body);
-    if (response.statusCode == 200) {
-      return response.body;
-    } else
-      return null;
+  static Future<String> GetSalesOrders(BuildContext context,String start_date, String end_date, String CustomerId) async {
+    ProgressDialog pd= ProgressDialog(context);
+    try{
+      pd.show();
+      final response = await http.get(Utils.getBaseUrl()+'SalesService.svc/GetSalesOrders/' +
+          CustomerId +
+          '/' +
+          start_date +
+          '/' +
+          end_date,
+          headers: {'authorization': Utils.apiAuthentication()});
+      //debugPrint(response.body);
+      if (response.statusCode == 200) {
+        pd.hide();
+        return response.body;
+      } else
+        pd.hide();
+        Utils.showError(context,response.statusCode.toString());
+        return null;
+    }catch(e){
+      pd.hide();
+      print(e);
+    }
+   return null;
   }
+  static Future<String> GetCustomerOnHand(BuildContext context,String CustomerId, int PageNo, int PageSize) async {
+  ProgressDialog pd= ProgressDialog(context);
+    try{
+      pd.show();
+      final response = await http.get(Utils.getBaseUrl()+'SalesService.svc/GetCustomerOnHand/' + CustomerId + '/' + PageNo.toString() + '/' + PageSize.toString(), headers: {'authorization': Utils.apiAuthentication()});
+      //debugPrint(response.body);
+      if (response.statusCode == 200) {
+        pd.hide();
+        return response.body;
+      } else
+        pd.hide();
+      Utils.showError(context,response.statusCode.toString());
+        return null;
+    }catch(e){
+      pd.hide();
+      Utils.showError(context, e.toString());
+    }
 
-  static Future<String> GetCustomerOnHand(
-      String CustomerId, int PageNo, int PageSize) async {
-    final response = await http.get(
-        'http://sales.arabianceramics.com/AcmcMobileServices/SalesService.svc/GetCustomerOnHand/' +
-            CustomerId +
-            '/' +
-            PageNo.toString() +
-            '/' +
-            PageSize.toString(),
-        headers: {'authorization': basicAuth});
-    //debugPrint(response.body);
-    if (response.statusCode == 200) {
-      return response.body;
-    } else
-      return null;
   }
+  static Future<String> GetCustomerOnHandNoStock(BuildContext context,String CustomerId, int PageNo, int PageSize) async {
+    ProgressDialog pd= ProgressDialog(context);
+    try{
+      pd.show();
+      final response = await http.get(Utils.getBaseUrl()+'SalesService.svc/GetCustomerOnHandNoStock/' + CustomerId + '/' + PageNo.toString() + '/' + PageSize.toString(), headers: {'authorization': Utils.apiAuthentication()});
+      //debugPrint(response.body);
+      if (response.statusCode == 200) {
+        pd.hide();
+        return response.body;
+      } else
+        pd.hide();
+      Utils.showError(context,response.statusCode.toString());
+        return null;
+    }catch(e){
+      pd.hide();
+      Utils.showError(context,e.toString());
+    }
 
-  static Future<String> GetCustomerOnHandNoStock(
-      String CustomerId, int PageNo, int PageSize) async {
-    final response = await http.get(
-        'http://sales.arabianceramics.com/AcmcMobileServices/SalesService.svc/GetCustomerOnHandNoStock/' +
-            CustomerId +
-            '/' +
-            PageNo.toString() +
-            '/' +
-            PageSize.toString(),
-        headers: {'authorization': basicAuth});
-    //debugPrint(response.body);
-    if (response.statusCode == 200) {
-      return response.body;
-    } else
-      return null;
   }
-
-  static Future<String> GetOnHandByItem(String itemNumber) async {
-    final response = await http.get(
-        'http://sales.arabianceramics.com/AcmcMobileServices/SalesService.svc/GetOnHandByItem/' +
-            itemNumber,
-        headers: {'authorization': basicAuth});
-    //debugPrint(response.body);
-    if (response.statusCode == 200) {
-      return response.body;
-    } else
+  static Future<String> GetOnHandByItem(BuildContext context,String itemNumber) async {
+    ProgressDialog pd=ProgressDialog(context);
+    try{
+      pd.show();
+      final response = await http.get(Utils.getBaseUrl()+'SalesService.svc/GetOnHandByItem/' +
+          itemNumber,
+          headers: {'authorization': Utils.apiAuthentication()});
+      //debugPrint(response.body);
+      if (response.statusCode == 200) {
+        pd.hide();
+        return response.body;
+      } else
+        pd.hide();
+      Utils.showError(context,response.statusCode.toString());
       return null;
+    }catch(e){
+      pd.hide();
+      Utils.showError(context,e.toString());
+    }
   }
+  static Future<String> GetCustomerInvoices(BuildContext context,String CustomerId, int PageNo, int PageSize) async {
+    ProgressDialog pd=ProgressDialog(context);
+    try{
+      pd.show();
+      final response = await http.get(Utils.getBaseUrl()+'SalesService.svc/GetInvoices/' + CustomerId + '/' + PageNo.toString() + '/' + PageSize.toString(), headers: {'authorization': Utils.apiAuthentication()});
+      //debugPrint(response.body);
+      if (response.statusCode == 200) {
+        pd.hide();
+        return response.body;
+      } else
+        pd.hide();
+      Utils.showError(context,response.statusCode.toString());
+        return null;
+    }catch(e){
+      pd.hide();
+      Utils.showError(context,e.toString());
+    }
 
-  static Future<String> GetCustomerInvoices(
-      String CustomerId, int PageNo, int PageSize) async {
-    final response = await http.get(
-        'http://sales.arabianceramics.com/AcmcMobileServices/SalesService.svc/GetInvoices/' +
-            CustomerId +
-            '/' +
-            PageNo.toString() +
-            '/' +
-            PageSize.toString(),
-        headers: {'authorization': basicAuth});
-    //debugPrint(response.body);
-    if (response.statusCode == 200) {
-      return response.body;
-    } else
-      return null;
   }
+  static Future<String> GetInvoice(BuildContext context,String InvoiceId) async {
+    ProgressDialog pd=ProgressDialog(context);
+    try{
+      pd.show();
+      final response = await http.get(Utils.getBaseUrl()+'SalesService.svc/GetInvoice/' + InvoiceId, headers: {'authorization': Utils.apiAuthentication()});
+      //debugPrint(response.body);
+      if (response.statusCode == 200) {
+        pd.hide();
+        return response.body;
+      } else
+        pd.hide();
+      Utils.showError(context,response.statusCode.toString());
+        return null;
+    }catch(e){
+      pd.hide();
+      Utils.showError(context,e.toString());
+    }
 
-  static Future<String> GetInvoice(String InvoiceId) async {
-    final response = await http.get(
-        'http://sales.arabianceramics.com/AcmcMobileServices/SalesService.svc/GetInvoice/' +
-            InvoiceId,
-        headers: {'authorization': basicAuth});
-    //debugPrint(response.body);
-    if (response.statusCode == 200) {
-      return response.body;
-    } else
-      return null;
   }
+  static Future<String> GetProductInfo(BuildContext context,String itemNumber) async {
+    ProgressDialog pd=ProgressDialog(context);
+    try{
+      pd.show();
+      final response = await http.get(Utils.getBaseUrl()+'SalesService.svc/GetProductInfo/' + itemNumber, headers: {'authorization': Utils.apiAuthentication()});
+      //debugPrint(response.body);
+      if (response.statusCode == 200) {
+        pd.hide();
+        return response.body;
+      } else
+        pd.hide();
+        Utils.showError(context,response.statusCode.toString());
+        return null;
+    }catch(e){
+      pd.hide();
+      Utils.showError(context,e.toString());
+    }
 
-  static Future<String> GetProductInfo(String itemNumber) async {
-    final response = await http.get(
-        'http://sales.arabianceramics.com/AcmcMobileServices/SalesService.svc/GetProductInfo/' +
-            itemNumber,
-        headers: {'authorization': basicAuth});
-    //debugPrint(response.body);
-    if (response.statusCode == 200) {
-      return response.body;
-    } else
-      return null;
   }
+  static Future<String> GetProductsByModel(BuildContext context,String CustomerId, String model, String sort, int PageNo, int PageSize) async {
+    ProgressDialog pd=ProgressDialog(context);
+    try{
+      pd.show();
+      final response = await http.get(Utils.getBaseUrl()+'SalesService.svc/GetProductsByModel/' +
+          CustomerId +
+          '/' +
+          model +
+          '/' +
+          sort +
+          '/' +
+          PageNo.toString() +
+          '/' +
+          PageSize.toString(),
+          headers: {'authorization': Utils.apiAuthentication()});
+      if (response.statusCode == 200) {
+        pd.hide();
+        return response.body;
+      } else
+        pd.hide();
+        Utils.showError(context,response.statusCode.toString());
+        return null;
+    }catch(e){
+      pd.hide();
+      Utils.showError(context,e.toString());
+    }
 
-  static Future<String> GetProductsByModel(String CustomerId, String model,
-      String sort, int PageNo, int PageSize) async {
-    final response = await http.get(
-        'http://sales.arabianceramics.com/AcmcMobileServices/SalesService.svc/GetProductsByModel/' +
-            CustomerId +
-            '/' +
-            model +
-            '/' +
-            sort +
-            '/' +
-            PageNo.toString() +
-            '/' +
-            PageSize.toString(),
-        headers: {'authorization': basicAuth});
-    if (response.statusCode == 200) {
-      return response.body;
-    } else
-      return null;
   }
+  static Future<String> GetProductsBySize(BuildContext context,String CustomerId, String size, String sort, int PageNo, int PageSize) async {
+    ProgressDialog pd=ProgressDialog(context);
+    try{
+      pd.show();
+      final response = await http.get(Utils.getBaseUrl()+'SalesService.svc/GetProductsBySize/' +
+          CustomerId +
+          '/' +
+          size +
+          '/' +
+          sort +
+          '/' +
+          PageNo.toString() +
+          '/' +
+          PageSize.toString(),
+          headers: {'authorization': Utils.apiAuthentication()});
+      if (response.statusCode == 200) {
+        pd.hide();
+        return response.body;
+      } else
+        pd.hide();
+       Utils.showError(context,response.statusCode.toString());
+        return null;
+    }catch(e){
+      pd.hide();
+      Utils.showError(context, e.toString());
+    }
 
-  static Future<String> GetProductsBySize(String CustomerId, String size,
-      String sort, int PageNo, int PageSize) async {
-    final response = await http.get(
-        'http://sales.arabianceramics.com/AcmcMobileServices/SalesService.svc/GetProductsBySize/' +
-            CustomerId +
-            '/' +
-            size +
-            '/' +
-            sort +
-            '/' +
-            PageNo.toString() +
-            '/' +
-            PageSize.toString(),
-        headers: {'authorization': basicAuth});
-    if (response.statusCode == 200) {
-      return response.body;
-    } else
-      return null;
   }
+  static Future<String> GetCustomerOlderStock(BuildContext context,String CustomerId) async {
+    try{
+      final response = await http.get(Utils.getBaseUrl()+'SalesService.svc/GetCustomerOlderStockOverAll/' + CustomerId+'/_', headers: {'authorization': Utils.apiAuthentication()});
+      //debugPrint(response.body);
+      if (response.statusCode == 200) {
+        return response.body;
+      } else
+        Utils.showError(context,response.statusCode.toString());
+        return null;
+    }catch(e){
+      Utils.showError(context,e.toString());
+    }
 
-  static Future<String> GetCustomerOlderStock(String CustomerId) async {
-    final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/SalesService.svc/GetCustomerOlderStockOverAll/' + CustomerId+'/_', headers: {'authorization': basicAuth});
-    //debugPrint(response.body);
-    if (response.statusCode == 200) {
-      return response.body;
-    } else
-      return null;
   }
 
   //Customer Cases
-  static Future<String> GetCustomerCase(String caseId) async {
-    final response = await http.get(
-        'http://sales.arabianceramics.com/AcmcMobileServices/CustomerCaseService.svc/GetCase/' +
-            caseId,
-        headers: {'authorization': basicAuth});
-    //debugPrint(response.body);
-    if (response.statusCode == 200) {
-      return response.body;
-    } else
-      return null;
+  static Future<String> GetCustomerCase(BuildContext context,String caseId) async {
+    ProgressDialog pd=ProgressDialog(context);
+    try{
+      pd.show();
+      final response = await http.get(Utils.getBaseUrl()+'CustomerCaseService.svc/GetCase/' + caseId, headers: {'authorization': Utils.apiAuthentication()});
+      //debugPrint(response.body);
+      if (response.statusCode == 200) {
+        pd.hide();
+        return response.body;
+      } else
+        pd.hide();
+        Utils.showError(context,response.statusCode.toString());
+        return null;
+    }catch(e){
+       pd.hide();
+       Utils.showError(context,e.toString());
+    }
   }
+  static Future<String> FindCustomerCases(BuildContext context,String customerId) async {
+    ProgressDialog pd=ProgressDialog(context);
+    try{
+      pd.show();
+      final response = await http.get(Utils.getBaseUrl()+'CustomerCaseService.svc/FindCases/' +
+          customerId,
+          headers: {'authorization': Utils.apiAuthentication()});
+      //debugPrint(response.body);
+      if (response.statusCode == 200) {
+        pd.hide();
+        return response.body;
+      } else
+        pd.hide();
+        Utils.showError(context, response.statusCode.toString());
+        return null;
+    }catch(e){
+      pd.hide();
+      Utils.showError(context,e.toString());
+    }
 
-  static Future<String> FindCustomerCases(String customerId) async {
-    final response = await http.get(
-        'http://sales.arabianceramics.com/AcmcMobileServices/CustomerCaseService.svc/FindCases/' +
-            customerId,
-        headers: {'authorization': basicAuth});
-    //debugPrint(response.body);
-    if (response.statusCode == 200) {
-      return response.body;
-    } else
-      return null;
   }
+  static Future<String> DeleteCustomerCase(BuildContext context,String caseId) async {
+    ProgressDialog pd=ProgressDialog(context);
+    try{
+      pd.show();
+      final response = await http.delete(Utils.getBaseUrl()+'CustomerCaseService.svc/DeleteCase/' + caseId, headers: {'authorization': Utils.apiAuthentication()});
+      //print(response.body);
+      if (response.statusCode == 200) {
+        pd.hide();
+        return response.body;
+      } else
+        pd.hide();
+        Utils.showError(context,response.statusCode.toString());
+        return null;
+    }catch(e){
+      pd.hide();
+      Utils.showError(context,e.toString());
+    }
 
-  static Future<String> DeleteCustomerCase(String caseId) async {
-    final response = await http.delete(
-        'http://sales.arabianceramics.com/AcmcMobileServices/CustomerCaseService.svc/DeleteCase/' +
-            caseId,
-        headers: {'authorization': basicAuth});
-    //print(response.body);
-    if (response.statusCode == 200) {
-      return response.body;
-    } else
-      return null;
   }
+  static Future<String> CreateCustomerCase(BuildContext context, String customerId, String description, int statusField, int categoryTypeField, customerName, int resolutionType, String caseMemo) async {
+    ProgressDialog pd=ProgressDialog(context);
+    try{
+      pd.show();
+      final body = jsonEncode({
+        'CustomerAccount': customerId,
+        'CustomerName': customerName,
+        'CaseDescription': description,
+        'CaseMemo': caseMemo,
+        'Status': statusField,
+        'ResolutionType': resolutionType,
+        'CategoryTypeId': categoryTypeField
+      }, toEncodable: Utils.myEncode);
+      final response = await http.post(
+          Utils.getBaseUrl()+'CustomerCaseService.svc/CreateCase',
+          body: body,
+          headers: {
+            'authorization': Utils.apiAuthentication(),
+            'Content-Type': 'application/json'
+          });
+      //print(response.statusCode);
+      if (response.statusCode == 200) {
+        pd.hide();
+        return response.body;
+      } else
+        pd.hide();
+       Utils.showError(context,response.statusCode.toString());
+        return null;
+    }catch(e){
+      pd.hide();
+      Utils.showError(context, e.toString());
+    }
 
-  static Future<String> CreateCustomerCase(
-      String customerId,
-      String description,
-      int statusField,
-      int categoryTypeField,
-      customerName,
-      int resolutionType,
-      String caseMemo) async {
-    final body = jsonEncode({
-      'CustomerAccount': customerId,
-      'CustomerName': customerName,
-      'CaseDescription': description,
-      'CaseMemo': caseMemo,
-      'Status': statusField,
-      'ResolutionType': resolutionType,
-      'CategoryTypeId': categoryTypeField
-    }, toEncodable: Utils.myEncode);
-    final response = await http.post(
-        'http://sales.arabianceramics.com/AcmcMobileServices/CustomerCaseService.svc/CreateCase',
-        body: body,
-        headers: {
-          'authorization': basicAuth,
-          'Content-Type': 'application/json'
-        });
-    //print(response.statusCode);
-    if (response.statusCode == 200) {
-      return response.body;
-    } else
-      return null;
   }
+  static Future<String> UpdateCustomerCase(BuildContext context, String caseId, String customerId, String description, int statusField, int categoryTypeField, customerName, int resolutionType, String caseMemo) async {
+    ProgressDialog pd=ProgressDialog(context);
+    try{
+      pd.show();
+      final body = jsonEncode({
+        'CustomerAccount': customerId,
+        'CustomerName': customerName,
+        'CaseDescription': description,
+        'CaseMemo': caseMemo,
+        'Status': statusField,
+        'ResolutionType': resolutionType,
+        'CategoryTypeId': categoryTypeField
+      }, toEncodable: Utils.myEncode);
+      print(body);
+      final response = await http.put(
+          Utils.getBaseUrl()+'CustomerCaseService.svc/UpdateCase/' +
+              caseId,
+          body: body,
+          headers: {
+            'authorization': Utils.apiAuthentication(),
+            'Content-Type': 'application/json'
+          });
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        pd.hide();
+        return response.body;
+      } else
+        pd.hide();
+        Utils.showError(context, response.statusCode.toString());
+        return null;
+    }catch(e){
+      pd.hide();
+      Utils.showError(context,e.toString());
+    }
 
-  static Future<String> UpdateCustomerCase(
-      String caseId,
-      String customerId,
-      String description,
-      int statusField,
-      int categoryTypeField,
-      customerName,
-      int resolutionType,
-      String caseMemo) async {
-    final body = jsonEncode({
-      'CustomerAccount': customerId,
-      'CustomerName': customerName,
-      'CaseDescription': description,
-      'CaseMemo': caseMemo,
-      'Status': statusField,
-      'ResolutionType': resolutionType,
-      'CategoryTypeId': categoryTypeField
-    }, toEncodable: Utils.myEncode);
-    print(body);
-    final response = await http.put(
-        'http://sales.arabianceramics.com/AcmcMobileServices/CustomerCaseService.svc/UpdateCase/' +
-            caseId,
-        body: body,
-        headers: {
-          'authorization': basicAuth,
-          'Content-Type': 'application/json'
-        });
-    print(response.statusCode);
-    if (response.statusCode == 200) {
-      return response.body;
-    } else
-      return null;
   }
-
   //Production Plan
-  static Future<String> GetItemSizes() async {
-    final response = await http.get(
-        'http://sales.arabianceramics.com/AcmcMobileServices/ProdPlanService.svc/GetItemSizes',
-        headers: {'authorization': basicAuth});
-    if (response.statusCode == 200) {
-      return response.body;
-    } else
-      return null;
+  static Future<String> GetItemSizes(BuildContext context) async {
+    ProgressDialog pd=ProgressDialog(context);
+    try{
+      pd.show();
+      final response = await http.get(Utils.getBaseUrl()+'ProdPlanService.svc/GetItemSizes', headers: {'authorization': Utils.apiAuthentication()});
+      if (response.statusCode == 200) {
+        pd.hide();
+        return response.body;
+      } else
+        pd.hide();
+        Utils.showError(context,response.statusCode.toString());
+        return null;
+    }catch(e){
+      pd.hide();
+      Utils.showError(context,e.toString());
+    }
+
   }
 
-  static Future<String> GetCustomerPlan(String customerId, String year) async {
-    final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/ProdPlanService.svc/GetCustomerPlan/' + customerId + '/' + year, headers: {'authorization': basicAuth});
-   // print(response.body);
-    if (response.statusCode == 200) {
-      return response.body;
-    } else
-      return null;
+  static Future<String> GetCustomerPlan(BuildContext context,String customerId, String year) async {
+     ProgressDialog pd=ProgressDialog(context);
+    try{
+      pd.show();
+      final response = await http.get(Utils.getBaseUrl()+'ProdPlanService.svc/GetCustomerPlan/' + customerId + '/' + year, headers: {'authorization': Utils.apiAuthentication()});
+      if (response.statusCode == 200) {
+        pd.hide();
+        return response.body;
+      } else
+        pd.hide();
+        Utils.showError(context,response.statusCode.toString());
+        return null;
+    }catch(e){
+      pd.hide();
+      Utils.showError(context,e.toString());
+    }
+
   }
   static Future<String> GetCustomerPlanForecast(String customerId, int year,int month) async {
     final response = await http.get('http://sales.arabianceramics.com/AcmcMobileServices/ProdPlanService.svc/GetMonthlyForcastSummary/' + customerId + '/' + year.toString() + '/' + month.toString(), headers: {'authorization': basicAuth});

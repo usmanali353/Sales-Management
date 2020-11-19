@@ -72,7 +72,7 @@ class _PrePickingListState extends ResumableState<PrePickingList> {
                pd.show();
                try{
                  Network_Operations.GetAllPrePicking(customerId).then((response){
-                   pd.dismiss();
+                   pd.hide();
                    if(response!=null){
                      setState(() {
                        if(prePicking!=null){
@@ -90,7 +90,7 @@ class _PrePickingListState extends ResumableState<PrePickingList> {
                    }
                  });
                }catch(e){
-                pd.dismiss();
+                pd.hide();
                }
              }else{
                Flushbar(

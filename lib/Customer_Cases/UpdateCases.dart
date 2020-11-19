@@ -105,10 +105,7 @@ class _UpdateCasesState extends State<UpdateCases> {
                         onPressed: (){
                           if(_fbKey.currentState.validate()){
                             _fbKey.currentState.save();
-                            ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-                            pd.show();
-                            Network_Operations.UpdateCustomerCase(caseData['CaseNum'],caseData['CustomerAccount'], description.text, 1, caseType, caseData['CustomerName'], 0, 'caseMemo').then((response){
-                              pd.hide();
+                            Network_Operations.UpdateCustomerCase(context,caseData['CaseNum'],caseData['CustomerAccount'], description.text, 1, caseType, caseData['CustomerName'], 0, 'caseMemo').then((response){
                               if(response!=null){
                                 Scaffold.of(context).showSnackBar(SnackBar(
                                   backgroundColor: Colors.green,

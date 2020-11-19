@@ -178,7 +178,7 @@ class _UpdatePrePickingState extends State<UpdatePrePicking> {
                               ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
                               pd.show();
                               Network_Operations.updatePrePicking(prePicking['CustomerAccount'], address.text, driverName.text, truckNumber.text, '/Date('+deliveryDate.millisecondsSinceEpoch.toString()+'+0300)/', mobileNo.text, prePickingLines, prePicking['PickingId']).then((response){
-                                pd.dismiss();
+                                pd.hide();
                                 if(response!=null){
                                   Scaffold.of(context).showSnackBar(SnackBar(
                                     content: Text("Pre Picking Updatedd"),

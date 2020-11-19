@@ -197,7 +197,7 @@ class _AddPrePickingState extends State<AddPrePicking> {
                               ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
                               pd.show();
                               Network_Operations.CreatePrePicking(customerId, address.text, driverName.text, truckNumber.text, '/Date('+deliveryDate.millisecondsSinceEpoch.toString()+'+0300)/', mobileNo.text, prePickingLines).then((value){
-                                pd.dismiss();
+                                pd.hide();
                                 if(value!=null){
                                   db.deleteProducts().then((deletedProducts){
                                     if(deletedProducts>0){

@@ -94,10 +94,7 @@ class _CreateCase extends State<CreateCase>{
                       child: MaterialButton(
                         onPressed: (){
                           if(_fbKey.currentState.validate()){
-                            ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-                            pd.show();
-                            Network_Operations.CreateCustomerCase(customerId, description.text, 1, caseType, 'some customer', 0, 'caseMemo').then((response){
-                              pd.hide();
+                            Network_Operations.CreateCustomerCase(context,customerId, description.text, 1, caseType, 'some customer', 0, 'caseMemo').then((response){
                               if(response!=null){
                                 Scaffold.of(context).showSnackBar(SnackBar(
                                   backgroundColor: Colors.green,
