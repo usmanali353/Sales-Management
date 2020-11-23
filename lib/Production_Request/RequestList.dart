@@ -147,10 +147,7 @@ class _RequestsList extends ResumableState<RequestList>{
               return Utils.check_connectivity().then((connected){
                 if(connected){
                   if(size!=null&&month!=null){
-                    ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
-                    pd.show();
-                    Network_Operations.GetProdRequestListBySize(customerId,size, 1, 100).then((response){
-                      pd.hide();
+                    Network_Operations.GetProdRequestListBySize(context,customerId,size, 1, 100).then((response){
                       if(response!=null&&response!=''&&response!='[]'){
                         setState(() {
                           var filteredRequest=[];
@@ -184,10 +181,7 @@ class _RequestsList extends ResumableState<RequestList>{
                       }
                     });
                   }else{
-                    ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
-                    pd.show();
-                    Network_Operations.GetProdRequestList(customerId, 1, 100).then((response){
-                      pd.hide();
+                    Network_Operations.GetProdRequestList(context,customerId, 1, 100).then((response){
                       if(response!=null&&response!=''&&response!='[]'){
                         setState(() {
                           if(requests!=null){
@@ -233,7 +227,7 @@ class _RequestsList extends ResumableState<RequestList>{
                             caption: "Delete",
                             closeOnTap: true,
                             onTap: (){
-                              Network_Operations.DeleteProdRequest(requests[index]['ProductionRequestId']).then((response){
+                              Network_Operations.DeleteProdRequest(context,requests[index]['ProductionRequestId']).then((response){
                                 if(response!=null&&response!=''&&response!='[]'){
                                   WidgetsBinding.instance
                                       .addPostFrameCallback((_) =>
@@ -325,7 +319,7 @@ class _RequestsList extends ResumableState<RequestList>{
     Widget cancelButton = FlatButton(
       child: Text("Ok"),
       onPressed:  () {
-        Network_Operations.GetProdRequestListByItem(customerId,items[selectedValue]['ItemNumber'], 1, 100).then((value){
+        Network_Operations.GetProdRequestListByItem(context,customerId,items[selectedValue]['ItemNumber'], 1, 100).then((value){
           if(value!=null){
             setState(() {
               var requestsByItem=jsonDecode(value);
@@ -424,10 +418,7 @@ class _RequestsList extends ResumableState<RequestList>{
                     setState(() {
                       selectedValue = newValue;
                       Navigator.pop(context);
-                      ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
-                      pd.show();
-                      Network_Operations.GetProdRequestListBySize(customerId,selectedValue, 1, 100).then((value){
-                        pd.hide();
+                      Network_Operations.GetProdRequestListBySize(context,customerId,selectedValue, 1, 100).then((value){
                         if(value!=null){
                           setState(() {
                             var requestsByItem=jsonDecode(value);

@@ -33,6 +33,7 @@ class _PlanDetailState extends State<PlanDetail> {
               if(choice=='Create Production Request'){
                 Navigator.push(context,MaterialPageRoute(builder: (context)=>CreateProductionRequest(customerId,null),
                     settings: RouteSettings(
+
                         arguments: {'month':planData['MonthOfYear'].toString()}
                     )));
               }else if(choice=='View Production Requests') {

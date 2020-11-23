@@ -143,10 +143,7 @@ class _UpdateProductionRequestState extends State<UpdateProductionRequest> {
                         onPressed: (){
                           if(_fbKey.currentState.validate()){
                             _fbKey.currentState.save();
-                            ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-                            pd.show();
-                            Network_Operations.UpdateProductionRequest(requestData['CustomerAccount'], itemNumber.text, customerItemCode.text, selectedMonth, int.parse(quantity.text), requestData['RequestedDate'],requestData['CustomerPONum'],requestData['ProductionRequestId']).then((response){
-                              pd.hide();
+                            Network_Operations.UpdateProductionRequest(context,requestData['CustomerAccount'], itemNumber.text, customerItemCode.text, selectedMonth, int.parse(quantity.text), requestData['RequestedDate'],requestData['CustomerPONum'],requestData['ProductionRequestId']).then((response){
                               if(response!=null){
                                 Navigator.pop(context,'Refresh');
                                 Scaffold.of(context).showSnackBar(SnackBar(

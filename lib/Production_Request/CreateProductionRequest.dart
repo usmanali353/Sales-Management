@@ -153,7 +153,6 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
                     child: FormBuilderTextField(
                       controller: customerItemCode,
                       attribute: "Customer Item Code",
-                      validators: [FormBuilderValidators.required()],
                       decoration: InputDecoration(hintText: "Customer Item Code",contentPadding: EdgeInsets.all(16),border: InputBorder.none
 //                        border: OutlineInputBorder(
 //                            borderRadius: BorderRadius.circular(9.0),
@@ -201,16 +200,21 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
                                  sizeMonthlyForecast=0;
                                  sizeMonthlyRequested=0;
                                  var forecast=jsonDecode(value);
+                                 print(forecast);
                                  if(forecast!=null&&forecast.length>0){
                                    for(int i=0;i<forecast.length;i++){
                                      monthlyPlanForecast+=forecast[i]['QuantityForcasted'];
                                      monthlyRequested+=forecast[i]['QuantityRequested'];
-                                     if(forecast['ItemSize']==params['ItemSize']){
+                                     if(params!=null&&params['ItemSize']!=null&&forecast[i]['ItemSize']==params['ItemSize']){
                                        sizeMonthlyForecast+=forecast[i]['QuantityForcasted'];
                                        sizeMonthlyRequested+=forecast[i]['QuantityRequested'];
                                      }
+                                     print(params!=null&&params['ItemSize']!=null&&forecast[i]['ItemSize']==params['ItemSize']);
                                    }
-                                   if(int.parse(quantity.text)+monthlyRequested>monthlyPlanForecast||int.parse(quantity.text)+sizeMonthlyRequested>sizeMonthlyForecast){
+                                  print(int.parse(quantity.text)+sizeMonthlyRequested);
+                                   print(sizeMonthlyForecast);
+                                  // print(1234>0);
+                                   if(int.parse(quantity.text)+monthlyRequested>monthlyPlanForecast||sizeMonthlyForecast!=0&&sizeMonthlyRequested!=0&&int.parse(quantity.text)+sizeMonthlyRequested>sizeMonthlyForecast){
                                      Flushbar(
                                        message: "Quantity Requested exceeding your Overall monthly Forecast which is "+monthlyPlanForecast.toString(),
                                        backgroundColor: Colors.red,
@@ -247,10 +251,7 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
       onPressed:  () {
         if(_fbKey.currentState.validate()){
           var size=params!=null&&params['ItemSize']!=null?params['ItemSize']:'';
-          ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-          pd.show();
-          Network_Operations.CreateProductionRequest(customerId, selectedItemId, customerItemCode.text, selectedMonth, int.parse(quantity.text),size).then((response){
-            pd.hide();
+          Network_Operations.CreateProductionRequest(context,customerId, selectedItemId, customerItemCode.text, selectedMonth, int.parse(quantity.text),size).then((response){
             if(response!=null){
               Navigator.pop(context,'Refresh');
               Scaffold.of(context).showSnackBar(SnackBar(

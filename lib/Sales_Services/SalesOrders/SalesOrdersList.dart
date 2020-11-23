@@ -69,7 +69,8 @@ class _SalesOrdersList extends State<SalesOrdersList>{
               return Column(
                 children: <Widget>[
               ListTile(
-              title: Text(filteredList[index]['salesIdField']!=null?filteredList[index]['salesIdField'].toString():''),
+              title: Text(filteredList[index]['deliveryNameField']!=null?filteredList[index]['deliveryNameField'].toString():''),
+                subtitle: Text(filteredList[index]['salesStatusField']!=null?get_order_status(filteredList[index]['salesStatusField']):''),
                 trailing:  Text(filteredList[index]['deliveryDateField']!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(filteredList[index]['deliveryDateField'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
                 leading: Material(
                     borderRadius: BorderRadius.circular(24),
