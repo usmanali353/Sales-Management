@@ -34,8 +34,7 @@ class _RequestDetails extends State<RequestDetails>{
                 child: Center(child: Text("View Schedule")),
                 onTap: () {
                   try {
-                    Network_Operations.GetProductionScheduleByRequest(
-                        requestData['ProductionRequestId']).then((response) {
+                    Network_Operations.GetProductionScheduleByRequest(context,requestData['ProductionRequestId']).then((response) {
                           if(response!=null){
                             var schedulebyRequest = jsonDecode(response);
                             if (schedulebyRequest != null) {

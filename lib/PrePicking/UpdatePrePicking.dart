@@ -175,10 +175,7 @@ class _UpdatePrePickingState extends State<UpdatePrePicking> {
                           child: Text("Update PrePicking",style: TextStyle(color:Colors.white),),
                           onPressed: (){
                             if(_fbKey.currentState.validate()) {
-                              ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
-                              pd.show();
-                              Network_Operations.updatePrePicking(prePicking['CustomerAccount'], address.text, driverName.text, truckNumber.text, '/Date('+deliveryDate.millisecondsSinceEpoch.toString()+'+0300)/', mobileNo.text, prePickingLines, prePicking['PickingId']).then((response){
-                                pd.hide();
+                              Network_Operations.updatePrePicking(context,prePicking['CustomerAccount'], address.text, driverName.text, truckNumber.text, '/Date('+deliveryDate.millisecondsSinceEpoch.toString()+'+0300)/', mobileNo.text, prePickingLines, prePicking['PickingId']).then((response){
                                 if(response!=null){
                                   Scaffold.of(context).showSnackBar(SnackBar(
                                     content: Text("Pre Picking Updatedd"),

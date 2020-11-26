@@ -177,10 +177,7 @@ class _UpdateProductionPlanState extends State<UpdateProductionPlan> {
                         onPressed: (){
                           if(_fbKey.currentState.validate()){
                             _fbKey.currentState.save();
-                            ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-                            pd.show();
-                            Network_Operations.UpdateCustomerPlan(planData['CustomerAccount'], selectedValue, selectedMonth, int.parse(selectedYear),int.parse(quantity.text),planData['RecordId']).then((response){
-                              pd.hide();
+                            Network_Operations.UpdateCustomerPlan(context,planData['CustomerAccount'], selectedValue, selectedMonth, int.parse(selectedYear),int.parse(quantity.text),planData['RecordId']).then((response){
                               if(response!=null){
                                 Scaffold.of(context).showSnackBar(SnackBar(
                                   backgroundColor: Colors.green,

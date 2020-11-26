@@ -68,11 +68,7 @@ class _PrePickingListState extends ResumableState<PrePickingList> {
         onRefresh: (){
           return Utils.check_connectivity().then((connected){
              if(connected){
-               ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
-               pd.show();
-               try{
-                 Network_Operations.GetAllPrePicking(customerId).then((response){
-                   pd.hide();
+                 Network_Operations.GetAllPrePicking(context,customerId).then((response){
                    if(response!=null){
                      setState(() {
                        if(prePicking!=null){
@@ -89,9 +85,6 @@ class _PrePickingListState extends ResumableState<PrePickingList> {
                      });
                    }
                  });
-               }catch(e){
-                pd.hide();
-               }
              }else{
                Flushbar(
                  message: "Network not Available",
@@ -124,7 +117,7 @@ class _PrePickingListState extends ResumableState<PrePickingList> {
                           caption: "Delete",
                           closeOnTap: true,
                           onTap: (){
-                            Network_Operations.DeletePrePicking(filteredList[index]['PickingId']).then((response){
+                            Network_Operations.DeletePrePicking(context,filteredList[index]['PickingId']).then((response){
                               if(response!=null&&response!=''&&response!='[]'){
                                 WidgetsBinding.instance
                                     .addPostFrameCallback((_) =>

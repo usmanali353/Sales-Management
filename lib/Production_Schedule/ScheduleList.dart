@@ -37,7 +37,7 @@ class _SchedulesList extends State<SchedulesList>{
           IconButton(
             icon: Icon(Icons.search),
             onPressed: (){
-              Network_Operations.GetOnhandStock(customerId).then((value){
+              Network_Operations.GetOnhandStock(context,customerId).then((value){
                 if(value!=null){
                   setState(() {
                     var items = jsonDecode(value);
@@ -61,10 +61,7 @@ class _SchedulesList extends State<SchedulesList>{
         onRefresh: (){
           return Utils.check_connectivity().then((connected){
              if(connected){
-               ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
-               pd.show();
-               Network_Operations.GetProductionSchedules(customerId, 1, 100).then((response){
-                 pd.hide();
+               Network_Operations.GetProductionSchedules(context,customerId, 1, 100).then((response){
                  if(response!=null&&response!='[]'){
                    if(schedules!=null){
                      schedules.clear();
@@ -130,7 +127,7 @@ class _SchedulesList extends State<SchedulesList>{
     Widget cancelButton = FlatButton(
       child: Text("Ok"),
       onPressed:  () {
-        Network_Operations.GetProductionSchedulesByItem(customerId,items[selectedValue]['ItemNumber'], 1, 100).then((value){
+        Network_Operations.GetProductionSchedulesByItem(context,customerId,items[selectedValue]['ItemNumber'], 1, 100).then((value){
           if(value!=null){
             setState(() {
               var requestsByItem=jsonDecode(value);

@@ -99,10 +99,8 @@ class _RequestsList extends ResumableState<RequestList>{
                 }else if(choice=='Filter by Item') {
                   Utils.check_connectivity().then((connected){
                     if(connected){
-                      ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
-                      pd.show();
-                      Network_Operations.GetOnhandStock(customerId).then((value) {
-                        pd.hide();
+                      Network_Operations.GetOnhandStock(context,customerId).then((value) {
+
                         if (value != null) {
                           setState(() {
 
@@ -275,10 +273,7 @@ class _RequestsList extends ResumableState<RequestList>{
                   ),
                           onTap: (){
                             if(requests[index]['ProductionStatus']=='Produced'){
-                              ProgressDialog pd=ProgressDialog(context,type: ProgressDialogType.Normal,isDismissible: true);
-                              pd.show();
-                              Network_Operations.GetOnhandStock(customerId).then((response){
-                                pd.hide();
+                              Network_Operations.GetOnhandStock(context,customerId).then((response){
                                 if(response!=null){
                                   setState(() {
                                     var items=jsonDecode(response);

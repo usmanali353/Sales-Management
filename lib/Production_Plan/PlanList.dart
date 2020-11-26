@@ -261,10 +261,7 @@ List<Widget> wholeYear() {
                 caption: "Delete",
                 closeOnTap: true,
                 onTap: (){
-                  ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-                  pd.show();
-                  Network_Operations.DeleteCustomerPlan(planList[index]['RecordId']).then((response){
-                    pd.hide();
+                  Network_Operations.DeleteCustomerPlan(context,planList[index]['RecordId']).then((response){
                     if(response!=null){
                       WidgetsBinding.instance
                           .addPostFrameCallback((_) =>
@@ -344,10 +341,7 @@ List<Widget> wholeYear() {
               caption: "Delete",
               closeOnTap: true,
               onTap: (){
-                ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-                pd.show();
-                Network_Operations.DeleteCustomerPlan(planList[index]['RecordId']).then((response){
-                  pd.hide();
+                Network_Operations.DeleteCustomerPlan(context,planList[index]['RecordId']).then((response){
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -401,8 +395,7 @@ List<Widget> wholeYear() {
                 )
             ),
             onTap: () {
-              push(context, MaterialPageRoute(
-                  builder: (context) => PlanDetail(planList[index],customerId)));
+              push(context, MaterialPageRoute(builder: (context) => PlanDetail(planList[index],customerId)));
             },
           ),
         ));
@@ -427,10 +420,7 @@ List<Widget> wholeYear() {
               caption: "Delete",
               closeOnTap: true,
               onTap: (){
-                ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-                pd.show();
-                Network_Operations.DeleteCustomerPlan(planList[index]['RecordId']).then((response){
-                  pd.hide();
+                Network_Operations.DeleteCustomerPlan(context,planList[index]['RecordId']).then((response){
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -510,10 +500,7 @@ List<Widget> wholeYear() {
               caption: "Delete",
               closeOnTap: true,
               onTap: (){
-                ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-                pd.show();
-                Network_Operations.DeleteCustomerPlan(planList[index]['RecordId']).then((response){
-                  pd.hide();
+                Network_Operations.DeleteCustomerPlan(context,planList[index]['RecordId']).then((response){
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -593,10 +580,7 @@ List<Widget> wholeYear() {
               caption: "Delete",
               closeOnTap: true,
               onTap: (){
-                ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-                pd.show();
-                Network_Operations.DeleteCustomerPlan(planList[index]['RecordId']).then((response){
-                  pd.hide();
+                Network_Operations.DeleteCustomerPlan(context,planList[index]['RecordId']).then((response){
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -676,7 +660,7 @@ List<Widget> wholeYear() {
               caption: "Delete",
               closeOnTap: true,
               onTap: (){
-                Network_Operations.DeleteCustomerPlan(planList[index]['RecordId']).then((response){
+                Network_Operations.DeleteCustomerPlan(context,planList[index]['RecordId']).then((response){
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -756,10 +740,7 @@ List<Widget> wholeYear() {
               caption: "Delete",
               closeOnTap: true,
               onTap: (){
-                ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-                pd.show();
-                Network_Operations.DeleteCustomerPlan(planList[index]['RecordId']).then((response){
-                  pd.hide();
+                Network_Operations.DeleteCustomerPlan(context,planList[index]['RecordId']).then((response){
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -839,10 +820,7 @@ List<Widget> wholeYear() {
               caption: "Delete",
               closeOnTap: true,
               onTap: (){
-                ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-                pd.show();
-                Network_Operations.DeleteCustomerPlan(planList[index]['RecordId']).then((response){
-                  pd.hide();
+                Network_Operations.DeleteCustomerPlan(context,planList[index]['RecordId']).then((response){
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -922,10 +900,7 @@ List<Widget> wholeYear() {
               caption: "Delete",
               closeOnTap: true,
               onTap: (){
-                ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-                pd.show();
-                Network_Operations.DeleteCustomerPlan(planList[index]['RecordId']).then((response){
-                  pd.hide();
+                Network_Operations.DeleteCustomerPlan(context,planList[index]['RecordId']).then((response){
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -1005,10 +980,7 @@ List<Widget> wholeYear() {
               caption: "Delete",
               closeOnTap: true,
               onTap: (){
-                ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-                pd.show();
-                Network_Operations.DeleteCustomerPlan(planList[index]['RecordId']).then((response){
-                  pd.hide();
+                Network_Operations.DeleteCustomerPlan(context,planList[index]['RecordId']).then((response){
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -1088,10 +1060,7 @@ List<Widget> wholeYear() {
               caption: "Delete",
               closeOnTap: true,
               onTap: (){
-                ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-                pd.show();
-                Network_Operations.DeleteCustomerPlan(planList[index]['RecordId']).then((response){
-                  pd.hide();
+                Network_Operations.DeleteCustomerPlan(context,planList[index]['RecordId']).then((response){
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -1171,10 +1140,7 @@ List<Widget> wholeYear() {
               caption: "Delete",
               closeOnTap: true,
               onTap: (){
-                ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-                pd.show();
-                Network_Operations.DeleteCustomerPlan(planList[index]['RecordId']).then((response){
-                  pd.hide();
+                Network_Operations.DeleteCustomerPlan(context,planList[index]['RecordId']).then((response){
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -1254,10 +1220,7 @@ List<Widget> wholeYear() {
               caption: "Delete",
               closeOnTap: true,
               onTap: (){
-                ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-                pd.show();
-                Network_Operations.DeleteCustomerPlan(planList[index]['RecordId']).then((response){
-                  pd.hide();
+                Network_Operations.DeleteCustomerPlan(context,planList[index]['RecordId']).then((response){
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -1349,7 +1312,7 @@ List<Widget> wholeYear() {
                             _refreshIndicatorKey.currentState
                                 .show());
                       }else{
-                        Network_Operations.GetCustomerPlanBySize(customerId, currentSelectedValue, year).then((response){
+                        Network_Operations.GetCustomerPlanBySize(context,customerId, currentSelectedValue, year).then((response){
                           if(response!=null){
                             setState(() {
                               if(planList!=null){

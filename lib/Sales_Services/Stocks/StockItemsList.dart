@@ -64,10 +64,8 @@ class _StockItemsList extends ResumableState<StockItemsList>{
     });
     Utils.check_connectivity().then((connected) {
       if(connected){
-        ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-        pd.show();
-        Network_Operations.GetOnhandStock(customerId).then((response){
-          pd.hide();
+        Network_Operations.GetOnhandStock(context,customerId).then((response){
+
           if(response!=null&&response!='[]'){
             setState(() {
               if(items!=null){
@@ -122,13 +120,8 @@ class _StockItemsList extends ResumableState<StockItemsList>{
                           olderExpanded = false;
                           finishedExpanded = false;
                         });
-                        ProgressDialog pd = ProgressDialog(
-                            context, isDismissible: true,
-                            type: ProgressDialogType.Normal);
-                        pd.show();
-                        Network_Operations.GetOnhandStock(customerId).then((
+                        Network_Operations.GetOnhandStock(context,customerId).then((
                             response) {
-                          pd.hide();
                           if (response != null && response != '[]') {
                             setState(() {
                               if (items != null) {
@@ -162,13 +155,8 @@ class _StockItemsList extends ResumableState<StockItemsList>{
                           olderExpanded = true;
                           finishedExpanded = false;
                         });
-                        ProgressDialog pd = ProgressDialog(
-                            context, isDismissible: true,
-                            type: ProgressDialogType.Normal);
-                        pd.show();
                         Network_Operations.GetCustomerOlderStock(context,customerId)
                             .then((response) {
-                          pd.hide();
                           if (response != null && response != '[]') {
                             setState(() {
                               if (items != null) {

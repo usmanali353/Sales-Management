@@ -164,10 +164,7 @@ class _CreateProductionPlanState extends State<CreateProductionPlan> {
                         color: Color(0xFF004c4c),
                         onPressed: (){
                           if(_fbKey.currentState.validate()){
-                            ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-                            pd.show();
-                            Network_Operations.CreateCustomerPlan(CustomerId, selectedValue, selectedMonth, int.parse(selectedYear),int.parse(quantity.text)).then((response){
-                              pd.hide();
+                            Network_Operations.CreateCustomerPlan(context,CustomerId, selectedValue, selectedMonth, int.parse(selectedYear),int.parse(quantity.text)).then((response){
                               if(response!=null){
                                 Scaffold.of(context).showSnackBar(SnackBar(
                                   backgroundColor: Colors.green,

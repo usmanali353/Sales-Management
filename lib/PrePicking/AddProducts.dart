@@ -42,6 +42,7 @@ class _AddProductsState extends ResumableState<AddProducts> {
       });
     }else if(resume.data.toString() == 'Close'){
       Navigator.pop(context,'Close');
+      Navigator.pop(context,'Close');
     }
   }
 
@@ -59,11 +60,7 @@ class _AddProductsState extends ResumableState<AddProducts> {
     });
     Utils.check_connectivity().then((connected){
       if(connected){
-        ProgressDialog dialog=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-        try{
-          dialog.show();
-        Network_Operations.GetOnhandStock(customerId).then((response){
-          dialog.hide();
+        Network_Operations.GetOnhandStock(context,customerId).then((response){
           if(response!=null){
             setState(() {
               stockItems=jsonDecode(response);
@@ -77,9 +74,6 @@ class _AddProductsState extends ResumableState<AddProducts> {
             });
           }
         });
-      }catch(e){
-          dialog.hide();
-        }
       }else{
         Flushbar(
           message: "Network not Available",

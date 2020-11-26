@@ -41,13 +41,9 @@ class _VariationDetailsState extends ResumableState<VariationDetails> {
     db = sqlite_helper();
     Utils.check_connectivity().then((connected) {
       if (connected) {
-        ProgressDialog pd = ProgressDialog(context,
-            isDismissible: true, type: ProgressDialogType.Normal);
-        pd.show();
         Network_Operations.GetProdRequestListByItemNotFinished(
-                customerId, variationData['ItemNumber'], 1, 100)
+                context,customerId, variationData['ItemNumber'], 1, 100)
             .then((response) {
-          pd.hide();
           if (response != null) {
             setState(() {
               var requests = jsonDecode(response);

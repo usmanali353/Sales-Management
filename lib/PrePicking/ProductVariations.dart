@@ -36,10 +36,7 @@ class _ProductVariationsState extends ResumableState<ProductVariations> {
   void initState() {
     Utils.check_connectivity().then((connected){
       if(connected){
-        ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-        pd.show();
-        Network_Operations.GetOnhandStockByItem(customerId,itemNumber).then((response){
-          pd.hide();
+        Network_Operations.GetOnhandStockByItem(context,customerId,itemNumber).then((response){
           if(response!=null){
             setState(() {
               variations=jsonDecode(response);

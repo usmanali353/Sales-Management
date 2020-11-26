@@ -140,7 +140,7 @@ class _InvoicesList extends State<InvoicesList>{
                         return Column(
                           children: <Widget>[
                             ListTile(
-                              title: Text(InvoiceList[index]['InvoiceId']!=null?InvoiceList[index]['InvoiceId']:''),
+                              title: Text(InvoiceList[index]['DeliveryName']!=null?InvoiceList[index]['DeliveryName'].trim():''),
                               trailing: Text(InvoiceList[index]['InvoiceDate']!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(InvoiceList[index]['InvoiceDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
                               subtitle: Text('Sales Id:'+InvoiceList[index]['SalesOrderId']+'\n'+'Quantity Sold: '+InvoiceList[index]['QuantitySold'].toString()),
                               leading: Material(

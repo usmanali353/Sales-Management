@@ -33,10 +33,7 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
     quantity=TextEditingController();
     Utils.check_connectivity().then((connected){
        if(connected){
-         ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-         pd.show();
-         Network_Operations.GetOnhandStock(customerId).then((response){
-           pd.hide();
+         Network_Operations.GetOnhandStock(context,customerId).then((response){
            if(response!=null&&response!='[]'){
              setState(() {
                isVisible=true;
@@ -189,10 +186,7 @@ class _CreateProductionRequestState extends State<CreateProductionRequest> {
                         child: Text("Create Production Request",style: TextStyle(color: Colors.white),),
                         onPressed: (){
                           _fbKey.currentState.save();
-                          ProgressDialog pd=ProgressDialog(context,isDismissible: true,type: ProgressDialogType.Normal);
-                          pd.show();
-                          Network_Operations.GetCustomerPlanForecast(customerId,2020,selectedMonth).then((value){
-                             pd.hide();
+                          Network_Operations.GetCustomerPlanForecast(context,customerId,2020,selectedMonth).then((value){
                              if(value!=null){
                                setState(() {
                                  monthlyPlanForecast=0;
