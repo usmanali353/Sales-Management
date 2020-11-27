@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:salesmanagement/Model/Deliveries.dart';
 import 'package:salesmanagement/Sales_Services/Deliveries/detail_page.dart';
 import '../../Network_Operations.dart';
 import '../../Utils.dart';
@@ -21,7 +22,8 @@ class DeliveryList extends StatefulWidget{
 }
 class _DeliveryList extends State<DeliveryList>{
   bool isVisible=false;
-  var orders_list,temp=['',''],CustomerId,_isSearching=false,filteredList=[];
+  var temp=['',''],CustomerId,_isSearching=false;
+  List<Deliveries> orders_list=[],filteredList=[];
   String date,searchQuery = "Search query";
   TextEditingController _searchQuery;
   _DeliveryList(this.date,this.CustomerId);
@@ -32,10 +34,10 @@ class _DeliveryList extends State<DeliveryList>{
     _searchQuery=TextEditingController();
     Utils.check_connectivity().then((connected){
       if(connected){
-        Network_Operations.get_deliveries(context,date,CustomerId).then((response){
-          if(response!=null&&response!='[]'){
+        Network_Operations.get_deliveries(context,date,CustomerId).then((deliveries){
+          if(deliveries!=null&&deliveries.length>0){
             setState(() {
-              orders_list=json.decode(response);
+              orders_list=deliveries;
               if(orders_list!=null&&orders_list.length>0) {
                 isVisible = true;
                 filteredList.addAll(orders_list);
@@ -72,13 +74,13 @@ class _DeliveryList extends State<DeliveryList>{
               return Column(
                 children: <Widget>[
                   ListTile(
-                    title: Text(filteredList[index]['salesIdField']),
-                    trailing:  Text(filteredList[index]['deliveryDateField']!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(filteredList[index]['deliveryDateField'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
+                    title: Text(filteredList[index].packingSlipNumField),
+                    trailing:  Text(filteredList[index].deliveryDateField!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(filteredList[index].deliveryDateField.replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
                     subtitle:  Text((() {
-                      if(filteredList[index]['packingSlipNumField']!=null){
-                        return 'Qty:'+filteredList[index]['quantityInSQMField'].toString()+' SQM'+'\n'+'Packing Slip:'+filteredList[index]['packingSlipNumField'];
+                      if(filteredList[index].packingSlipNumField!=null){
+                        return 'Sales Order Id:'+filteredList[index].salesIdField.toString()+'\n'+'Truck no: '+filteredList[index].truckPlateNumField+"\n"+"Status: "+Utils.getDeliveryStatus(filteredList[index].deliveryStatusField);
                       }else
-                        return 'Qty:'+filteredList[index]['quantityInSQMField'].toString()+' SQM';
+                        return 'Qty:'+filteredList[index].quantityInSqmField.toString()+' SQM';
                     })()),
                     leading: Material(
                         borderRadius: BorderRadius.circular(24),
@@ -168,7 +170,7 @@ class _DeliveryList extends State<DeliveryList>{
       searchQuery = newQuery;
       if(searchQuery.length>0){
         for(int i=0;i<orders_list.length;i++){
-          if(orders_list[i]['salesIdField'].toLowerCase().contains(searchQuery)){
+          if(orders_list[i].salesIdField.toLowerCase().contains(searchQuery)){
             filteredList.add(orders_list[i]);
           }
         }

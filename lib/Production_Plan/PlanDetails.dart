@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'package:flushbar/flushbar.dart';
 import  'package:flutter/material.dart';
+import 'package:salesmanagement/Model/ProductionPlans.dart';
 import 'package:salesmanagement/Network_Operations.dart';
 import 'package:salesmanagement/Production_Request/CreateProductionRequest.dart';
 import 'package:salesmanagement/Production_Request/RequestList.dart';
 class PlanDetail extends StatefulWidget {
- var planData,customerId;
-
+ ProductionPlans planData;
+ var customerId;
  PlanDetail(this.planData,this.customerId);
 
  @override
@@ -14,8 +15,8 @@ class PlanDetail extends StatefulWidget {
 }
 
 class _PlanDetailState extends State<PlanDetail> {
-  var planData,customerId;
-
+  ProductionPlans planData;
+  var customerId;
   _PlanDetailState(this.planData,this.customerId);
  @override
   void initState() {
@@ -34,10 +35,10 @@ class _PlanDetailState extends State<PlanDetail> {
                 Navigator.push(context,MaterialPageRoute(builder: (context)=>CreateProductionRequest(customerId,null),
                     settings: RouteSettings(
 
-                        arguments: {'month':planData['MonthOfYear'].toString()}
+                        arguments: {'month':planData.monthOfYear.toString()}
                     )));
               }else if(choice=='View Production Requests') {
-                Navigator.push(context, MaterialPageRoute(builder:(context)=>RequestList(planData['ItemSize'],planData['MonthOfYear'],customerId)));
+                Navigator.push(context, MaterialPageRoute(builder:(context)=>RequestList(planData.itemSize,planData.monthOfYear,customerId)));
               }
             },
             itemBuilder: (BuildContext context){
@@ -65,17 +66,17 @@ class _PlanDetailState extends State<PlanDetail> {
                 children: <Widget>[
                   ListTile(
                     title: Text("Plan Month"),
-                    trailing: Text(planData['WhichYear']!=null&&planData['MonthOfYear']!=null?planData['MonthOfYear']+' '+planData['WhichYear'].toString():''),
+                    trailing: Text(planData.whichYear!=null&&planData.monthOfYear!=null?planData.monthOfYear+' '+planData.whichYear.toString():''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Size Requested"),
-                    trailing: Text(planData['ItemSize']!=null?planData['ItemSize']:''),
+                    trailing: Text(planData.itemSize!=null?planData.itemSize:''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Requested Quantity"),
-                    trailing: Text(planData['EstimatedQuantity']!=null?planData['EstimatedQuantity'].toString():''),
+                    trailing: Text(planData.estimatedQuantity!=null?planData.estimatedQuantity.toString():''),
                   ),
                   Divider(),
                 ],

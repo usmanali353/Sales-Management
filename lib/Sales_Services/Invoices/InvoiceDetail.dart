@@ -5,24 +5,22 @@ import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import '../../Network_Operations.dart';
 import 'InvoiceLines.dart';
+import 'package:salesmanagement/Model/Invoices.dart';
 
 
 class InvoiceDetails extends StatefulWidget{
-  var InvoiceData;
+  Invoices InvoiceData;
 
   InvoiceDetails(this.InvoiceData);
 
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _InvoiceDetails(InvoiceData);
+    return _InvoiceDetails();
   }
 
 }
 class _InvoiceDetails extends State<InvoiceDetails>{
-  var InvoiceData;
-
-  _InvoiceDetails(this.InvoiceData);
  @override
   void initState() {
     super.initState();
@@ -35,7 +33,7 @@ class _InvoiceDetails extends State<InvoiceDetails>{
         actions: <Widget>[
           InkWell(
             onTap: (){
-              Network_Operations.GetInvoice(context,InvoiceData['InvoiceId']).then((response){
+              Network_Operations.GetInvoice(context,widget.InvoiceData.invoiceId).then((response){
                 if(response!=null&&response!=''&&response!='[]'){
                   setState(() {
                   Navigator.push(context, MaterialPageRoute(builder: (context)=>InvoiceLines(jsonDecode(response))));
@@ -72,12 +70,12 @@ class _InvoiceDetails extends State<InvoiceDetails>{
                 children: <Widget>[
                   ListTile(
                     title: Text("Order Id"),
-                    trailing: Text(InvoiceData['SalesOrderId']),
+                    trailing: Text(widget.InvoiceData.salesOrderId),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Delivery Name"),
-                    subtitle: Text(InvoiceData['DeliveryName']),
+                    subtitle: Text(widget.InvoiceData.deliveryName),
                   ),
                   Divider(),
                 ],
@@ -102,27 +100,27 @@ class _InvoiceDetails extends State<InvoiceDetails>{
                 children: <Widget>[
                   ListTile(
                     title: Text("Invoice Date"),
-                    trailing: Text(DateTime.fromMillisecondsSinceEpoch(int.parse(InvoiceData['InvoiceDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]),
+                    trailing: Text(DateTime.fromMillisecondsSinceEpoch(int.parse(widget.InvoiceData.invoiceDate.replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Invoice Id"),
-                    trailing: Text(InvoiceData['InvoiceId']),
+                    trailing: Text(widget.InvoiceData.invoiceId),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Amount without Tax"),
-                    trailing: Text(InvoiceData['SalesAmount']!=null?InvoiceData['SalesAmount'].toString():''),
+                    trailing: Text(widget.InvoiceData.salesAmount!=null?widget.InvoiceData.salesAmount.toString():''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Sales Tax"),
-                    trailing: Text(InvoiceData['SalesTaxAmount'].toString()),
+                    trailing: Text(widget.InvoiceData.salesTaxAmount.toString()),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Total Amount"),
-                    trailing: Text(InvoiceData['InvoiceAmount'].toString()),
+                    trailing: Text(widget.InvoiceData.invoiceAmount.toString()),
                   ),
                   Divider()
                 ],

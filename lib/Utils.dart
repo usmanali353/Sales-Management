@@ -39,4 +39,14 @@ class Utils{
       message: message,
     )..show(context);
   }
+  static String getDeliveryStatus(int id){
+    if(id==0){
+      return "Open";
+    }else if(id==1){
+      return "Closed";
+    }else if(id==2){
+      return "Cancelled";
+    }
+    return null;
+  }
 }

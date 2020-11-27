@@ -2,7 +2,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:salesmanagement/Model/ProductionPlans.dart';
 import 'package:salesmanagement/Utils.dart';
+import 'package:salesmanagement/Model/Invoices.dart';
+
+import 'Model/Deliveries.dart';
 
 class Network_Operations {
   //Login
@@ -13,7 +17,6 @@ class Network_Operations {
       final response = await http.get(Utils.getBaseUrl()+'userinfoservice.svc/LoginUser/'+ username+"/"+password, headers: {'authorization': Utils.apiAuthentication()});
       //debugPrint(response.body);
       if (response.statusCode == 200) {
-        pd.hide();
         return response.body;
       } else
       Utils.showError(context,response.statusCode.toString());
@@ -22,6 +25,19 @@ class Network_Operations {
       Utils.showError(context,e.toString());
     }finally{
       pd.hide();
+    }
+  }
+  static Future<String> getUserInfo(BuildContext context,String username,String password)async{
+    try{
+      final response = await http.get(Utils.getBaseUrl()+'userinfoservice.svc/GetUserInfoOnLogin/'+ username+"/"+password, headers: {'authorization': Utils.apiAuthentication()});
+      //debugPrint(response.body);
+      if (response.statusCode == 200) {
+        return response.body;
+      } else
+        Utils.showError(context,response.statusCode.toString());
+      return null;
+    }catch(e){
+      Utils.showError(context,e.toString());
     }
   }
   static Future<String> find_orders(BuildContext context,String order_number) async {
@@ -43,16 +59,15 @@ class Network_Operations {
     }
     return null;
   }
-  static Future<String> get_deliveries(BuildContext context,String date, String CustomerId) async {
+  static Future<List<Deliveries>> get_deliveries(BuildContext context,String date, String CustomerId) async {
     ProgressDialog pd= ProgressDialog(context);
     try{
       pd.show();
-      final response = await http.get(Utils.getBaseUrl()+'SalesService.svc/GetDeliveries/' + CustomerId + '/' + date,
-          headers: {'authorization': Utils.apiAuthentication()});
+      final response = await http.get(Utils.getBaseUrl()+'SalesService.svc/GetCustomerDeliveries/'+ CustomerId +'/'+ date, headers: {'authorization': Utils.apiAuthentication()});
       //debugPrint(response.body);
       if (response.statusCode == 200) {
         pd.hide();
-        return response.body;
+        return Deliveries.deliveriesFromJson(response.body);
       } else
         pd.hide();
         Utils.showError(context,response.statusCode.toString());
@@ -146,7 +161,7 @@ class Network_Operations {
       Utils.showError(context,e.toString());
     }
   }
-  static Future<String> GetCustomerInvoices(BuildContext context,String CustomerId, int PageNo, int PageSize) async {
+  static Future<List<Invoices>> GetCustomerInvoices(BuildContext context,String CustomerId, int PageNo, int PageSize) async {
     ProgressDialog pd=ProgressDialog(context);
     try{
       pd.show();
@@ -154,7 +169,7 @@ class Network_Operations {
       //debugPrint(response.body);
       if (response.statusCode == 200) {
         pd.hide();
-        return response.body;
+        return Invoices.invoicesFromJson(response.body);
       } else
         pd.hide();
       Utils.showError(context,response.statusCode.toString());
@@ -425,7 +440,7 @@ class Network_Operations {
     }
 
   }
-  static Future<String> GetCustomerPlan(BuildContext context,String customerId, String year) async {
+  static Future<List<ProductionPlans>> GetCustomerPlan(BuildContext context,String customerId, String year) async {
      ProgressDialog pd=ProgressDialog(context);
     try{
       pd.show();
@@ -433,7 +448,7 @@ class Network_Operations {
 
       if (response.statusCode == 200) {
         pd.hide();
-        return response.body;
+        return ProductionPlans.productionPlansFromJson(response.body);
       } else
         pd.hide();
         Utils.showError(context,response.statusCode.toString());
@@ -462,13 +477,13 @@ class Network_Operations {
     }
 
   }
-  static Future<String> GetCustomerPlanBySize(BuildContext context,String customerId, String size, String year) async {
+  static Future<List<ProductionPlans>> GetCustomerPlanBySize(BuildContext context,String customerId, String size, String year) async {
     ProgressDialog pd=ProgressDialog(context);
     try{
       pd.show();
       final response = await http.get(Utils.getBaseUrl()+'ProdPlanService.svc/GetCustomerPlanBySize/' + customerId + '/' + year + '/' + size,headers: {'authorization': Utils.apiAuthentication()});
       if (response.statusCode == 200) {
-        return response.body;
+        return ProductionPlans.productionPlansFromJson(response.body);
       } else
         Utils.showError(context,response.statusCode.toString());
       return null;

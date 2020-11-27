@@ -118,7 +118,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       if(username.text!=null&&password.text!=null&&password.text.length>3){
                         Network_Operations.login(context, username.text, password.text).then((isLogin){
                           if(isLogin=="true"){
-                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>newdashboard("LC0001")), (route) => false);
+                            Network_Operations.getUserInfo(context, username.text, password.text).then((userInfo){
+                              print(userInfo);
+                              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>newdashboard("LC0001")), (route) => false);
+                            });
                           }else{
                             Utils.showError(context,"Invalid Username OR Password");
                           }

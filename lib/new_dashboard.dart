@@ -271,7 +271,8 @@ class _newdashboard extends ResumableState<newdashboard>{
                     visible: todayDeliveryCardVisible,
                     child: InkWell(
                       onTap:(){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>DeliveryList((DateFormat("yyyy-MM-dd").format(DateTime.now())),customerId)));
+                        //DateFormat("yyyy-MM-dd").format(DateTime.now()
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>DeliveryList("2019-09-15",customerId)));
                       },
                       child: Card(
                         elevation: 10,

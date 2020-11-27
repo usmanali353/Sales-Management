@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:salesmanagement/Model/Deliveries.dart';
 
 import 'SalesLinesItemsList.dart';
 
 class DeliveryDetails extends StatefulWidget{
-  var orders_data;
+  Deliveries orders_data;
 
   DeliveryDetails(this.orders_data);
 
@@ -15,7 +16,7 @@ class DeliveryDetails extends StatefulWidget{
 
 }
 class _DeliveryDetails extends State<DeliveryDetails>{
-  var orders_data;
+  Deliveries orders_data;
 
   _DeliveryDetails(this.orders_data);
   @override
@@ -38,7 +39,7 @@ class _DeliveryDetails extends State<DeliveryDetails>{
                 ),
               ),
               onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>SalesLinesItemsList(orders_data['salesIdField'])));
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>SalesLinesItemsList(orders_data.salesIdField)));
               },
             ),
           )
@@ -57,32 +58,57 @@ class _DeliveryDetails extends State<DeliveryDetails>{
                 children: <Widget>[
                   ListTile(
                     title: Text("Packing Slip #"),
-                    trailing: Text(orders_data['packingSlipNumField']!=null?orders_data['packingSlipNumField']:''),
+                    trailing: Text(orders_data.packingSlipNumField!=null?orders_data.packingSlipNumField:''),
+                  ),
+                  Divider(),
+                  ListTile(
+                    title: Text("Packing Slip Generation"),
+                    trailing: Text(orders_data.packingSlipGenerateField!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(orders_data.packingSlipGenerateField.replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString():''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Pallet Quantity"),
-                    trailing: Text(orders_data['quantityInPalletsField']!=null?orders_data['quantityInPalletsField'].toString():''),
+                    trailing: Text(orders_data.quantityInPalletsField!=null?orders_data.quantityInPalletsField.toString():''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Quantity in SQM"),
-                    trailing: Text(orders_data['quantityInSQMField']!=null?orders_data['quantityInSQMField'].toString():''),
+                    trailing: Text(orders_data.quantityInSqmField!=null?orders_data.quantityInSqmField.toString():''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Delivery Date"),
-                    trailing: Text(orders_data['deliveryDateField']!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(orders_data['deliveryDateField'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
+                    trailing: Text(orders_data.deliveryDateField!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(orders_data.deliveryDateField.replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Truck Number"),
-                    trailing: Text(orders_data['truckPlateNumField']!=null?orders_data['truckPlateNumField']:''),
+                    trailing: Text(orders_data.truckPlateNumField!=null?orders_data.truckPlateNumField:''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Truck Driver"),
-                    trailing: Text(orders_data['truckDriverField']!=null?orders_data['truckDriverField']:''),
+                    trailing: Text(orders_data.truckDriverField!=null?orders_data.truckDriverField:''),
+                  ),
+                  Divider(),
+                  ListTile(
+                    title: Text("Driver Mobile"),
+                    trailing: Text(orders_data.mobileField!=null?orders_data.mobileField:''),
+                  ),
+                  Divider(),
+                  ListTile(
+                    title: Text("Ticket #"),
+                    trailing: Text(orders_data.ticketField!=null?orders_data.ticketField:''),
+                  ),
+                  Divider(),
+                  ListTile(
+                    title: Text("Loading Start"),
+                    trailing: Text(orders_data.startLoadTruckField!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(orders_data.startLoadTruckField.replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString():''),
+                  ),
+                  Divider(),
+                  ListTile(
+                    title: Text("Loading End"),
+                    trailing: Text(orders_data.stopLoadTruckField!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(orders_data.stopLoadTruckField.replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString():''),
                   ),
                   Divider(),
                 ],

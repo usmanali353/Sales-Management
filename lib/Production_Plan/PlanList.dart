@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart';
 import 'package:need_resume/need_resume.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:salesmanagement/Model/ProductionPlans.dart';
 import 'package:salesmanagement/Network_Operations.dart';
 import 'package:salesmanagement/Production_Plan/CreateProductionPlan.dart';
 import 'package:salesmanagement/Production_Plan/UpdateProductionPlan.dart';
@@ -14,8 +15,8 @@ import 'package:salesmanagement/Utils.dart';
 import 'PlanDetails.dart';
 
 class PlanList extends StatefulWidget{
-  var planList,type,month,year,size,customerId;
-
+  var type,month,year,size,customerId;
+  List<ProductionPlans>planList=[];
   PlanList(this.type,this.year,this.month,this.size,this.customerId);
 
   @override
@@ -26,7 +27,8 @@ class PlanList extends StatefulWidget{
 }
 class _PlanList extends ResumableState<PlanList>{
   int yearSum=0, janSum=0,febSum=0,marSum=0,aprSum=0,maySum=0,juneSum=0,julSum=0,augSum=0,sepSum=0,octSum=0,novSum=0,decSum=0;
-  var planList=[],temp=['',''],type,month,year,size,customerId,isvisible=false,currentSelectedValue;
+  var temp=['',''],type,month,year,size,customerId,isvisible=false,currentSelectedValue;
+  List<ProductionPlans>planList=[];
    List<String> deviceTypes=[];
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
   _PlanList(this.type,this.year,this.month,this.size,this.customerId);
@@ -96,42 +98,42 @@ class _PlanList extends ResumableState<PlanList>{
           onRefresh: (){
             return  Utils.check_connectivity().then((connected){
               if(connected){
-                Network_Operations.GetCustomerPlan(context,customerId,year).then((response){
-                  if(response!=null){
+                Network_Operations.GetCustomerPlan(context,customerId,year).then((plans){
+                  if(plans!=null&&plans.length>0){
                     setState(() {
                       if(planList!=null){
                         planList.clear();
                       }
-                      planList=jsonDecode(response);
+                      planList=plans;
                       isvisible=true;
                       janSum=0;febSum=0;marSum=0;aprSum=0;maySum=0;juneSum=0;julSum=0;augSum=0;sepSum=0;octSum=0;novSum=0;decSum=0;yearSum=0;
 
                       for (int index = 0; index < planList.length; index++) {
-                        yearSum=yearSum+planList[index]['EstimatedQuantity'];
-                        if (planList[index]['MonthOfYear'] == 'January') {
-                          janSum = janSum + planList[index]['EstimatedQuantity'];
-                        }else if (planList[index]['MonthOfYear'] == 'Febuary') {
-                          febSum = febSum + planList[index]['EstimatedQuantity'];
-                        }else if (planList[index]['MonthOfYear'] == 'March') {
-                          marSum = marSum + planList[index]['EstimatedQuantity'];
-                        }else if (planList[index]['MonthOfYear'] == 'April') {
-                          aprSum = aprSum + planList[index]['EstimatedQuantity'];
-                        }else if (planList[index]['MonthOfYear'] == 'May') {
-                          maySum = maySum + planList[index]['EstimatedQuantity'];
-                        }else if (planList[index]['MonthOfYear'] == 'June') {
-                          juneSum = juneSum + planList[index]['EstimatedQuantity'];
-                        }else if (planList[index]['MonthOfYear'] == 'July') {
-                          julSum = julSum + planList[index]['EstimatedQuantity'];
-                        }else if (planList[index]['MonthOfYear'] == 'August') {
-                          augSum = augSum + planList[index]['EstimatedQuantity'];
-                        }else if (planList[index]['MonthOfYear'] == 'September') {
-                          sepSum = sepSum + planList[index]['EstimatedQuantity'];
-                        }else if (planList[index]['MonthOfYear'] == 'October') {
-                          octSum = octSum + planList[index]['EstimatedQuantity'];
-                        }else if (planList[index]['MonthOfYear'] == 'November') {
-                          novSum = novSum + planList[index]['EstimatedQuantity'];
-                        }else if (planList[index]['MonthOfYear'] == 'December') {
-                          decSum = decSum + planList[index]['EstimatedQuantity'];
+                        yearSum=yearSum+planList[index].estimatedQuantity;
+                        if (planList[index].monthOfYear == 'January') {
+                          janSum = janSum + planList[index].estimatedQuantity;
+                        }else if (planList[index].monthOfYear == 'Febuary') {
+                          febSum = febSum + planList[index].estimatedQuantity;
+                        }else if (planList[index].monthOfYear == 'March') {
+                          marSum = marSum + planList[index].estimatedQuantity;
+                        }else if (planList[index].monthOfYear == 'April') {
+                          aprSum = aprSum + planList[index].estimatedQuantity;
+                        }else if (planList[index].monthOfYear == 'May') {
+                          maySum = maySum + planList[index].estimatedQuantity;
+                        }else if (planList[index].monthOfYear == 'June') {
+                          juneSum = juneSum + planList[index].estimatedQuantity;
+                        }else if (planList[index].monthOfYear == 'July') {
+                          julSum = julSum + planList[index].estimatedQuantity;
+                        }else if (planList[index].monthOfYear == 'August') {
+                          augSum = augSum + planList[index].estimatedQuantity;
+                        }else if (planList[index].monthOfYear == 'September') {
+                          sepSum = sepSum + planList[index].estimatedQuantity;
+                        }else if (planList[index].monthOfYear == 'October') {
+                          octSum = octSum + planList[index].estimatedQuantity;
+                        }else if (planList[index].monthOfYear == 'November') {
+                          novSum = novSum + planList[index].estimatedQuantity;
+                        }else if (planList[index].monthOfYear == 'December') {
+                          decSum = decSum + planList[index].estimatedQuantity;
                         }
                       }
                     });
@@ -261,7 +263,7 @@ List<Widget> wholeYear() {
                 caption: "Delete",
                 closeOnTap: true,
                 onTap: (){
-                  Network_Operations.DeleteCustomerPlan(context,planList[index]['RecordId']).then((response){
+                  Network_Operations.DeleteCustomerPlan(context,planList[index].recordId).then((response){
                     if(response!=null){
                       WidgetsBinding.instance
                           .addPostFrameCallback((_) =>
@@ -293,16 +295,16 @@ List<Widget> wholeYear() {
               ),
             ],
         child:ListTile(
-      title: Text(planList[index]['ItemSize'] != null
-          ? planList[index]['ItemSize']
+      title: Text(planList[index].itemSize != null
+          ? planList[index].itemSize
           : ''),
       subtitle: Text(
-          planList[index]['EstimatedQuantity'] != null ? "Quantity:" +
-              planList[index]['EstimatedQuantity'].toString() : ''),
-      trailing: Text(planList[index]['WhichYear'] != null &&
-          planList[index]['MonthOfYear'] != null
-          ? planList[index]['MonthOfYear'] + ' ' +
-          planList[index]['WhichYear'].toString()
+          planList[index].estimatedQuantity != null ? "Quantity:" +
+              planList[index].estimatedQuantity.toString() : ''),
+      trailing: Text(planList[index].whichYear != null &&
+          planList[index].monthOfYear != null
+          ? planList[index].monthOfYear + ' ' +
+          planList[index].whichYear.toString()
           : ''),
       leading: Material(
           borderRadius: BorderRadius.circular(24),
@@ -329,7 +331,7 @@ List<Widget> wholeYear() {
     List<Widget> columnContent = [];
     for (int index = 0; index < planList.length; index++) {
 
-      if(planList[index]['MonthOfYear']=='January'){
+      if(planList[index].monthOfYear=='January'){
         columnContent.add(Slidable(
           actionPane: SlidableDrawerActionPane(),
           actionExtentRatio: 0.20,
@@ -341,7 +343,7 @@ List<Widget> wholeYear() {
               caption: "Delete",
               closeOnTap: true,
               onTap: (){
-                Network_Operations.DeleteCustomerPlan(context,planList[index]['RecordId']).then((response){
+                Network_Operations.DeleteCustomerPlan(context,planList[index].recordId).then((response){
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -373,16 +375,16 @@ List<Widget> wholeYear() {
             ),
           ],
           child: ListTile(
-            title: Text(planList[index]['ItemSize'] != null
-                ? planList[index]['ItemSize']
+            title: Text(planList[index].itemSize != null
+                ? planList[index].itemSize
                 : ''),
             subtitle: Text(
-                planList[index]['EstimatedQuantity'] != null ? "Quantity:" +
-                    planList[index]['EstimatedQuantity'].toString() : ''),
-            trailing: Text(planList[index]['WhichYear'] != null &&
-                planList[index]['MonthOfYear'] != null
-                ? planList[index]['MonthOfYear'] + ' ' +
-                planList[index]['WhichYear'].toString()
+                planList[index].estimatedQuantity != null ? "Quantity:" +
+                    planList[index].estimatedQuantity.toString() : ''),
+            trailing: Text(planList[index].whichYear != null &&
+                planList[index].monthOfYear != null
+                ? planList[index].monthOfYear + ' ' +
+                planList[index].whichYear.toString()
                 : ''),
             leading: Material(
                 borderRadius: BorderRadius.circular(24),
@@ -408,7 +410,7 @@ List<Widget> wholeYear() {
   List<Widget> febuaryList() {
     List<Widget> columnContent = [];
     for (int index = 0; index < planList.length; index++) {
-      if(planList[index]['MonthOfYear']=='Febuary'){
+      if(planList[index].monthOfYear=='Febuary'){
         columnContent.add(Slidable(
           actionPane: SlidableDrawerActionPane(),
           actionExtentRatio: 0.20,
@@ -420,7 +422,7 @@ List<Widget> wholeYear() {
               caption: "Delete",
               closeOnTap: true,
               onTap: (){
-                Network_Operations.DeleteCustomerPlan(context,planList[index]['RecordId']).then((response){
+                Network_Operations.DeleteCustomerPlan(context,planList[index].recordId).then((response){
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -452,16 +454,16 @@ List<Widget> wholeYear() {
             ),
           ],
           child: ListTile(
-            title: Text(planList[index]['ItemSize'] != null
-                ? planList[index]['ItemSize']
+            title: Text(planList[index].itemSize != null
+                ? planList[index].itemSize
                 : ''),
             subtitle: Text(
-                planList[index]['EstimatedQuantity'] != null ? "Quantity:" +
-                    planList[index]['EstimatedQuantity'].toString() : ''),
-            trailing: Text(planList[index]['WhichYear'] != null &&
-                planList[index]['MonthOfYear'] != null
-                ? planList[index]['MonthOfYear'] + ' ' +
-                planList[index]['WhichYear'].toString()
+                planList[index].estimatedQuantity != null ? "Quantity:" +
+                    planList[index].estimatedQuantity.toString() : ''),
+            trailing: Text(planList[index].whichYear != null &&
+                planList[index].monthOfYear != null
+                ? planList[index].monthOfYear + ' ' +
+                planList[index].whichYear.toString()
                 : ''),
             leading: Material(
                 borderRadius: BorderRadius.circular(24),
@@ -488,7 +490,7 @@ List<Widget> wholeYear() {
   List<Widget> MarchList() {
     List<Widget> columnContent = [];
     for (int index = 0; index < planList.length; index++) {
-      if(planList[index]['MonthOfYear']=='March'){
+      if(planList[index].monthOfYear=='March'){
         columnContent.add(Slidable(
           actionPane: SlidableDrawerActionPane(),
           actionExtentRatio: 0.20,
@@ -500,7 +502,7 @@ List<Widget> wholeYear() {
               caption: "Delete",
               closeOnTap: true,
               onTap: (){
-                Network_Operations.DeleteCustomerPlan(context,planList[index]['RecordId']).then((response){
+                Network_Operations.DeleteCustomerPlan(context,planList[index].recordId).then((response){
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -532,16 +534,16 @@ List<Widget> wholeYear() {
             ),
           ],
           child: ListTile(
-            title: Text(planList[index]['ItemSize'] != null
-                ? planList[index]['ItemSize']
+            title: Text(planList[index].itemSize != null
+                ? planList[index].itemSize
                 : ''),
             subtitle: Text(
-                planList[index]['EstimatedQuantity'] != null ? "Quantity:" +
-                    planList[index]['EstimatedQuantity'].toString() : ''),
-            trailing: Text(planList[index]['WhichYear'] != null &&
-                planList[index]['MonthOfYear'] != null
-                ? planList[index]['MonthOfYear'] + ' ' +
-                planList[index]['WhichYear'].toString()
+                planList[index].estimatedQuantity != null ? "Quantity:" +
+                    planList[index].estimatedQuantity.toString() : ''),
+            trailing: Text(planList[index].whichYear != null &&
+                planList[index].monthOfYear != null
+                ? planList[index].monthOfYear + ' ' +
+                planList[index].whichYear.toString()
                 : ''),
             leading: Material(
                 borderRadius: BorderRadius.circular(24),
@@ -568,7 +570,7 @@ List<Widget> wholeYear() {
   List<Widget> AprilList() {
     List<Widget> columnContent = [];
     for (int index = 0; index < planList.length; index++) {
-      if(planList[index]['MonthOfYear']=='April'){
+      if(planList[index].monthOfYear=='April'){
         columnContent.add(Slidable(
           actionPane: SlidableDrawerActionPane(),
           actionExtentRatio: 0.20,
@@ -580,7 +582,7 @@ List<Widget> wholeYear() {
               caption: "Delete",
               closeOnTap: true,
               onTap: (){
-                Network_Operations.DeleteCustomerPlan(context,planList[index]['RecordId']).then((response){
+                Network_Operations.DeleteCustomerPlan(context,planList[index].recordId).then((response){
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -612,16 +614,16 @@ List<Widget> wholeYear() {
             ),
           ],
           child: ListTile(
-            title: Text(planList[index]['ItemSize'] != null
-                ? planList[index]['ItemSize']
+            title: Text(planList[index].itemSize != null
+                ? planList[index].itemSize
                 : ''),
             subtitle: Text(
-                planList[index]['EstimatedQuantity'] != null ? "Quantity:" +
-                    planList[index]['EstimatedQuantity'].toString() : ''),
-            trailing: Text(planList[index]['WhichYear'] != null &&
-                planList[index]['MonthOfYear'] != null
-                ? planList[index]['MonthOfYear'] + ' ' +
-                planList[index]['WhichYear'].toString()
+                planList[index].estimatedQuantity != null ? "Quantity:" +
+                    planList[index].estimatedQuantity.toString() : ''),
+            trailing: Text(planList[index].whichYear != null &&
+                planList[index].monthOfYear != null
+                ? planList[index].monthOfYear + ' ' +
+                planList[index].whichYear.toString()
                 : ''),
             leading: Material(
                 borderRadius: BorderRadius.circular(24),
@@ -648,7 +650,7 @@ List<Widget> wholeYear() {
   List<Widget> MayList() {
     List<Widget> columnContent = [];
     for (int index = 0; index < planList.length; index++) {
-      if(planList[index]['MonthOfYear']=='May'){
+      if(planList[index].monthOfYear=='May'){
         columnContent.add(Slidable(
           actionPane: SlidableDrawerActionPane(),
           actionExtentRatio: 0.20,
@@ -660,7 +662,7 @@ List<Widget> wholeYear() {
               caption: "Delete",
               closeOnTap: true,
               onTap: (){
-                Network_Operations.DeleteCustomerPlan(context,planList[index]['RecordId']).then((response){
+                Network_Operations.DeleteCustomerPlan(context,planList[index].recordId).then((response){
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -692,16 +694,16 @@ List<Widget> wholeYear() {
             ),
           ],
           child: ListTile(
-            title: Text(planList[index]['ItemSize'] != null
-                ? planList[index]['ItemSize']
+            title: Text(planList[index].itemSize != null
+                ? planList[index].itemSize
                 : ''),
             subtitle: Text(
-                planList[index]['EstimatedQuantity'] != null ? "Quantity:" +
-                    planList[index]['EstimatedQuantity'].toString() : ''),
-            trailing: Text(planList[index]['WhichYear'] != null &&
-                planList[index]['MonthOfYear'] != null
-                ? planList[index]['MonthOfYear'] + ' ' +
-                planList[index]['WhichYear'].toString()
+                planList[index].estimatedQuantity != null ? "Quantity:" +
+                    planList[index].estimatedQuantity.toString() : ''),
+            trailing: Text(planList[index].whichYear != null &&
+                planList[index].monthOfYear != null
+                ? planList[index].monthOfYear + ' ' +
+                planList[index].whichYear.toString()
                 : ''),
             leading: Material(
                 borderRadius: BorderRadius.circular(24),
@@ -728,7 +730,7 @@ List<Widget> wholeYear() {
   List<Widget> JuneList() {
     List<Widget> columnContent = [];
     for (int index = 0; index < planList.length; index++) {
-      if(planList[index]['MonthOfYear']=='June'){
+      if(planList[index].monthOfYear=='June'){
         columnContent.add(Slidable(
           actionPane: SlidableDrawerActionPane(),
           actionExtentRatio: 0.20,
@@ -740,7 +742,7 @@ List<Widget> wholeYear() {
               caption: "Delete",
               closeOnTap: true,
               onTap: (){
-                Network_Operations.DeleteCustomerPlan(context,planList[index]['RecordId']).then((response){
+                Network_Operations.DeleteCustomerPlan(context,planList[index].recordId).then((response){
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -772,16 +774,16 @@ List<Widget> wholeYear() {
             ),
           ],
           child: ListTile(
-            title: Text(planList[index]['ItemSize'] != null
-                ? planList[index]['ItemSize']
+            title: Text(planList[index].itemSize != null
+                ? planList[index].itemSize
                 : ''),
             subtitle: Text(
-                planList[index]['EstimatedQuantity'] != null ? "Quantity:" +
-                    planList[index]['EstimatedQuantity'].toString() : ''),
-            trailing: Text(planList[index]['WhichYear'] != null &&
-                planList[index]['MonthOfYear'] != null
-                ? planList[index]['MonthOfYear'] + ' ' +
-                planList[index]['WhichYear'].toString()
+                planList[index].estimatedQuantity != null ? "Quantity:" +
+                    planList[index].estimatedQuantity.toString() : ''),
+            trailing: Text(planList[index].whichYear != null &&
+                planList[index].monthOfYear != null
+                ? planList[index].monthOfYear + ' ' +
+                planList[index].whichYear.toString()
                 : ''),
             leading: Material(
                 borderRadius: BorderRadius.circular(24),
@@ -808,7 +810,7 @@ List<Widget> wholeYear() {
   List<Widget> JulyList() {
     List<Widget> columnContent = [];
     for (int index = 0; index < planList.length; index++) {
-      if(planList[index]['MonthOfYear']=='July'){
+      if(planList[index].monthOfYear=='July'){
         columnContent.add(Slidable(
           actionPane: SlidableDrawerActionPane(),
           actionExtentRatio: 0.20,
@@ -820,7 +822,7 @@ List<Widget> wholeYear() {
               caption: "Delete",
               closeOnTap: true,
               onTap: (){
-                Network_Operations.DeleteCustomerPlan(context,planList[index]['RecordId']).then((response){
+                Network_Operations.DeleteCustomerPlan(context,planList[index].recordId).then((response){
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -852,16 +854,16 @@ List<Widget> wholeYear() {
             ),
           ],
           child: ListTile(
-            title: Text(planList[index]['ItemSize'] != null
-                ? planList[index]['ItemSize']
+            title: Text(planList[index].itemSize != null
+                ? planList[index].itemSize
                 : ''),
             subtitle: Text(
-                planList[index]['EstimatedQuantity'] != null ? "Quantity:" +
-                    planList[index]['EstimatedQuantity'].toString() : ''),
-            trailing: Text(planList[index]['WhichYear'] != null &&
-                planList[index]['MonthOfYear'] != null
-                ? planList[index]['MonthOfYear'] + ' ' +
-                planList[index]['WhichYear'].toString()
+                planList[index].estimatedQuantity != null ? "Quantity:" +
+                    planList[index].estimatedQuantity.toString() : ''),
+            trailing: Text(planList[index].whichYear != null &&
+                planList[index].monthOfYear != null
+                ? planList[index].monthOfYear + ' ' +
+                planList[index].whichYear.toString()
                 : ''),
             leading: Material(
                 borderRadius: BorderRadius.circular(24),
@@ -888,7 +890,7 @@ List<Widget> wholeYear() {
   List<Widget> AugustList() {
     List<Widget> columnContent = [];
     for (int index = 0; index < planList.length; index++) {
-      if(planList[index]['MonthOfYear']=='August'){
+      if(planList[index].monthOfYear=='August'){
         columnContent.add(Slidable(
           actionPane: SlidableDrawerActionPane(),
           actionExtentRatio: 0.20,
@@ -900,7 +902,7 @@ List<Widget> wholeYear() {
               caption: "Delete",
               closeOnTap: true,
               onTap: (){
-                Network_Operations.DeleteCustomerPlan(context,planList[index]['RecordId']).then((response){
+                Network_Operations.DeleteCustomerPlan(context,planList[index].recordId).then((response){
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -932,16 +934,16 @@ List<Widget> wholeYear() {
             ),
           ],
           child: ListTile(
-            title: Text(planList[index]['ItemSize'] != null
-                ? planList[index]['ItemSize']
+            title: Text(planList[index].itemSize != null
+                ? planList[index].itemSize
                 : ''),
             subtitle: Text(
-                planList[index]['EstimatedQuantity'] != null ? "Quantity:" +
-                    planList[index]['EstimatedQuantity'].toString() : ''),
-            trailing: Text(planList[index]['WhichYear'] != null &&
-                planList[index]['MonthOfYear'] != null
-                ? planList[index]['MonthOfYear'] + ' ' +
-                planList[index]['WhichYear'].toString()
+                planList[index].estimatedQuantity != null ? "Quantity:" +
+                    planList[index].estimatedQuantity.toString() : ''),
+            trailing: Text(planList[index].whichYear != null &&
+                planList[index].monthOfYear != null
+                ? planList[index].monthOfYear + ' ' +
+                planList[index].whichYear.toString()
                 : ''),
             leading: Material(
                 borderRadius: BorderRadius.circular(24),
@@ -968,7 +970,7 @@ List<Widget> wholeYear() {
   List<Widget> SeptemberList() {
     List<Widget> columnContent = [];
     for (int index = 0; index < planList.length; index++) {
-      if(planList[index]['MonthOfYear']=='September'){
+      if(planList[index].monthOfYear=='September'){
         columnContent.add(Slidable(
           actionPane: SlidableDrawerActionPane(),
           actionExtentRatio: 0.20,
@@ -980,7 +982,7 @@ List<Widget> wholeYear() {
               caption: "Delete",
               closeOnTap: true,
               onTap: (){
-                Network_Operations.DeleteCustomerPlan(context,planList[index]['RecordId']).then((response){
+                Network_Operations.DeleteCustomerPlan(context,planList[index].recordId).then((response){
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -1012,16 +1014,16 @@ List<Widget> wholeYear() {
             ),
           ],
           child: ListTile(
-            title: Text(planList[index]['ItemSize'] != null
-                ? planList[index]['ItemSize']
+            title: Text(planList[index].itemSize != null
+                ? planList[index].itemSize
                 : ''),
             subtitle: Text(
-                planList[index]['EstimatedQuantity'] != null ? "Quantity:" +
-                    planList[index]['EstimatedQuantity'].toString() : ''),
-            trailing: Text(planList[index]['WhichYear'] != null &&
-                planList[index]['MonthOfYear'] != null
-                ? planList[index]['MonthOfYear'] + ' ' +
-                planList[index]['WhichYear'].toString()
+                planList[index].estimatedQuantity != null ? "Quantity:" +
+                    planList[index].estimatedQuantity.toString() : ''),
+            trailing: Text(planList[index].whichYear != null &&
+                planList[index].monthOfYear != null
+                ? planList[index].monthOfYear + ' ' +
+                planList[index].whichYear.toString()
                 : ''),
             leading: Material(
                 borderRadius: BorderRadius.circular(24),
@@ -1048,7 +1050,7 @@ List<Widget> wholeYear() {
   List<Widget> OctoberList() {
     List<Widget> columnContent = [];
     for (int index = 0; index < planList.length; index++) {
-      if(planList[index]['MonthOfYear']=='October'){
+      if(planList[index].monthOfYear=='October'){
         columnContent.add(Slidable(
           actionPane: SlidableDrawerActionPane(),
           actionExtentRatio: 0.20,
@@ -1060,7 +1062,7 @@ List<Widget> wholeYear() {
               caption: "Delete",
               closeOnTap: true,
               onTap: (){
-                Network_Operations.DeleteCustomerPlan(context,planList[index]['RecordId']).then((response){
+                Network_Operations.DeleteCustomerPlan(context,planList[index].recordId).then((response){
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -1092,16 +1094,16 @@ List<Widget> wholeYear() {
             ),
           ],
           child: ListTile(
-            title: Text(planList[index]['ItemSize'] != null
-                ? planList[index]['ItemSize']
+            title: Text(planList[index].itemSize != null
+                ? planList[index].itemSize
                 : ''),
             subtitle: Text(
-                planList[index]['EstimatedQuantity'] != null ? "Quantity:" +
-                    planList[index]['EstimatedQuantity'].toString() : ''),
-            trailing: Text(planList[index]['WhichYear'] != null &&
-                planList[index]['MonthOfYear'] != null
-                ? planList[index]['MonthOfYear'] + ' ' +
-                planList[index]['WhichYear'].toString()
+                planList[index].estimatedQuantity != null ? "Quantity:" +
+                    planList[index].estimatedQuantity.toString() : ''),
+            trailing: Text(planList[index].whichYear != null &&
+                planList[index].monthOfYear != null
+                ? planList[index].monthOfYear + ' ' +
+                planList[index].whichYear.toString()
                 : ''),
             leading: Material(
                 borderRadius: BorderRadius.circular(24),
@@ -1128,7 +1130,7 @@ List<Widget> wholeYear() {
   List<Widget> NovemberList() {
     List<Widget> columnContent = [];
     for (int index = 0; index < planList.length; index++) {
-      if(planList[index]['MonthOfYear']=='November'){
+      if(planList[index].monthOfYear=='November'){
         columnContent.add(Slidable(
           actionPane: SlidableDrawerActionPane(),
           actionExtentRatio: 0.20,
@@ -1140,7 +1142,7 @@ List<Widget> wholeYear() {
               caption: "Delete",
               closeOnTap: true,
               onTap: (){
-                Network_Operations.DeleteCustomerPlan(context,planList[index]['RecordId']).then((response){
+                Network_Operations.DeleteCustomerPlan(context,planList[index].recordId).then((response){
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -1172,16 +1174,16 @@ List<Widget> wholeYear() {
             ),
           ],
           child: ListTile(
-            title: Text(planList[index]['ItemSize'] != null
-                ? planList[index]['ItemSize']
+            title: Text(planList[index].itemSize != null
+                ? planList[index].itemSize
                 : ''),
             subtitle: Text(
-                planList[index]['EstimatedQuantity'] != null ? "Quantity:" +
-                    planList[index]['EstimatedQuantity'].toString() : ''),
-            trailing: Text(planList[index]['WhichYear'] != null &&
-                planList[index]['MonthOfYear'] != null
-                ? planList[index]['MonthOfYear'] + ' ' +
-                planList[index]['WhichYear'].toString()
+                planList[index].estimatedQuantity != null ? "Quantity:" +
+                    planList[index].estimatedQuantity.toString() : ''),
+            trailing: Text(planList[index].whichYear != null &&
+                planList[index].monthOfYear != null
+                ? planList[index].monthOfYear + ' ' +
+                planList[index].whichYear.toString()
                 : ''),
             leading: Material(
                 borderRadius: BorderRadius.circular(24),
@@ -1208,7 +1210,7 @@ List<Widget> wholeYear() {
   List<Widget> DecemberList() {
     List<Widget> columnContent = [];
     for (int index = 0; index < planList.length; index++) {
-      if(planList[index]['MonthOfYear']=='December'){
+      if(planList[index].monthOfYear=='December'){
         columnContent.add(Slidable(
           actionPane: SlidableDrawerActionPane(),
           actionExtentRatio: 0.20,
@@ -1220,7 +1222,7 @@ List<Widget> wholeYear() {
               caption: "Delete",
               closeOnTap: true,
               onTap: (){
-                Network_Operations.DeleteCustomerPlan(context,planList[index]['RecordId']).then((response){
+                Network_Operations.DeleteCustomerPlan(context,planList[index].recordId).then((response){
                   if(response!=null){
                     WidgetsBinding.instance
                         .addPostFrameCallback((_) =>
@@ -1252,16 +1254,16 @@ List<Widget> wholeYear() {
             ),
           ],
           child: ListTile(
-            title: Text(planList[index]['ItemSize'] != null
-                ? planList[index]['ItemSize']
+            title: Text(planList[index].itemSize != null
+                ? planList[index].itemSize
                 : ''),
             subtitle: Text(
-                planList[index]['EstimatedQuantity'] != null ? "Quantity:" +
-                    planList[index]['EstimatedQuantity'].toString() : ''),
-            trailing: Text(planList[index]['WhichYear'] != null &&
-                planList[index]['MonthOfYear'] != null
-                ? planList[index]['MonthOfYear'] + ' ' +
-                planList[index]['WhichYear'].toString()
+                planList[index].estimatedQuantity != null ? "Quantity:" +
+                    planList[index].estimatedQuantity.toString() : ''),
+            trailing: Text(planList[index].whichYear != null &&
+                planList[index].monthOfYear != null
+                ? planList[index].monthOfYear + ' ' +
+                planList[index].whichYear.toString()
                 : ''),
             leading: Material(
                 borderRadius: BorderRadius.circular(24),
@@ -1312,41 +1314,41 @@ List<Widget> wholeYear() {
                             _refreshIndicatorKey.currentState
                                 .show());
                       }else{
-                        Network_Operations.GetCustomerPlanBySize(context,customerId, currentSelectedValue, year).then((response){
-                          if(response!=null){
+                        Network_Operations.GetCustomerPlanBySize(context,customerId, currentSelectedValue, year).then((plans){
+                          if(plans!=null&&plans.length>0){
                             setState(() {
                               if(planList!=null){
                                 planList.clear();
                               }
-                              planList=jsonDecode(response);
+                              planList=plans;
                               janSum=0;febSum=0;marSum=0;aprSum=0;maySum=0;juneSum=0;julSum=0;augSum=0;sepSum=0;octSum=0;novSum=0;decSum=0;yearSum=0;
 
                               for (int index = 0; index < planList.length; index++) {
-                                yearSum=yearSum+planList[index]['EstimatedQuantity'];
-                                if (planList[index]['MonthOfYear'] == 'January') {
-                                  janSum = janSum + planList[index]['EstimatedQuantity'];
-                                }else if (planList[index]['MonthOfYear'] == 'Febuary') {
-                                  febSum = febSum + planList[index]['EstimatedQuantity'];
-                                }else if (planList[index]['MonthOfYear'] == 'March') {
-                                  marSum = marSum + planList[index]['EstimatedQuantity'];
-                                }else if (planList[index]['MonthOfYear'] == 'April') {
-                                  aprSum = aprSum + planList[index]['EstimatedQuantity'];
-                                }else if (planList[index]['MonthOfYear'] == 'May') {
-                                  maySum = maySum + planList[index]['EstimatedQuantity'];
-                                }else if (planList[index]['MonthOfYear'] == 'June') {
-                                  juneSum = juneSum + planList[index]['EstimatedQuantity'];
-                                }else if (planList[index]['MonthOfYear'] == 'July') {
-                                  julSum = julSum + planList[index]['EstimatedQuantity'];
-                                }else if (planList[index]['MonthOfYear'] == 'August') {
-                                  augSum = augSum + planList[index]['EstimatedQuantity'];
-                                }else if (planList[index]['MonthOfYear'] == 'September') {
-                                  sepSum = sepSum + planList[index]['EstimatedQuantity'];
-                                }else if (planList[index]['MonthOfYear'] == 'October') {
-                                  octSum = octSum + planList[index]['EstimatedQuantity'];
-                                }else if (planList[index]['MonthOfYear'] == 'November') {
-                                  novSum = novSum + planList[index]['EstimatedQuantity'];
-                                }else if (planList[index]['MonthOfYear'] == 'December') {
-                                  decSum = decSum + planList[index]['EstimatedQuantity'];
+                                yearSum=yearSum+planList[index].estimatedQuantity;
+                                if (planList[index].monthOfYear == 'January') {
+                                  janSum = janSum + planList[index].estimatedQuantity;
+                                }else if (planList[index].monthOfYear == 'Febuary') {
+                                  febSum = febSum + planList[index].estimatedQuantity;
+                                }else if (planList[index].monthOfYear == 'March') {
+                                  marSum = marSum + planList[index].estimatedQuantity;
+                                }else if (planList[index].monthOfYear == 'April') {
+                                  aprSum = aprSum + planList[index].estimatedQuantity;
+                                }else if (planList[index].monthOfYear == 'May') {
+                                  maySum = maySum + planList[index].estimatedQuantity;
+                                }else if (planList[index].monthOfYear == 'June') {
+                                  juneSum = juneSum + planList[index].estimatedQuantity;
+                                }else if (planList[index].monthOfYear == 'July') {
+                                  julSum = julSum + planList[index].estimatedQuantity;
+                                }else if (planList[index].monthOfYear == 'August') {
+                                  augSum = augSum + planList[index].estimatedQuantity;
+                                }else if (planList[index].monthOfYear == 'September') {
+                                  sepSum = sepSum + planList[index].estimatedQuantity;
+                                }else if (planList[index].monthOfYear == 'October') {
+                                  octSum = octSum + planList[index].estimatedQuantity;
+                                }else if (planList[index].monthOfYear == 'November') {
+                                  novSum = novSum + planList[index].estimatedQuantity;
+                                }else if (planList[index].monthOfYear == 'December') {
+                                  decSum = decSum + planList[index].estimatedQuantity;
                                 }
                               }
                             });

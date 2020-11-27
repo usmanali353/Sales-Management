@@ -2,10 +2,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:salesmanagement/Model/ProductionPlans.dart';
 import '../Network_Operations.dart';
 
 class UpdateProductionPlan extends StatefulWidget {
-  var planData;
+  ProductionPlans planData;
 
   UpdateProductionPlan(this.planData);
 
@@ -15,8 +16,8 @@ class UpdateProductionPlan extends StatefulWidget {
 class _UpdateProductionPlanState extends State<UpdateProductionPlan> {
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey();
   TextEditingController quantity;
-  var itemSizesJson,selectedValue,selectedYear,selectedMonth,isVisible=false,planData;
-
+  var itemSizesJson,selectedValue,selectedYear,selectedMonth,isVisible=false;
+  ProductionPlans planData;
   _UpdateProductionPlanState(this.planData);
 
   List<String> itemSizes=[],months=['January','Febuary','March','April','May','June','July','August','September','October','November','December'],years=['2020','2021','2022','2023','2024','2025'];
@@ -35,7 +36,7 @@ class _UpdateProductionPlanState extends State<UpdateProductionPlan> {
       }
     });
    // customerId.text=planData['CustomerAccount'];
-    quantity.text=planData['EstimatedQuantity'].toString();
+    quantity.text=planData.estimatedQuantity.toString();
   }
   @override
   Widget build(BuildContext context) {
@@ -56,7 +57,7 @@ class _UpdateProductionPlanState extends State<UpdateProductionPlan> {
                       child: FormBuilderDropdown(
                         attribute: "Select ItemSize",
                         hint: Text("Select Item Size"),
-                        initialValue: planData['ItemSize'],
+                        initialValue: planData.itemSize,
                         items: itemSizes!=null?itemSizes.map((plans)=>DropdownMenuItem(
                           child: Text(plans),
                           value: plans,
@@ -93,7 +94,7 @@ class _UpdateProductionPlanState extends State<UpdateProductionPlan> {
                       attribute: "Select Year",
                       validators: [FormBuilderValidators.required()],
                       hint: Text("Select Year"),
-                      initialValue:planData['WhichYear'].toString(),
+                      initialValue:planData.whichYear.toString(),
                       items: years.map((trainer)=>DropdownMenuItem(
                         child: Text(trainer),
                         value: trainer,
@@ -125,7 +126,7 @@ class _UpdateProductionPlanState extends State<UpdateProductionPlan> {
                     child: FormBuilderDropdown(
                       attribute: "Select Month",
                       hint: Text("Select Month"),
-                      initialValue: planData['MonthOfYear'],
+                      initialValue: planData.monthOfYear,
                       items: months!=null?months.map((plans)=>DropdownMenuItem(
                         child: Text(plans),
                         value: plans,
@@ -177,7 +178,7 @@ class _UpdateProductionPlanState extends State<UpdateProductionPlan> {
                         onPressed: (){
                           if(_fbKey.currentState.validate()){
                             _fbKey.currentState.save();
-                            Network_Operations.UpdateCustomerPlan(context,planData['CustomerAccount'], selectedValue, selectedMonth, int.parse(selectedYear),int.parse(quantity.text),planData['RecordId']).then((response){
+                            Network_Operations.UpdateCustomerPlan(context,planData.customerAccount, selectedValue, selectedMonth, int.parse(selectedYear),int.parse(quantity.text),planData.recordId).then((response){
                               if(response!=null){
                                 Scaffold.of(context).showSnackBar(SnackBar(
                                   backgroundColor: Colors.green,

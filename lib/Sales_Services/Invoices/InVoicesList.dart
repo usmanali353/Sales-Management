@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:salesmanagement/Model/Invoices.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import '../../Utils.dart';
 import 'InvoiceDetail.dart';
@@ -21,7 +22,8 @@ class InvoicesList extends StatefulWidget{
 
 }
 class _InvoicesList extends State<InvoicesList>{
-  var InvoiceList,CustomerId,isVisible=false,temp=['',''],paidChecked=true,unpaidChecked=false;
+  var CustomerId,isVisible=false,temp=['',''],paidChecked=true,unpaidChecked=false;
+  List<Invoices> InvoiceList=[];
   DateTime selectedDate=DateTime.now();
   TextEditingController invoiceNumber;
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey();
@@ -31,10 +33,10 @@ class _InvoicesList extends State<InvoicesList>{
     invoiceNumber=TextEditingController();
     Utils.check_connectivity().then((connected){
       if(connected){
-        Network_Operations.GetCustomerInvoices(context,CustomerId, 1, 10).then((response){
-          if(response!=null){
+        Network_Operations.GetCustomerInvoices(context,CustomerId, 1, 10).then((invoices){
+          if(invoices!=null){
             setState(() {
-              this.InvoiceList=json.decode(response);
+              this.InvoiceList=invoices;
               this.isVisible=true;
             });
           }
@@ -85,13 +87,13 @@ class _InvoicesList extends State<InvoicesList>{
                       paidChecked=true;
                       unpaidChecked=false;
                     });
-                    Network_Operations.GetCustomerInvoices(context,CustomerId, 1, 10).then((response){
-                      if(response!=null){
+                    Network_Operations.GetCustomerInvoices(context,CustomerId, 1, 100).then((invoices){
+                      if(invoices!=null){
                         setState(() {
                           if(InvoiceList!=null){
                             InvoiceList.clear();
                           }
-                          this.InvoiceList=json.decode(response);
+                          this.InvoiceList=invoices;
 
                           this.isVisible=true;
                         });
@@ -108,13 +110,13 @@ class _InvoicesList extends State<InvoicesList>{
                       paidChecked=false;
                       unpaidChecked=true;
                     });
-                    Network_Operations.GetCustomerInvoices(context,CustomerId, 1, 10).then((response){
-                      if(response!=null){
+                    Network_Operations.GetCustomerInvoices(context,CustomerId, 1, 100).then((invoices){
+                      if(invoices!=null){
                         setState(() {
                           if(InvoiceList!=null){
                             InvoiceList.clear();
                           }
-                          this.InvoiceList=json.decode(response);
+                          this.InvoiceList=invoices;
                           this.isVisible=true;
                         });
                       }
@@ -140,9 +142,9 @@ class _InvoicesList extends State<InvoicesList>{
                         return Column(
                           children: <Widget>[
                             ListTile(
-                              title: Text(InvoiceList[index]['DeliveryName']!=null?InvoiceList[index]['DeliveryName'].trim():''),
-                              trailing: Text(InvoiceList[index]['InvoiceDate']!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(InvoiceList[index]['InvoiceDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
-                              subtitle: Text('Sales Id:'+InvoiceList[index]['SalesOrderId']+'\n'+'Quantity Sold: '+InvoiceList[index]['QuantitySold'].toString()),
+                              title: Text(InvoiceList[index].deliveryName!=null?InvoiceList[index].deliveryName.trim():''),
+                              trailing: Text(InvoiceList[index].invoiceDate!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(InvoiceList[index].invoiceDate.replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
+                              subtitle: Text('Sales Id:'+InvoiceList[index].salesOrderId+'\n'+'Quantity Sold: '+InvoiceList[index].quantitySold.toString()+"\n"+"Total: "+InvoiceList[index].salesAmount.toString()),
                               leading: Material(
                                   borderRadius: BorderRadius.circular(24),
                                   color: Colors.teal.shade100,
