@@ -17,11 +17,14 @@ class Network_Operations {
       final response = await http.get(Utils.getBaseUrl()+'userinfoservice.svc/LoginUser/'+ username+"/"+password, headers: {'authorization': Utils.apiAuthentication()});
       //debugPrint(response.body);
       if (response.statusCode == 200) {
+        pd.hide();
         return response.body;
       } else
+        pd.hide();
       Utils.showError(context,response.statusCode.toString());
       return null;
     }catch(e){
+      pd.hide();
       Utils.showError(context,e.toString());
     }finally{
       pd.hide();

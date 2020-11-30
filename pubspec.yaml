@@ -38,6 +38,8 @@ dependencies:
   day_night_switch:
   shared_preferences: ^0.5.6+1
   flushbar: ^1.10.4
+  timeline_tile: ^1.0.0
+  flutter_animation_progress_bar: ^1.0.6
 dev_dependencies:
   flutter_test:
     sdk: flutter

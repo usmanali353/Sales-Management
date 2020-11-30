@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:salesmanagement/LoginScreen/Login.dart';
-import 'package:salesmanagement/PrePicking/PrePickingList.dart';
+import 'package:salesmanagement/Sales_Services/Deliveries/trackDeliveryList.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Model/Theme.dart';
 import 'Model/ThemeNotifier.dart';
-import 'PrePicking/AddProducts.dart';
-import 'Sales_Services/Deliveries/detail_page.dart';
-import 'new_dashboard.dart';
 
 
 void main(){
@@ -36,7 +33,7 @@ class _myAppState extends State<myApp> {
     return  MaterialApp(
       title: "Sales Management",
       debugShowCheckedModeBanner: false,
-      theme: themeNotifier.getTheme(),
+      theme: ThemeData.light(),
       home: LoginScreen(),
     );
   }

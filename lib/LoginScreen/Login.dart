@@ -123,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>newdashboard("LC0001")), (route) => false);
                             });
                           }else{
-                            Utils.showError(context,"Invalid Username OR Password");
+                            Utils.showError(context,"Invalid Username or Password");
                           }
                         });
                       }else{

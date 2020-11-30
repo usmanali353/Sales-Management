@@ -7,6 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:need_resume/need_resume.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:salesmanagement/Sales_Services/Deliveries/trackDeliveryList.dart';
 import 'package:salesmanagement/Sales_Services/Invoices/InVoicesList.dart';
 import 'package:salesmanagement/Sales_Services/Invoices/InvoicesMainPage.dart';
 import 'package:salesmanagement/SettingPage.dart';
@@ -79,6 +80,13 @@ class _newdashboard extends ResumableState<newdashboard>{
               child: ListView(
                 padding: EdgeInsets.zero,
                 children: <Widget>[
+                  ListTile(
+                    title: Text("Track Deliveries"),
+                    leading: Icon(FontAwesomeIcons.truckLoading),
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>trackDeliveryList("2019-09-15", customerId)));
+                    },
+                  ),
                   ListTile(
                     title: Text("Production Plan"),
                     leading: Icon(FontAwesomeIcons.tasks),
