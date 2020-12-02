@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:salesmanagement/Model/CustomerCases.dart';
+import 'package:salesmanagement/Model/ItemSizes.dart';
 import 'package:salesmanagement/Model/ProductionPlans.dart';
 import 'package:salesmanagement/Utils.dart';
 import 'package:salesmanagement/Model/Invoices.dart';
@@ -75,6 +77,25 @@ class Network_Operations {
         pd.hide();
         Utils.showError(context,response.statusCode.toString());
         return null;
+    }catch(e){
+      pd.hide();
+      Utils.showError(context,e.toString());
+    }
+    return null;
+  }
+  static Future<Deliveries> getDeliveryByPickingId(BuildContext context,String pickingId) async {
+    ProgressDialog pd= ProgressDialog(context);
+    try{
+      pd.show();
+      final response = await http.get(Utils.getBaseUrl()+'SalesService.svc/GetSingleDelivery/'+ pickingId, headers: {'authorization': Utils.apiAuthentication()});
+      //debugPrint(response.body);
+      if (response.statusCode == 200) {
+        pd.hide();
+        return Deliveries.deliveriesObjectFromJson(response.body);
+      } else
+        pd.hide();
+      Utils.showError(context,response.statusCode.toString());
+      return null;
     }catch(e){
       pd.hide();
       Utils.showError(context,e.toString());
@@ -295,8 +316,22 @@ class Network_Operations {
     }
 
   }
+  static Future<String> GetCustomerOlderStockDashboard(BuildContext context,String CustomerId) async {
+    try{
+      final response = await http.get(Utils.getBaseUrl()+'SalesService.svc/GetCustomerOlderStockOverAll/' + CustomerId+'/_', headers: {'authorization': Utils.apiAuthentication()});
+      //debugPrint(response.body);
+      if (response.statusCode == 200) {
+        return response.body;
+      } else
+        Utils.showError(context,response.statusCode.toString());
+      return null;
+    }catch(e){
+      Utils.showError(context,e.toString());
+    }
+
+  }
   //Customer Cases
-  static Future<String> GetCustomerCase(BuildContext context,String caseId) async {
+  static Future<CustomerCases> GetCustomerCase(BuildContext context,String caseId) async {
     ProgressDialog pd=ProgressDialog(context);
     try{
       pd.show();
@@ -304,7 +339,7 @@ class Network_Operations {
       //debugPrint(response.body);
       if (response.statusCode == 200) {
         pd.hide();
-        return response.body;
+        return CustomerCases.customerCasesObjFromJson(response.body);
       } else
         pd.hide();
         Utils.showError(context,response.statusCode.toString());
@@ -314,7 +349,7 @@ class Network_Operations {
        Utils.showError(context,e.toString());
     }
   }
-  static Future<String> FindCustomerCases(BuildContext context,String customerId) async {
+  static Future<List<CustomerCases>> FindCustomerCases(BuildContext context,String customerId) async {
     ProgressDialog pd=ProgressDialog(context);
     try{
       pd.show();
@@ -324,7 +359,7 @@ class Network_Operations {
       //debugPrint(response.body);
       if (response.statusCode == 200) {
         pd.hide();
-        return response.body;
+        return CustomerCases.customerCasesFromJson(response.body);
       } else
         pd.hide();
         Utils.showError(context, response.statusCode.toString());
@@ -425,14 +460,14 @@ class Network_Operations {
 
   }
   //Production Plan
-  static Future<String> GetItemSizes(BuildContext context) async {
+  static Future<List<ItemSizes>> GetItemSizes(BuildContext context) async {
     ProgressDialog pd=ProgressDialog(context);
     try{
       pd.show();
       final response = await http.get(Utils.getBaseUrl()+'ProdPlanService.svc/GetItemSizes', headers: {'authorization': Utils.apiAuthentication()});
       if (response.statusCode == 200) {
         pd.hide();
-        return response.body;
+        return ItemSizes.itemSizesFromJson(response.body);
       } else
         pd.hide();
         Utils.showError(context,response.statusCode.toString());

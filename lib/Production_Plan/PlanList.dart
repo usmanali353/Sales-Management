@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart';
 import 'package:need_resume/need_resume.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:salesmanagement/Model/ItemSizes.dart';
 import 'package:salesmanagement/Model/ProductionPlans.dart';
 import 'package:salesmanagement/Network_Operations.dart';
 import 'package:salesmanagement/Production_Plan/CreateProductionPlan.dart';
@@ -71,10 +72,10 @@ class _PlanList extends ResumableState<PlanList>{
                   Network_Operations.GetItemSizes(context).then((response){
                     if(response!=null){
                       setState(() {
-                        var sizes=jsonDecode(response);
+                        List<ItemSizes> sizes=response;
                         if(sizes!=null&&sizes.length>0) {
                           for (int i = 1; i < sizes.length; i++) {
-                            deviceTypes.add(sizes[i]['ItemSize']);
+                            deviceTypes.add(sizes[i].itemSize);
                           }
                           showAlertDialog(context);
                         }

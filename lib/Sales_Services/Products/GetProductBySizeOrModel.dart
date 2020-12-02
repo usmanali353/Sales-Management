@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:salesmanagement/Model/ItemSizes.dart';
 import 'package:salesmanagement/Network_Operations.dart';
 import 'ProductsList.dart';
 
@@ -21,7 +22,8 @@ class _GetProductBySizeOrModel extends State<GetProductBySizeOrModel>{
   TextEditingController customerId;
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey();
   _GetProductBySizeOrModel(this.sizeOrModel);
-  var itemSizesJson,isVisible=false;
+  var isVisible=false;
+  List<ItemSizes> sizes=[];
   List<String> itemSizes=[];
  @override
   void initState() {
@@ -29,9 +31,9 @@ class _GetProductBySizeOrModel extends State<GetProductBySizeOrModel>{
      Network_Operations.GetItemSizes(context).then((response){
        if(response!=null){
          setState(() {
-           itemSizesJson=json.decode(response);
-           for(int i=0;i<itemSizesJson.length;i++){
-             itemSizes.add(itemSizesJson[i]['ItemSize']);
+           sizes=response;
+           for(int i=0;i<sizes.length;i++){
+             itemSizes.add(sizes[i].itemSize);
              isVisible=true;
            }
 

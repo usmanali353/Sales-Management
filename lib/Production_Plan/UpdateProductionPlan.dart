@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:salesmanagement/Model/ItemSizes.dart';
 import 'package:salesmanagement/Model/ProductionPlans.dart';
 import '../Network_Operations.dart';
 
@@ -16,8 +17,9 @@ class UpdateProductionPlan extends StatefulWidget {
 class _UpdateProductionPlanState extends State<UpdateProductionPlan> {
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey();
   TextEditingController quantity;
-  var itemSizesJson,selectedValue,selectedYear,selectedMonth,isVisible=false;
+  var selectedValue,selectedYear,selectedMonth,isVisible=false;
   ProductionPlans planData;
+  List<ItemSizes> sizes=[];
   _UpdateProductionPlanState(this.planData);
 
   List<String> itemSizes=[],months=['January','Febuary','March','April','May','June','July','August','September','October','November','December'],years=['2020','2021','2022','2023','2024','2025'];
@@ -27,9 +29,9 @@ class _UpdateProductionPlanState extends State<UpdateProductionPlan> {
     Network_Operations.GetItemSizes(context).then((response){
       if(response!=null){
         setState(() {
-          itemSizesJson=json.decode(response);
-          for(int i=0;i<itemSizesJson.length;i++){
-            itemSizes.add(itemSizesJson[i]['ItemSize']);
+          sizes=response;
+          for(int i=0;i<sizes.length;i++){
+            itemSizes.add(sizes[i].itemSize);
             isVisible=true;
           }
         });

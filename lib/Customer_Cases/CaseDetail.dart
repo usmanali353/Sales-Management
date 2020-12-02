@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:salesmanagement/Model/CustomerCases.dart';
+import 'package:salesmanagement/Utils.dart';
 
 class CaseDetail extends StatefulWidget{
-  var caseData;
+  CustomerCases caseData;
 
   CaseDetail(this.caseData);
 
@@ -12,7 +14,7 @@ class CaseDetail extends StatefulWidget{
 
 }
 class _CaseDetail extends State<CaseDetail>{
-  var caseData;
+  CustomerCases caseData;
 
   _CaseDetail(this.caseData);
 
@@ -34,27 +36,27 @@ class _CaseDetail extends State<CaseDetail>{
                 children: <Widget>[
                   ListTile(
                     title: Text("Case Id"),
-                    trailing: Text(caseData['CaseNum']!=null?caseData['CaseNum']:''),
+                    trailing: Text(caseData.caseNum!=null?caseData.caseNum:''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Case type"),
-                    trailing: Text(caseData['CategoryTypeId']!=null?getCaseType(caseData['CategoryTypeId']):''),
+                    trailing: Text(caseData.categoryTypeId!=null?Utils.getCaseType(caseData.categoryTypeId):''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Case Description"),
-                    subtitle: Text(caseData['CaseDescription']!=null?caseData['CaseDescription']:''),
+                    subtitle: Text(caseData.caseDescription!=null?caseData.caseDescription:''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Case Priority"),
-                    trailing: Text(caseData['Priority']!=null?caseData['Priority']:''),
+                    trailing: Text(caseData.priority!=null?caseData.priority:''),
                   ),
                   Divider(),
                   ListTile(
                     title: Text("Resolution Type"),
-                    trailing: Text(caseData['ResolutionType']!=null?getResolutionType(caseData['ResolutionType']):''),
+                    trailing: Text(caseData.resolutionType!=null?Utils.getResolutionType(caseData.resolutionType):''),
                   ),
                   Divider(),
                 ],
@@ -66,25 +68,4 @@ class _CaseDetail extends State<CaseDetail>{
       ),
     );
   }
-String getCaseType(int CategoryTypeId){
-    String type;
-    if(CategoryTypeId==5637145326){
-      type="Inquiry";
-    }
-    if(CategoryTypeId==5637144576){
-      type="Complaint";
-    }
-    return type;
-}
-String getResolutionType(int resolutionType){
-   String  restype;
-    if(resolutionType==0){
-      restype='None';
-    }else if(resolutionType==1){
-      restype='Accept';
-    }else if(resolutionType==2){
-      restype='Reject';
-    }
-    return restype;
-}
 }

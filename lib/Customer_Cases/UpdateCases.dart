@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:salesmanagement/Model/CustomerCases.dart';
+import 'package:salesmanagement/Utils.dart';
 
 import '../Network_Operations.dart';
 class UpdateCases extends StatefulWidget {
-  var caseData;
+  CustomerCases caseData;
 
   UpdateCases(this.caseData);
 
@@ -16,14 +18,14 @@ class _UpdateCasesState extends State<UpdateCases> {
   TextEditingController description;
   var selectedValue,caseType;
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey();
-  var caseData;
+  CustomerCases caseData;
   _UpdateCasesState(this.caseData);
 @override
   void initState() {
   description=TextEditingController();
-  if(caseData['CaseDescription']!=null){
+  if(caseData.caseDescription!=null){
     setState(() {
-      description.text=caseData['CaseDescription'];
+      description.text=caseData.caseDescription;
     });
   }
 
@@ -64,7 +66,7 @@ class _UpdateCasesState extends State<UpdateCases> {
                       attribute: "Case Type",
                       validators: [FormBuilderValidators.required()],
                       hint: Text("Case Type"),
-                      initialValue: getCaseType(caseData['CategoryTypeId']),
+                      initialValue: Utils.getCaseType(caseData.categoryTypeId),
                       items: ['Inquiry','Complaint'].map((trainer)=>DropdownMenuItem(
                         child: Text(trainer),
                         value: trainer,
@@ -105,7 +107,7 @@ class _UpdateCasesState extends State<UpdateCases> {
                         onPressed: (){
                           if(_fbKey.currentState.validate()){
                             _fbKey.currentState.save();
-                            Network_Operations.UpdateCustomerCase(context,caseData['CaseNum'],caseData['CustomerAccount'], description.text, 1, caseType, caseData['CustomerName'], 0, 'caseMemo').then((response){
+                            Network_Operations.UpdateCustomerCase(context,caseData.caseNum,caseData.customerAccount, description.text, 1, caseType, caseData.customerName, 0, 'caseMemo').then((response){
                               if(response!=null){
                                 Scaffold.of(context).showSnackBar(SnackBar(
                                   backgroundColor: Colors.green,
@@ -133,15 +135,5 @@ class _UpdateCasesState extends State<UpdateCases> {
         ],
       ),
     );
-  }
-  String getCaseType(int CategoryTypeId){
-    String type;
-    if(CategoryTypeId==5637145326){
-      type="Inquiry";
-    }
-    if(CategoryTypeId==5637144576){
-      type="Complaint";
-    }
-    return type;
   }
 }

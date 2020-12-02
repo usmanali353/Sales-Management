@@ -1,6 +1,9 @@
 import 'dart:convert';
 
-class Deliveries {
+import 'package:salesmanagement/Model/DeliveryItems.dart';
+
+class
+Deliveries {
   Deliveries({
     this.propertyChanged,
     this.barcodeCode128Field,
@@ -28,9 +31,10 @@ class Deliveries {
     this.ticketField,
     this.truckDriverField,
     this.truckPlateNumField,
+    this.deliveryItemsField,
   });
  static List<Deliveries> deliveriesFromJson(String str) => List<Deliveries>.from(json.decode(str).map((x) => Deliveries.fromJson(x)));
-
+ static Deliveries deliveriesObjectFromJson(String str) => Deliveries.fromJson(json.decode(str));
  static String deliveriesToJson(List<Deliveries> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
   dynamic propertyChanged;
   String barcodeCode128Field;
@@ -58,6 +62,7 @@ class Deliveries {
   String ticketField;
   String truckDriverField;
   String truckPlateNumField;
+  List<DeliveryItems> deliveryItemsField;
 
   factory Deliveries.fromJson(Map<String, dynamic> json) => Deliveries(
     propertyChanged: json["PropertyChanged"],
@@ -86,6 +91,7 @@ class Deliveries {
     ticketField: json["ticketField"],
     truckDriverField: json["truckDriverField"],
     truckPlateNumField: json["truckPlateNumField"],
+    deliveryItemsField: json["deliveryItemsField"]!=null?List<DeliveryItems>.from(json["deliveryItemsField"].map((x) => DeliveryItems.fromJson(x))):json["deliveryItemsField"],
   );
 
   Map<String, dynamic> toJson() => {

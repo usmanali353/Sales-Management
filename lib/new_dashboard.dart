@@ -129,22 +129,6 @@ class _newdashboard extends ResumableState<newdashboard>{
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>casesList(customerId,'All','Complaints & Inquiries')));
                     },
                   ),
-                  ListTile(
-                    title: Text("Settings"),
-                    leading: Icon(Icons.settings),
-                    onTap: (){
-                      push(context, MaterialPageRoute(builder: (context)=>SettingsPage()));
-                    },
-                  ),
-
-//                  ListTile(
-//                    title: Text("Stocks"),
-//                    leading: Icon(FontAwesomeIcons.pallet),
-//                    onTap: (){
-//                      Navigator.push(context, MaterialPageRoute(builder: (context)=>StocksMainPage()));
-//                    },
-//                  ),
-
                 ],
               ),
             )
@@ -167,7 +151,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                     this.todayDeliveryCardVisible=true;
                   });
                 });
-                Network_Operations.GetCustomerOlderStock(context,customerId).then((response){
+                Network_Operations.GetCustomerOlderStockDashboard(context,customerId).then((response){
                   if(response!=null){
                     setState(() {
                       var olderStock=jsonDecode(response);

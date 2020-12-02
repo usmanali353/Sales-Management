@@ -1,5 +1,7 @@
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:salesmanagement/Model/Deliveries.dart';
 import 'package:salesmanagement/Network_Operations.dart';
@@ -18,9 +20,13 @@ class trackDeliveryList extends StatefulWidget {
 
 class _trackDeliveryListState extends State<trackDeliveryList> {
   GlobalKey<RefreshIndicatorState> _refreshIndicatorKey=GlobalKey();
+  TextEditingController pickingId,salesOrderId;
+  final GlobalKey<FormBuilderState> _fbKey = GlobalKey();
   List<Deliveries> orders_list=[];
   @override
   void initState() {
+    pickingId=TextEditingController();
+    salesOrderId=TextEditingController();
     WidgetsBinding.instance
         .addPostFrameCallback((_) =>
         _refreshIndicatorKey.currentState
@@ -32,6 +38,28 @@ class _trackDeliveryListState extends State<trackDeliveryList> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Deliveries"),
+        actions: [
+          PopupMenuButton<String>(
+            onSelected: (choice){
+              if(choice=='Search by Picking Id'){
+                 showSearchByPickingIdDialog(context);
+              }else if(choice=='Search by Barcode') {
+                Utils.scan(context);
+              }else if(choice=="Search by Sales Order"){
+                showSearchBySalesOrderDialog(context);
+              }
+            },
+            itemBuilder: (BuildContext context){
+              return ['Search by Picking Id','Search by Barcode',"Search by Sales Order"].map((String choice){
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(choice),
+                );
+              }).toList();
+            },
+
+          )
+        ],
       ),
       body:RefreshIndicator(
         key: _refreshIndicatorKey,
@@ -131,10 +159,10 @@ class _trackDeliveryListState extends State<trackDeliveryList> {
                                   axis: TimelineAxis.horizontal,
                                   alignment: TimelineAlign.center,
                                   endChild: Text("Open"),
+                                  isFirst: true,
                                   indicatorStyle: IndicatorStyle(
                                       color:orders_list[index].deliveryStatusField==0?Color(0xFF004c4c):Colors.grey
                                   ),
-                                  isFirst: true,
                                 ),
                                 TimelineTile(
                                   axis: TimelineAxis.horizontal,
@@ -176,6 +204,112 @@ class _trackDeliveryListState extends State<trackDeliveryList> {
             }
         ),
       )
+    );
+  }
+  showSearchByPickingIdDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Cancel"),
+      onPressed:  () {
+        Navigator.pop(context);
+      },
+    );
+    Widget search = FlatButton(
+      child: Text("Search"),
+      onPressed:  () {
+        if(_fbKey.currentState.validate()) {
+          Navigator.pop(context);
+          Network_Operations.getDeliveryByPickingId(context,pickingId.text).then((delivery){
+             Navigator.push(context,MaterialPageRoute(builder:(context)=>trackDeliveries(delivery)));
+          });
+        }
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Search by Picking Id"),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          FormBuilder(
+            key: _fbKey,
+            child: FormBuilderTextField(
+              attribute: 'Picking Id',
+              controller: pickingId,
+              validators: [FormBuilderValidators.required()],
+              decoration: InputDecoration(
+                hintText: "Picking Id",
+              ),
+            ),
+          )
+
+        ],
+      ),
+      actions: [
+        cancelButton,
+        search
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+  showSearchBySalesOrderDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Cancel"),
+      onPressed:  () {
+        Navigator.pop(context);
+      },
+    );
+    Widget search = FlatButton(
+      child: Text("Search"),
+      onPressed:  () {
+        if(_fbKey.currentState.validate()) {
+          Navigator.pop(context);
+
+        }
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Search by Sales Order"),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          FormBuilder(
+            key: _fbKey,
+            child: FormBuilderTextField(
+              attribute: 'Sales Order No.',
+              controller: salesOrderId,
+              validators: [FormBuilderValidators.required()],
+              decoration: InputDecoration(
+                hintText: "Sales Order No.",
+              ),
+            ),
+          )
+
+        ],
+      ),
+      actions: [
+        cancelButton,
+        search
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }

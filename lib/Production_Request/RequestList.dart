@@ -7,6 +7,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:need_resume/need_resume.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:salesmanagement/Model/ItemSizes.dart';
 import 'package:salesmanagement/Model/Products.dart';
 import 'package:salesmanagement/Model/sqlite_helper.dart';
 import 'package:salesmanagement/Network_Operations.dart';
@@ -75,12 +76,12 @@ class _RequestsList extends ResumableState<RequestList>{
                       Network_Operations.GetItemSizes(context).then((value){
                         if(value!=null){
                           setState(() {
-                            var size=jsonDecode(value);
+                            List<ItemSizes> size=value;
                             List<String> sizeNames=[];
                             if(size!=null&&size.length>0){
                               sizeNames.insert(0, 'All');
                               for(int i=1;i<size.length;i++){
-                                sizeNames.add(size[i]['ItemSize']);
+                                sizeNames.add(size[i].itemSize);
                               }
                               showSizeAlertDialog(context, sizeNames);
                             }

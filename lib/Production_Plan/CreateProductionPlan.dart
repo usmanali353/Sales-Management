@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:salesmanagement/Model/ItemSizes.dart';
 import '../Network_Operations.dart';
 class CreateProductionPlan extends StatefulWidget {
   var customerId;
@@ -15,21 +16,21 @@ class CreateProductionPlan extends StatefulWidget {
 class _CreateProductionPlanState extends State<CreateProductionPlan> {
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey();
   TextEditingController customerId,quantity;
-  var itemSizesJson,selectedValue,selectedYear,selectedMonth,isVisible=false,CustomerId;
-
+  var selectedValue,selectedYear,selectedMonth,isVisible=false,CustomerId;
+   List<ItemSizes> itemSizes=[];
   _CreateProductionPlanState(this.CustomerId);
 
-  List<String> itemSizes=[],months=['January','Febuary','March','April','May','June','July','August','September','October','November','December'];
+  List<String> itemSizesStr=[],months=['January','Febuary','March','April','May','June','July','August','September','October','November','December'];
   @override
   void initState() {
     customerId=TextEditingController();
     quantity=TextEditingController();
-    Network_Operations.GetItemSizes(context).then((response){
-      if(response!=null){
+    Network_Operations.GetItemSizes(context).then((sizes){
+      if(sizes!=null&&sizes.length>0){
         setState(() {
-          itemSizesJson=json.decode(response);
-          for(int i=0;i<itemSizesJson.length;i++){
-            itemSizes.add(itemSizesJson[i]['ItemSize']);
+          itemSizes=sizes;
+          for(int i=0;i<itemSizes.length;i++){
+            itemSizesStr.add(itemSizes[i].itemSize);
             isVisible=true;
           }
         });
@@ -55,7 +56,7 @@ class _CreateProductionPlanState extends State<CreateProductionPlan> {
                       child: FormBuilderDropdown(
                         attribute: "Select ItemSize",
                         hint: Text("Select Item Size"),
-                        items: itemSizes!=null?itemSizes.map((plans)=>DropdownMenuItem(
+                        items: itemSizesStr!=null?itemSizesStr.map((plans)=>DropdownMenuItem(
                           child: Text(plans),
                           value: plans,
                         )).toList():[""].map((name) => DropdownMenuItem(

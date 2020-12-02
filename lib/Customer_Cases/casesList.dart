@@ -9,6 +9,7 @@ import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/Customer_Cases/CaseDetail.dart';
 import 'package:salesmanagement/Customer_Cases/CreateCase.dart';
 import 'package:salesmanagement/Customer_Cases/UpdateCases.dart';
+import 'package:salesmanagement/Model/CustomerCases.dart';
 import 'package:salesmanagement/Network_Operations.dart';
 import '../Utils.dart';
 
@@ -24,10 +25,11 @@ class casesList extends StatefulWidget{
 
 }
 class _casesList extends ResumableState<casesList>{
-  var caseListAll=[],customerId,temp=['',''],isVisible=false,caseList=[],caseType,title,_isSearching=false,filteredList=[];
+  var customerId,temp=['',''],isVisible=false,caseType,title,_isSearching=false;
   static final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   String searchQuery = "Search query";
   TextEditingController _searchQuery;
+  List<CustomerCases> caseListAll=[],caseList=[],filteredList=[];
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
   _casesList(this.customerId,this.caseType,this.title);
   @override
@@ -76,11 +78,10 @@ void onResume() {
                     if(caseList!=null){
                       caseList.clear();
                     }
-                    caseListAll=jsonDecode(response);
+                    caseListAll=response;
                     if(caseType=="Opened"){
                       for(int i=0;i<caseListAll.length;i++){
-                        print(caseListAll[i]['Status']);
-                        if(caseListAll[i]['Status']==1){
+                        if(caseListAll[i].status==1){
                           caseList.add(caseListAll[i]);
                           print(caseList.length.toString());
                         }
@@ -94,8 +95,7 @@ void onResume() {
                         caseList.clear();
                       }
                       for(int i=0;i<caseListAll.length;i++){
-                        print(caseListAll[i]['Status']);
-                        if(caseListAll[i]['Status']==2){
+                        if(caseListAll[i].status==2){
                           caseList.add(caseListAll[i]);
                           print(caseList.length.toString());
                         }
@@ -150,7 +150,7 @@ void onResume() {
                       color: Colors.red,
                       caption: 'Delete',
                       onTap: (){
-                        Network_Operations.DeleteCustomerCase(context,filteredList[index]['CaseNum']).then((response){
+                        Network_Operations.DeleteCustomerCase(context,filteredList[index].caseNum).then((response){
                            if(response!=null){
                              WidgetsBinding.instance
                                  .addPostFrameCallback((_) =>
@@ -174,8 +174,8 @@ void onResume() {
                     ),
                   ],
                   child: ListTile(
-                      title: Text(filteredList[index]['CaseNum']!=null?filteredList[index]['CaseNum']:''),
-                      subtitle: Text(filteredList[index]['Status']!=null?getCaseType(filteredList[index]['CategoryTypeId']):''),
+                      title: Text(filteredList[index].caseNum!=null?filteredList[index].caseNum:''),
+                      subtitle: Text(filteredList[index].categoryTypeId!=null?Utils.getCaseType(filteredList[index].categoryTypeId):''),
                       leading: Material(
                           borderRadius: BorderRadius.circular(25),
                           color: Color(0xFF9B3340),
@@ -203,16 +203,7 @@ void onResume() {
     );
 
   }
-  String getCaseType(int CategoryTypeId){
-    String type;
-    if(CategoryTypeId==5637145326){
-      type="Inquiry";
-    }
-    if(CategoryTypeId==5637144576){
-      type="Complaint";
-    }
-    return type;
-  }
+
   void _startSearch() {
     ModalRoute
         .of(context)
@@ -277,7 +268,7 @@ void onResume() {
       searchQuery = newQuery;
       if(searchQuery.length>0){
         for(int i=0;i<caseList.length;i++){
-          if(caseList[i]['CaseNum'].toLowerCase().contains(searchQuery)){
+          if(caseList[i].caseNum.toLowerCase().contains(searchQuery)){
             filteredList.add(caseList[i]);
           }
         }
