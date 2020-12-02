@@ -41,6 +41,8 @@ dependencies:
   timeline_tile: ^1.0.0
   flutter_animation_progress_bar: ^1.0.6
   barcode_scan: ^3.0.1
+  syncfusion_flutter_barcodes: ^18.1.42-beta
+  printing: ^3.7.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

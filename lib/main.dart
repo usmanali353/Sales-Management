@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:salesmanagement/LoginScreen/Login.dart';
+import 'package:salesmanagement/Sales_Services/Deliveries/BarcodePage.dart';
 import 'package:salesmanagement/Sales_Services/Deliveries/trackDeliveryList.dart';
 import 'package:salesmanagement/SettingPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
