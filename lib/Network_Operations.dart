@@ -5,6 +5,7 @@ import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/Model/CustomerCases.dart';
 import 'package:salesmanagement/Model/ItemSizes.dart';
 import 'package:salesmanagement/Model/ProductionPlans.dart';
+import 'package:salesmanagement/Model/ProductionSchedule.dart';
 import 'package:salesmanagement/Utils.dart';
 import 'package:salesmanagement/Model/Invoices.dart';
 
@@ -761,14 +762,14 @@ class Network_Operations {
 
   }
   //Production Schedule
-  static Future<String> GetProductionSchedules(BuildContext context,String CustomerId, int PageNo, int PageSize) async {
+  static Future<List<ProductionSchedule>> GetProductionSchedules(BuildContext context,String CustomerId, int PageNo, int PageSize) async {
     ProgressDialog pd=ProgressDialog(context);
     try{
       pd.show();
       final response = await http.get(Utils.getBaseUrl()+'ProdRequestService.svc/GetProductionSchedules/' + CustomerId + '/' + PageNo.toString() + '/' + PageSize.toString(), headers: {'authorization': Utils.apiAuthentication()});
       //print(response.body);
       if (response.statusCode == 200) {
-        return response.body;
+        return ProductionSchedule.productionScheduleFromJson(response.body);
       } else
         Utils.showError(context,response.statusCode.toString());
       return null;

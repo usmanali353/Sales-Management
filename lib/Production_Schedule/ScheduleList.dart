@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:salesmanagement/Model/ProductionSchedule.dart';
 import 'package:salesmanagement/Network_Operations.dart';
 import 'package:salesmanagement/Production_Schedule/ScheduleDetails.dart';
 import '../Utils.dart';
@@ -20,8 +21,9 @@ class SchedulesList extends StatefulWidget{
 
 }
 class _SchedulesList extends State<SchedulesList>{
-  var schedules,temp=['',''],customerId,isVisible=false,selectedValue,scheduleByRequest;
+  var temp=['',''],customerId,isVisible=false,selectedValue,scheduleByRequest;
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+  List<ProductionSchedule> schedules=[];
   _SchedulesList(this.customerId,this.scheduleByRequest);
   @override
   void initState() {
@@ -62,11 +64,11 @@ class _SchedulesList extends State<SchedulesList>{
           return Utils.check_connectivity().then((connected){
              if(connected){
                Network_Operations.GetProductionSchedules(context,customerId, 1, 100).then((response){
-                 if(response!=null&&response!='[]'){
+                 if(response!=null&&response.length>0){
                    if(schedules!=null){
                      schedules.clear();
                    }
-                   schedules=jsonDecode(response);
+                   schedules=response;
                    setState(() {
                      isVisible=true;
                    });
@@ -97,8 +99,8 @@ class _SchedulesList extends State<SchedulesList>{
                       children: <Widget>[
                         ListTile(
 
-                          title: Text(schedules[index]['ItemDescription']!=null?schedules[index]['ItemDescription']:''),
-                          subtitle: Text(schedules[index]['PlannedProdDate']!=null?'Planned Production Date:'+DateTime.fromMillisecondsSinceEpoch(int.parse(schedules[index]['PlannedProdDate'].replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
+                          title: Text(schedules[index].itemDescription!=null?schedules[index].itemDescription:''),
+                          subtitle: Text(schedules[index].plannedProdDate!=null?'Planned Production Date:'+DateTime.fromMillisecondsSinceEpoch(int.parse(schedules[index].plannedProdDate.replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString().split(' ')[0]:''),
                           leading:  Material(
                               borderRadius: BorderRadius.circular(24),
                               color: Colors.teal.shade100,
