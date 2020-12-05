@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 import 'package:salesmanagement/Model/Deliveries.dart';
+import 'package:salesmanagement/Network_Operations.dart';
+import 'package:salesmanagement/Sales_Services/Deliveries/DeliveryLines.dart';
 import 'package:timeline_tile/timeline_tile.dart';
+
+import '../../Utils.dart';
 class trackDeliveries extends StatefulWidget {
   Deliveries delivery;
 
@@ -12,11 +16,42 @@ class trackDeliveries extends StatefulWidget {
 }
 
 class _trackDeliveriesState extends State<trackDeliveries> {
+
+  @override
+  void initState() {
+    Utils.check_connectivity().then((isConnected){
+      if(isConnected){
+        Network_Operations.getDeliveryByPickingId(context,widget.delivery.pickingIdField).then((deliveryByPickingId){
+          setState(() {
+            if(deliveryByPickingId!=null) {
+               widget.delivery=deliveryByPickingId;
+            }else{
+              Utils.showError(context,"No Delivery Data Found against this Picking Id");
+            }
+          });
+        });
+      }else{
+        Utils.showError(context,"Network Not Available");
+      }
+    });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Track Deliveries"),
+        actions: [
+          InkWell(
+            onTap: (){
+              Navigator.push(context,MaterialPageRoute(builder:(context)=>DeliveryLines(widget.delivery)));
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(child: Text("View Lines")),
+            ),
+          )
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -158,6 +193,8 @@ class _trackDeliveriesState extends State<trackDeliveries> {
                               child: FAProgressBar(
                                 direction: Axis.horizontal,
                                 currentValue: 60,
+                                size: 20,
+                                border: Border.all(width: 1,color: Colors.grey),
                                 progressColor: Color(0xFF004c4c),
                                 displayText: "% Loaded",
                                 animatedDuration: Duration(seconds: 5),

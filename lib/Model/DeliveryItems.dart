@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class DeliveryItems {
   DeliveryItems({
     this.propertyChanged,
@@ -24,8 +26,13 @@ class DeliveryItems {
     this.sizeField,
     this.wLocationIdField,
     this.warehouseField,
+    this.warehouseLocationField,
+    this.reservedPercentField,
+    this.reservedQtyField
   });
-
+  dynamic reservedQtyField;
+  dynamic reservedPercentField;
+  String warehouseLocationField;
   dynamic propertyChanged;
   dynamic gradeField;
   String itemIdField;
@@ -51,22 +58,27 @@ class DeliveryItems {
   String wLocationIdField;
   String warehouseField;
 
+  static DeliveryItems deliveryItemsObjectFromJson(String str) => DeliveryItems.fromJson(json.decode(str));
+
   factory DeliveryItems.fromJson(Map<String, dynamic> json) => DeliveryItems(
     propertyChanged: json["PropertyChanged"],
     gradeField: json["gradeField"],
     itemIdField: json["itemIdField"],
     nameField: json["nameField"],
-    palletsField: List<PalletsField>.from(json["palletsField"].map((x) => PalletsField.fromJson(x))),
+    reservedPercentField: json["reservedPercentField"],
+    reservedQtyField: json['reservedQtyField'],
+    warehouseLocationField: json['warehouseLocationField'],
+    palletsField:json["palletsField"]!=null?List<PalletsField>.from(json["palletsField"].map((x) => PalletsField.fromJson(x))):json["palletsField"],
     salesIdField: json["salesIdField"],
     salesQtyBoxField: json["salesQtyBoxField"],
     salesQtyBoxFieldSpecified: json["salesQtyBoxFieldSpecified"],
-    salesQtyField: json["salesQtyField"].toDouble(),
+    salesQtyField: json["salesQtyField"],
     salesQtyFieldSpecified: json["salesQtyFieldSpecified"],
     salesQtyPalletField: json["salesQtyPalletField"],
     salesQtyPalletFieldSpecified: json["salesQtyPalletFieldSpecified"],
-    salesQtySqmField: json["salesQtySQMField"].toDouble(),
+    salesQtySqmField: json["salesQtySQMField"],
     salesQtySqmFieldSpecified: json["salesQtySQMFieldSpecified"],
-    salesQtySqmRemainingField: json["salesQtySQMRemainingField"].toDouble(),
+    salesQtySqmRemainingField: json["salesQtySQMRemainingField"],
     salesQtySqmRemainingFieldSpecified: json["salesQtySQMRemainingFieldSpecified"],
     salesQtySqmReservedField: json["salesQtySQMReservedField"],
     salesQtySqmReservedFieldSpecified: json["salesQtySQMReservedFieldSpecified"],
@@ -83,7 +95,7 @@ class DeliveryItems {
     "gradeField": gradeField,
     "itemIdField": itemIdField,
     "nameField": nameField,
-    "palletsField": List<dynamic>.from(palletsField.map((x) => x.toJson())),
+    //"palletsField": List<dynamic>.from(palletsField.map((x) => x.toJson())),
     "salesIdField": salesIdField,
     "salesQtyBoxField": salesQtyBoxField,
     "salesQtyBoxFieldSpecified": salesQtyBoxFieldSpecified,

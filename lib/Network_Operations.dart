@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/Model/CustomerCases.dart';
+import 'package:salesmanagement/Model/DeliveryItems.dart';
 import 'package:salesmanagement/Model/ItemSizes.dart';
 import 'package:salesmanagement/Model/ProductionPlans.dart';
 import 'package:salesmanagement/Model/ProductionSchedule.dart';
@@ -84,13 +85,34 @@ class Network_Operations {
     }
     return null;
   }
+  static Future<DeliveryItems> getPalletInfo(BuildContext context,String palletId)async
+  {
+    ProgressDialog pd= ProgressDialog(context);
+    try{
+      pd.show();
+      final response = await http.get(Utils.getBaseUrl()+'SalesService.svc/GetPalletInfo/'+ palletId, headers: {'authorization': Utils.apiAuthentication()});
+      debugPrint(response.body);
+      if (response.statusCode == 200) {
+        pd.hide();
+        return DeliveryItems.deliveryItemsObjectFromJson(response.body);
+      } else
+        pd.hide();
+      Utils.showError(context,response.statusCode.toString());
+      return null;
+    }catch(e){
+      pd.hide();
+      Utils.showError(context,e.toString());
+    }
+    return null;
+  }
   static Future<Deliveries> getDeliveryByPickingId(BuildContext context,String pickingId) async {
     ProgressDialog pd= ProgressDialog(context);
     try{
       pd.show();
       final response = await http.get(Utils.getBaseUrl()+'SalesService.svc/GetSingleDelivery/'+ pickingId, headers: {'authorization': Utils.apiAuthentication()});
-      //debugPrint(response.body);
+      debugPrint(Utils.getBaseUrl()+'SalesService.svc/GetSingleDelivery/'+ pickingId);
       if (response.statusCode == 200) {
+        debugPrint(response.body);
         pd.hide();
         return Deliveries.deliveriesObjectFromJson(response.body);
       } else

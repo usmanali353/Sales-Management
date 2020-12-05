@@ -97,7 +97,7 @@ class _trackDeliveryListState extends State<trackDeliveryList> {
                           ListTile(
                             title: Row(
                               children: [
-                                FaIcon(FontAwesomeIcons.dropbox),
+                                FaIcon(FontAwesomeIcons.dropbox,color: Color(0xFF004c4c),),
                                 SizedBox(
                                   width: 8,
                                 ),
