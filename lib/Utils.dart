@@ -6,6 +6,7 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:salesmanagement/Network_Operations.dart';
+import 'package:salesmanagement/Sales_Services/Deliveries/PalletDetails.dart';
 import 'package:salesmanagement/Sales_Services/Deliveries/trackDeliveries.dart';
 
 class Utils{
@@ -112,5 +113,44 @@ class Utils{
       restype='Reject';
     }
     return restype;
+  }
+  static Future scanPalletSerialNo(BuildContext context) async {
+    ScanResult  barcode;
+    try {
+      barcode = (await BarcodeScanner.scan());
+      barcode = barcode;
+      if(barcode.rawContent!=null){
+        Network_Operations.getPalletInfo(context,barcode.rawContent).then((delivery){
+          Navigator.push(context,MaterialPageRoute(builder:(context)=>PalletDetails(delivery)));
+        });
+      }
+    } on PlatformException catch (e) {
+      if (e.code == BarcodeScanner.cameraAccessDenied) {
+        Flushbar(
+          message: "Camera Access not Granted",
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 5),
+        ).show(context);
+      } else {
+        Flushbar(
+          message: e.toString(),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 5),
+        ).show(context);
+      }
+    } on FormatException{
+      Flushbar(
+        message: "User returned using the back-button before scanning anything",
+        backgroundColor: Colors.red,
+        duration: Duration(seconds: 5),
+      ).show(context);
+    } catch (e) {
+      Flushbar(
+        message: e,
+        backgroundColor: Colors.red,
+        duration: Duration(seconds: 5),
+      ).show(context);
+    }
+    return barcode;
   }
 }

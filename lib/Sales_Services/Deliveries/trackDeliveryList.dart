@@ -220,7 +220,12 @@ class _trackDeliveryListState extends State<trackDeliveryList> {
         if(_fbKey.currentState.validate()) {
           Navigator.pop(context);
           Network_Operations.getDeliveryByPickingId(context,pickingId.text).then((delivery){
-             Navigator.push(context,MaterialPageRoute(builder:(context)=>trackDeliveries(delivery)));
+            if(delivery!=null) {
+              Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => trackDeliveries(delivery)));
+            }else{
+              Utils.showError(context,"No Data Found against this picking Id");
+            }
           });
         }
       },

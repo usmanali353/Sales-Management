@@ -82,6 +82,8 @@ class Network_Operations {
     }catch(e){
       pd.hide();
       Utils.showError(context,e.toString());
+    }finally{
+      pd.hide();
     }
     return null;
   }

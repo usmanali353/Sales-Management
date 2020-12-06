@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:need_resume/need_resume.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:salesmanagement/Sales_Services/Deliveries/PalletDetails.dart';
+import 'package:salesmanagement/Sales_Services/Deliveries/TrackPalletPage.dart';
 import 'package:salesmanagement/Sales_Services/Deliveries/trackDeliveryList.dart';
 import 'package:salesmanagement/Sales_Services/Invoices/InVoicesList.dart';
 import 'package:salesmanagement/Sales_Services/Invoices/InvoicesMainPage.dart';
@@ -95,7 +96,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                     title: Text("Track Pallet"),
                     leading: Icon(FontAwesomeIcons.pallet),
                     onTap: (){
-                     showSearchByPalletIdDialog(context);
+                    Navigator.push(context,MaterialPageRoute(builder: (context)=>TrackPalletPage()));
                     },
                   ),
                   ListTile(

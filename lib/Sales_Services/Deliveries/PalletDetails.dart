@@ -41,9 +41,6 @@ class _PalletDetailsState extends State<PalletDetails> {
                     title: Text("Shade"),
                     trailing: Text(widget.items.shadeField!=null?widget.items.shadeField:''),
                   ),
-
-
-                  
                   Divider(),
                   ListTile(
                     title: Text("Warehouse Location"),
@@ -55,11 +52,10 @@ class _PalletDetailsState extends State<PalletDetails> {
                     trailing: Text(widget.items.salesQtyField!=null?widget.items.salesQtyField.toString():''),
                   ),
                   Divider(),
-
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );
