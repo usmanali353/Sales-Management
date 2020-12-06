@@ -96,6 +96,15 @@ class _TrackPalletPageState extends State<TrackPalletPage> {
                    focusedBorder:  OutlineInputBorder(
                      borderSide: BorderSide(color: Color(0xFF004c4c), width: 1),
                    ),
+                   errorBorder: OutlineInputBorder(
+                     borderSide: BorderSide(color: Color(0xFF004c4c), width: 1),
+                   ),
+                   disabledBorder: OutlineInputBorder(
+                     borderSide: BorderSide(color: Color(0xFF004c4c), width: 1),
+                   ),
+                   focusedErrorBorder: OutlineInputBorder(
+                     borderSide: BorderSide(color: Color(0xFF004c4c), width: 1),
+                   ),
                  ),
                ),
              ),

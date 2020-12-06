@@ -7,13 +7,9 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:need_resume/need_resume.dart';
-import 'package:progress_dialog/progress_dialog.dart';
-import 'package:salesmanagement/Sales_Services/Deliveries/PalletDetails.dart';
 import 'package:salesmanagement/Sales_Services/Deliveries/TrackPalletPage.dart';
 import 'package:salesmanagement/Sales_Services/Deliveries/trackDeliveryList.dart';
 import 'package:salesmanagement/Sales_Services/Invoices/InVoicesList.dart';
-import 'package:salesmanagement/Sales_Services/Invoices/InvoicesMainPage.dart';
-import 'package:salesmanagement/SettingPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Customer_Cases/casesList.dart';
 import 'Network_Operations.dart';
@@ -1301,65 +1297,6 @@ class _newdashboard extends ResumableState<newdashboard>{
           ),
         ),
       ),
-    );
-  }
-  showSearchByPalletIdDialog(BuildContext context) {
-    // set up the buttons
-    Widget cancelButton = FlatButton(
-      child: Text("Cancel"),
-      onPressed:  () {
-        Navigator.pop(context);
-      },
-    );
-    Widget search = FlatButton(
-      child: Text("Search"),
-      onPressed:  () {
-        if(_fbKey.currentState.validate()) {
-          Navigator.pop(context);
-          Network_Operations.getPalletInfo(context,palletId.text).then((palletInfo){
-            if(palletInfo!=null) {
-              Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => PalletDetails(palletInfo)));
-            }else{
-              Utils.showError(context,"No Record Found");
-            }
-          });
-        }
-      },
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text("Search by Pallet No."),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          FormBuilder(
-            key: _fbKey,
-            child: FormBuilderTextField(
-              attribute: 'Pallet No.',
-              controller: palletId,
-              validators: [FormBuilderValidators.required()],
-              decoration: InputDecoration(
-                hintText: "Pallet No.",
-              ),
-            ),
-          )
-
-        ],
-      ),
-      actions: [
-        cancelButton,
-        search
-      ],
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
     );
   }
 }
