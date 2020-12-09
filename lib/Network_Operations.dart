@@ -114,7 +114,6 @@ class Network_Operations {
       final response = await http.get(Utils.getBaseUrl()+'SalesService.svc/GetSingleDelivery/'+ pickingId, headers: {'authorization': Utils.apiAuthentication()});
       debugPrint(Utils.getBaseUrl()+'SalesService.svc/GetSingleDelivery/'+ pickingId);
       if (response.statusCode == 200) {
-        debugPrint(response.body);
         pd.hide();
         return Deliveries.deliveriesObjectFromJson(response.body);
       } else
@@ -123,6 +122,7 @@ class Network_Operations {
       return null;
     }catch(e){
       pd.hide();
+      debugPrint(e.toString());
       Utils.showError(context,e.toString());
     }
     return null;

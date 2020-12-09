@@ -20,12 +20,14 @@ class _trackDeliveriesState extends State<trackDeliveries> {
    double sum=0.0;
   @override
   void initState() {
+
     Utils.check_connectivity().then((isConnected){
       if(isConnected){
         if(widget.delivery!=null&&widget.delivery.pickingIdField!=null){
           print(widget.delivery.pickingIdField);
           Network_Operations.getDeliveryByPickingId(context,widget.delivery.pickingIdField).then((deliveryByPickingId){
             setState(() {
+
               if(deliveryByPickingId!=null) {
                 delivery=deliveryByPickingId;
                 isVisible=true;
