@@ -43,6 +43,7 @@ dependencies:
   barcode_scan: ^3.0.1
   syncfusion_flutter_barcodes: ^18.1.42-beta
   printing: ^3.7.1
+  quick_actions: ^0.4.0+10
 dev_dependencies:
   flutter_test:
     sdk: flutter

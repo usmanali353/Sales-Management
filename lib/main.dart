@@ -1,15 +1,9 @@
+
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:salesmanagement/LoginScreen/Login.dart';
-import 'package:salesmanagement/Sales_Services/Deliveries/BarcodePage.dart';
-import 'package:salesmanagement/Sales_Services/Deliveries/TrackPalletPage.dart';
-import 'package:salesmanagement/Sales_Services/Deliveries/trackDeliveryList.dart';
-import 'package:salesmanagement/SettingPage.dart';
+import 'package:salesmanagement/Utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'Model/Theme.dart';
-import 'Model/ThemeNotifier.dart';
-import 'Sales_Services/Deliveries/DeliveryLines.dart';
-import 'Sales_Services/Deliveries/LoadedPallets.dart';
+
 
 
 void main(){
@@ -24,6 +18,7 @@ void main(){
       // )
     );
   });
+
 }
 class myApp extends StatefulWidget {
 
@@ -49,6 +44,7 @@ class _myAppState extends State<myApp> {
   @override
   void initState() {
      myColor = MaterialColor(0xFF004c4c, color);
+     Utils.setupQuickActions(context);
     super.initState();
   }
   @override

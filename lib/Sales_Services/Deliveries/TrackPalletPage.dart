@@ -123,7 +123,7 @@ class _TrackPalletPageState extends State<TrackPalletPage> {
                 });
               }
              
-            }, icon:Icon(Icons.search,color: Colors.white,), label:Text("Serach",style: TextStyle(color: Colors.white),))),
+            }, icon:Icon(Icons.search,color: Colors.white,), label:Text("Search",style: TextStyle(color: Colors.white),))),
           Padding(
             padding: const EdgeInsets.all(16),
             child: Visibility(
@@ -135,6 +135,16 @@ class _TrackPalletPageState extends State<TrackPalletPage> {
                 ),
                 child: Column(
                   children: <Widget>[
+                    ListTile(
+                      title: Text("Item Number"),
+                      trailing: Text(palletInfo!=null&&palletInfo.itemIdField!=null?palletInfo.itemIdField:''),
+                    ),
+                    Divider(),
+                    ListTile(
+                      title: Text("Item Name"),
+                      trailing: Text(palletInfo!=null&&palletInfo.nameField!=null?palletInfo.nameField:''),
+                    ),
+                    Divider(),
                     ListTile(
                       title: Text("Item Grade"),
                       trailing: Text(palletInfo!=null&&palletInfo.gradeField!=null?palletInfo.gradeField:''),

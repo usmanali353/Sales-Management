@@ -5,8 +5,11 @@ import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:quick_actions/quick_actions.dart';
 import 'package:salesmanagement/Network_Operations.dart';
+import 'package:salesmanagement/Sales_Services/Deliveries/TrackPalletPage.dart';
 import 'package:salesmanagement/Sales_Services/Deliveries/trackDeliveries.dart';
+import 'package:salesmanagement/Sales_Services/Deliveries/trackDeliveryList.dart';
 
 class Utils{
   static Future<bool> check_connectivity () async{
@@ -112,5 +115,26 @@ class Utils{
       restype='Reject';
     }
     return restype;
+  }
+  static void setupQuickActions(BuildContext context) {
+    QuickActions quickActions=QuickActions();
+    quickActions.setShortcutItems(<ShortcutItem>[
+      ShortcutItem(
+          type: 'track_pallets',
+          localizedTitle: 'Track Pallets'
+      ),
+      ShortcutItem(
+          type: 'track_deliveries',
+          localizedTitle: 'Track Deliveries',
+      )
+         // icon: Platform.isAndroid ? 'quick_heart' : 'QuickHeart')
+    ]);
+    quickActions.initialize((shortcutType) {
+      if (shortcutType == 'track_pallets') {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => TrackPalletPage()));
+      } else if(shortcutType == 'track_deliveries') {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => trackDeliveryList("2019-09-15","LC0001")));
+      }
+    });
   }
 }
