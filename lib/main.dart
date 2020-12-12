@@ -1,6 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:quick_actions/quick_actions.dart';
 import 'package:salesmanagement/LoginScreen/Login.dart';
+import 'package:salesmanagement/Sales_Services/Deliveries/TrackPalletPage.dart';
+import 'package:salesmanagement/Sales_Services/Deliveries/trackDeliveryList.dart';
 import 'package:salesmanagement/Utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -27,6 +30,7 @@ class myApp extends StatefulWidget {
 }
 
 class _myAppState extends State<myApp> {
+  static final navigatorKey = GlobalKey<NavigatorState>();
   Map<int, Color> color =
   {
     50:Color.fromRGBO(0,96,94,  .1),
@@ -44,7 +48,6 @@ class _myAppState extends State<myApp> {
   @override
   void initState() {
      myColor = MaterialColor(0xFF004c4c, color);
-     Utils.setupQuickActions(context);
     super.initState();
   }
   @override
@@ -52,6 +55,7 @@ class _myAppState extends State<myApp> {
     //final themeNotifier = Provider.of<ThemeNotifier>(context);
     return  MaterialApp(
       title: "Sales Management",
+      key: navigatorKey,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.light,

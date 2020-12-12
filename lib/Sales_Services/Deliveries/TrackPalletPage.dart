@@ -142,7 +142,7 @@ class _TrackPalletPageState extends State<TrackPalletPage> {
                     Divider(),
                     ListTile(
                       title: Text("Item Name"),
-                      trailing: Text(palletInfo!=null&&palletInfo.nameField!=null?palletInfo.nameField:''),
+                      subtitle: Text(palletInfo!=null&&palletInfo.nameField!=null?palletInfo.nameField:''),
                     ),
                     Divider(),
                     ListTile(
@@ -162,7 +162,7 @@ class _TrackPalletPageState extends State<TrackPalletPage> {
                     Divider(),
                     ListTile(
                       title: Text("Warehouse Location"),
-                      trailing: Text(palletInfo!=null&&palletInfo.warehouseLocationField!=null?palletInfo.warehouseLocationField:''),
+                      subtitle: Text(palletInfo!=null&&palletInfo.warehouseLocationField!=null?palletInfo.warehouseLocationField:''),
                     ),
                     Divider(),
                     ListTile(

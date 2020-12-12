@@ -39,11 +39,8 @@ class _newdashboard extends ResumableState<newdashboard>{
   var todayDeliveryCardVisible=false,weeklyDeliveryCardVisible=false,prodRequestCardVisible=false,financeVisible=false,totalOlderStock=0.0,olderstockVisible=false,currentTheme=false,customerId;
    GlobalKey<RefreshIndicatorState> refreshIndicatorKey=GlobalKey();
   _newdashboard(this.customerId);
-  TextEditingController palletId;
-  final GlobalKey<FormBuilderState> _fbKey = GlobalKey();
   var caseNumbers,caseCardsVisible=false,productionRequestCardVisible=false,productionRequestNumbers,deliveryCardVisible=false,deliveryNumber,weeklyDelivery,financeCardVisible=false,finance,totalOnhandStock=0.0,onhandVisible=false;
   List<double> onHandValues=[];
-
   @override
   void onResume() {
     print('Data '+resume.data);
@@ -59,7 +56,6 @@ class _newdashboard extends ResumableState<newdashboard>{
 
   @override
   void initState() {
-    palletId=TextEditingController();
     WidgetsBinding.instance.addPostFrameCallback((_) => refreshIndicatorKey.currentState.show());
     super.initState();
   }

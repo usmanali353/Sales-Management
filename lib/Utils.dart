@@ -10,6 +10,7 @@ import 'package:salesmanagement/Network_Operations.dart';
 import 'package:salesmanagement/Sales_Services/Deliveries/TrackPalletPage.dart';
 import 'package:salesmanagement/Sales_Services/Deliveries/trackDeliveries.dart';
 import 'package:salesmanagement/Sales_Services/Deliveries/trackDeliveryList.dart';
+import 'package:salesmanagement/main.dart';
 
 class Utils{
   static Future<bool> check_connectivity () async{
@@ -121,19 +122,21 @@ class Utils{
     quickActions.setShortcutItems(<ShortcutItem>[
       ShortcutItem(
           type: 'track_pallets',
-          localizedTitle: 'Track Pallets'
+          localizedTitle: 'Track Pallets',
+          icon: "track_pallets"
       ),
       ShortcutItem(
           type: 'track_deliveries',
           localizedTitle: 'Track Deliveries',
+          icon: "track_delivery"
       )
-         // icon: Platform.isAndroid ? 'quick_heart' : 'QuickHeart')
+      // icon: Platform.isAndroid ? 'quick_heart' : 'QuickHeart')
     ]);
     quickActions.initialize((shortcutType) {
       if (shortcutType == 'track_pallets') {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => TrackPalletPage()));
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>TrackPalletPage()), (route) => false);
       } else if(shortcutType == 'track_deliveries') {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => trackDeliveryList("2019-09-15","LC0001")));
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => trackDeliveryList("2019-09-15","LC0001")),(route) => false);
       }
     });
   }

@@ -72,6 +72,7 @@ class _DeliveryList extends State<DeliveryList>{
             elevation: 10,
             child: ListView.builder(itemCount: filteredList!=null?filteredList.length:temp.length,itemBuilder: (context,int index){
               return Column(
+
                 children: <Widget>[
                   ListTile(
                     title: Text(filteredList[index].packingSlipNumField),
