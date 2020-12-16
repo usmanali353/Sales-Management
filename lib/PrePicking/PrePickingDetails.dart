@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:salesmanagement/PrePicking/OrderedProducts.dart';
+import 'package:acmc_customer/PrePicking/OrderedProducts.dart';
 
 class PrePickingDetails extends StatefulWidget {
   var prePickingData;

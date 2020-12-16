@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:salesmanagement/Model/Deliveries.dart';
-import 'package:salesmanagement/Model/DeliveryItems.dart';
+import 'package:acmc_customer/Model/Deliveries.dart';
+import 'package:acmc_customer/Model/DeliveryItems.dart';
 class LoadedPallets extends StatefulWidget {
   DeliveryItems deliveryItems;
   LoadedPallets(this.deliveryItems);

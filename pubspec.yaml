@@ -1,5 +1,5 @@
-name: salesmanagement
-description: Sales Management System
+name: acmc_customer
+description: ACMC Customer
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -33,8 +33,6 @@ dependencies:
   need_resume:
   sqflite: ^1.3.0
   badges: ^1.1.1
-  webview_flutter:
-  provider:
   day_night_switch:
   shared_preferences: ^0.5.6+1
   flushbar: ^1.10.4

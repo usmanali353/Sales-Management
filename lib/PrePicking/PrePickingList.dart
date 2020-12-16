@@ -7,10 +7,10 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:need_resume/need_resume.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:salesmanagement/Network_Operations.dart';
-import 'package:salesmanagement/PrePicking/AddPrePicking.dart';
-import 'package:salesmanagement/PrePicking/AddProducts.dart';
-import 'package:salesmanagement/PrePicking/UpdatePrePicking.dart';
+import 'package:acmc_customer/Network_Operations.dart';
+import 'package:acmc_customer/PrePicking/AddPrePicking.dart';
+import 'package:acmc_customer/PrePicking/AddProducts.dart';
+import 'package:acmc_customer/PrePicking/UpdatePrePicking.dart';
 import 'PrePickingDetails.dart';
 
 import '../Utils.dart';

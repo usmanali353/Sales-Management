@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:salesmanagement/Model/ItemSizes.dart';
-import 'package:salesmanagement/Model/ProductionPlans.dart';
+import 'package:acmc_customer/Model/ItemSizes.dart';
+import 'package:acmc_customer/Model/ProductionPlans.dart';
 import '../Network_Operations.dart';
 
 class UpdateProductionPlan extends StatefulWidget {

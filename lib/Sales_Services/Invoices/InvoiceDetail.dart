@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import '../../Network_Operations.dart';
 import 'InvoiceLines.dart';
-import 'package:salesmanagement/Model/Invoices.dart';
+import 'package:acmc_customer/Model/Invoices.dart';
 
 
 class InvoiceDetails extends StatefulWidget{

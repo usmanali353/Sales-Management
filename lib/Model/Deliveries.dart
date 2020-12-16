@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:salesmanagement/Model/DeliveryItems.dart';
+import 'package:acmc_customer/Model/DeliveryItems.dart';
 
 class
 Deliveries {

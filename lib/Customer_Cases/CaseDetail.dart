@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:salesmanagement/Model/CustomerCases.dart';
-import 'package:salesmanagement/Utils.dart';
+import 'package:acmc_customer/Model/CustomerCases.dart';
+import 'package:acmc_customer/Utils.dart';
 
 class CaseDetail extends StatefulWidget{
   CustomerCases caseData;

@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:salesmanagement/Network_Operations.dart';
-import 'package:salesmanagement/Production_Schedule/ScheduleDetails.dart';
+import 'package:acmc_customer/Network_Operations.dart';
+import 'package:acmc_customer/Production_Schedule/ScheduleDetails.dart';
 
 class RequestDetails extends StatefulWidget{
   var requestData;

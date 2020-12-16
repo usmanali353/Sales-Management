@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
-import 'package:salesmanagement/Model/Deliveries.dart';
-import 'package:salesmanagement/Network_Operations.dart';
-import 'package:salesmanagement/Sales_Services/Deliveries/DeliveryLines.dart';
+import 'package:acmc_customer/Model/Deliveries.dart';
+import 'package:acmc_customer/Network_Operations.dart';
+import 'package:acmc_customer/Sales_Services/Deliveries/DeliveryLines.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import '../../Utils.dart';
 class trackDeliveries extends StatefulWidget {

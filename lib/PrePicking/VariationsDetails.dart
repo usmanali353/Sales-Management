@@ -2,11 +2,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:need_resume/need_resume.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:salesmanagement/Model/sqlite_helper.dart';
-import 'package:salesmanagement/Network_Operations.dart';
-import 'package:salesmanagement/PrePicking/OrderedProductQty.dart';
-import 'package:salesmanagement/Production_Request/CreateProductionRequest.dart';
-import 'package:salesmanagement/Utils.dart';
+import 'package:acmc_customer/Model/sqlite_helper.dart';
+import 'package:acmc_customer/Network_Operations.dart';
+import 'package:acmc_customer/PrePicking/OrderedProductQty.dart';
+import 'package:acmc_customer/Production_Request/CreateProductionRequest.dart';
+import 'package:acmc_customer/Utils.dart';
 
 class VariationDetails extends StatefulWidget {
   var variationData, customerId;

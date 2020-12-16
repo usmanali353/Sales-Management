@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:salesmanagement/Model/Deliveries.dart';
-import 'package:salesmanagement/Sales_Services/Deliveries/LoadedPallets.dart';
+import 'package:acmc_customer/Model/Deliveries.dart';
+import 'package:acmc_customer/Sales_Services/Deliveries/LoadedPallets.dart';
 class DeliveryLines extends StatefulWidget {
   Deliveries delivery;
 

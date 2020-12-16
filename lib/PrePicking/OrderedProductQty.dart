@@ -1,8 +1,8 @@
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:salesmanagement/Model/Products.dart';
-import 'package:salesmanagement/Model/sqlite_helper.dart';
+import 'package:acmc_customer/Model/Products.dart';
+import 'package:acmc_customer/Model/sqlite_helper.dart';
 class OrderedProductQty extends StatefulWidget {
   var variationData;
 

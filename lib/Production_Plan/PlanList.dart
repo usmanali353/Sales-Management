@@ -6,12 +6,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart';
 import 'package:need_resume/need_resume.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:salesmanagement/Model/ItemSizes.dart';
-import 'package:salesmanagement/Model/ProductionPlans.dart';
-import 'package:salesmanagement/Network_Operations.dart';
-import 'package:salesmanagement/Production_Plan/CreateProductionPlan.dart';
-import 'package:salesmanagement/Production_Plan/UpdateProductionPlan.dart';
-import 'package:salesmanagement/Utils.dart';
+import 'package:acmc_customer/Model/ItemSizes.dart';
+import 'package:acmc_customer/Model/ProductionPlans.dart';
+import 'package:acmc_customer/Network_Operations.dart';
+import 'package:acmc_customer/Production_Plan/CreateProductionPlan.dart';
+import 'package:acmc_customer/Production_Plan/UpdateProductionPlan.dart';
+import 'package:acmc_customer/Utils.dart';
 
 import 'PlanDetails.dart';
 

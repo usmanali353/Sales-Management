@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:salesmanagement/Model/Invoices.dart';
+import 'package:acmc_customer/Model/Invoices.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import '../../Utils.dart';
 import 'InvoiceDetail.dart';
-import 'package:salesmanagement/Network_Operations.dart';
+import 'package:acmc_customer/Network_Operations.dart';
 
 class InvoicesList extends StatefulWidget{
   var CustomerId;

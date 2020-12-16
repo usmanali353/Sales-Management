@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:salesmanagement/Network_Operations.dart';
+import 'package:acmc_customer/Network_Operations.dart';
 import '../../Utils.dart';
 import 'SalesOrderDetails.dart';
 

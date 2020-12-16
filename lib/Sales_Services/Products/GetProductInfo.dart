@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:salesmanagement/Network_Operations.dart';
-import 'package:salesmanagement/Sales_Services/Products/GetProductBySizeOrModel.dart';
+import 'package:acmc_customer/Network_Operations.dart';
+import 'package:acmc_customer/Sales_Services/Products/GetProductBySizeOrModel.dart';
 import 'ProductDetails.dart';
 
 class GetProductInfo extends StatefulWidget{

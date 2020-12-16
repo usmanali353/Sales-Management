@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:salesmanagement/Model/CustomerCases.dart';
-import 'package:salesmanagement/Model/DeliveryItems.dart';
-import 'package:salesmanagement/Model/ItemSizes.dart';
-import 'package:salesmanagement/Model/ProductionPlans.dart';
-import 'package:salesmanagement/Model/ProductionSchedule.dart';
-import 'package:salesmanagement/Utils.dart';
-import 'package:salesmanagement/Model/Invoices.dart';
+import 'package:acmc_customer/Model/CustomerCases.dart';
+import 'package:acmc_customer/Model/DeliveryItems.dart';
+import 'package:acmc_customer/Model/ItemSizes.dart';
+import 'package:acmc_customer/Model/ProductionPlans.dart';
+import 'package:acmc_customer/Model/ProductionSchedule.dart';
+import 'package:acmc_customer/Utils.dart';
+import 'package:acmc_customer/Model/Invoices.dart';
 
 import 'Model/Deliveries.dart';
 

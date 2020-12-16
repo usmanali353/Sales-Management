@@ -6,10 +6,10 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:intl/intl.dart';
 import 'package:need_resume/need_resume.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:salesmanagement/Model/Products.dart';
-import 'package:salesmanagement/Model/sqlite_helper.dart';
-import 'package:salesmanagement/Network_Operations.dart';
-import 'package:salesmanagement/PrePicking/AddProducts.dart';
+import 'package:acmc_customer/Model/Products.dart';
+import 'package:acmc_customer/Model/sqlite_helper.dart';
+import 'package:acmc_customer/Network_Operations.dart';
+import 'package:acmc_customer/PrePicking/AddProducts.dart';
 class AddPrePicking extends StatefulWidget {
   var customerId;
 

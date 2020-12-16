@@ -4,9 +4,9 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:need_resume/need_resume.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:salesmanagement/Model/Products.dart';
-import 'package:salesmanagement/Model/sqlite_helper.dart';
-import 'package:salesmanagement/PrePicking/AddPrePicking.dart';
+import 'package:acmc_customer/Model/Products.dart';
+import 'package:acmc_customer/Model/sqlite_helper.dart';
+import 'package:acmc_customer/PrePicking/AddPrePicking.dart';
 import '../Network_Operations.dart';
 class SelectedProducts extends StatefulWidget {
   var customerId;

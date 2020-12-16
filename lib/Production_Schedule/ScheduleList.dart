@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:salesmanagement/Model/ProductionSchedule.dart';
-import 'package:salesmanagement/Network_Operations.dart';
-import 'package:salesmanagement/Production_Schedule/ScheduleDetails.dart';
+import 'package:acmc_customer/Model/ProductionSchedule.dart';
+import 'package:acmc_customer/Network_Operations.dart';
+import 'package:acmc_customer/Production_Schedule/ScheduleDetails.dart';
 import '../Utils.dart';
 
 class SchedulesList extends StatefulWidget{

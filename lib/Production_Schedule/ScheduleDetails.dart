@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:salesmanagement/Model/ProductionSchedule.dart';
+import 'package:acmc_customer/Model/ProductionSchedule.dart';
 
 class ScheduleDetails extends StatefulWidget{
   ProductionSchedule scheduleData;

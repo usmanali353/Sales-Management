@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:salesmanagement/Model/Deliveries.dart';
+import 'package:acmc_customer/Model/Deliveries.dart';
 
 import 'SalesLinesItemsList.dart';
 

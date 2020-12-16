@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:salesmanagement/PrePicking/PrePickingDetails.dart';
+import 'package:acmc_customer/PrePicking/PrePickingDetails.dart';
 
 import 'PrePickingLineDetails.dart';
 class OrderedProducts extends StatefulWidget {

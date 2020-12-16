@@ -1,10 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:quick_actions/quick_actions.dart';
-import 'package:salesmanagement/LoginScreen/Login.dart';
-import 'package:salesmanagement/Sales_Services/Deliveries/TrackPalletPage.dart';
-import 'package:salesmanagement/Sales_Services/Deliveries/trackDeliveryList.dart';
-import 'package:salesmanagement/Utils.dart';
+import 'package:acmc_customer/LoginScreen/Login.dart';
+import 'package:acmc_customer/Sales_Services/Deliveries/TrackPalletPage.dart';
+import 'package:acmc_customer/Sales_Services/Deliveries/trackDeliveryList.dart';
+import 'package:acmc_customer/Utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -13,12 +13,7 @@ void main(){
   WidgetsFlutterBinding.ensureInitialized();
 
   SharedPreferences.getInstance().then((prefs) {
-    // var darkModeOn = prefs.getBool('darkMode') ?? true;
     runApp( myApp()
-      // ChangeNotifierProvider<ThemeNotifier>(
-      //   create: (_) => ThemeNotifier(darkModeOn ? darkTheme : lightTheme),
-      //   child: myApp(),
-      // )
     );
   });
 
@@ -52,10 +47,8 @@ class _myAppState extends State<myApp> {
   }
   @override
   Widget build(BuildContext context) {
-    //final themeNotifier = Provider.of<ThemeNotifier>(context);
     return  MaterialApp(
-      title: "Sales Management",
-      key: navigatorKey,
+      title: "ACMC Customer",
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.light,

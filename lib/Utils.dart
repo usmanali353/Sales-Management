@@ -6,11 +6,11 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:quick_actions/quick_actions.dart';
-import 'package:salesmanagement/Network_Operations.dart';
-import 'package:salesmanagement/Sales_Services/Deliveries/TrackPalletPage.dart';
-import 'package:salesmanagement/Sales_Services/Deliveries/trackDeliveries.dart';
-import 'package:salesmanagement/Sales_Services/Deliveries/trackDeliveryList.dart';
-import 'package:salesmanagement/main.dart';
+import 'package:acmc_customer/Network_Operations.dart';
+import 'package:acmc_customer/Sales_Services/Deliveries/TrackPalletPage.dart';
+import 'package:acmc_customer/Sales_Services/Deliveries/trackDeliveries.dart';
+import 'package:acmc_customer/Sales_Services/Deliveries/trackDeliveryList.dart';
+import 'package:acmc_customer/main.dart';
 
 class Utils{
   static Future<bool> check_connectivity () async{

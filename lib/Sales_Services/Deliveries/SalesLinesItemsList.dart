@@ -4,8 +4,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:salesmanagement/Network_Operations.dart';
-import 'package:salesmanagement/Utils.dart';
+import 'package:acmc_customer/Network_Operations.dart';
+import 'package:acmc_customer/Utils.dart';
 
 import 'SalesLinesDetails.dart';
 class SalesLinesItemsList extends StatefulWidget {

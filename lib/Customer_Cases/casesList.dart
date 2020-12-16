@@ -6,11 +6,11 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:need_resume/need_resume.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:salesmanagement/Customer_Cases/CaseDetail.dart';
-import 'package:salesmanagement/Customer_Cases/CreateCase.dart';
-import 'package:salesmanagement/Customer_Cases/UpdateCases.dart';
-import 'package:salesmanagement/Model/CustomerCases.dart';
-import 'package:salesmanagement/Network_Operations.dart';
+import 'package:acmc_customer/Customer_Cases/CaseDetail.dart';
+import 'package:acmc_customer/Customer_Cases/CreateCase.dart';
+import 'package:acmc_customer/Customer_Cases/UpdateCases.dart';
+import 'package:acmc_customer/Model/CustomerCases.dart';
+import 'package:acmc_customer/Network_Operations.dart';
 import '../Utils.dart';
 
 class casesList extends StatefulWidget{

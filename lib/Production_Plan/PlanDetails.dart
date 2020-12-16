@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:flushbar/flushbar.dart';
 import  'package:flutter/material.dart';
-import 'package:salesmanagement/Model/ProductionPlans.dart';
-import 'package:salesmanagement/Network_Operations.dart';
-import 'package:salesmanagement/Production_Request/CreateProductionRequest.dart';
-import 'package:salesmanagement/Production_Request/RequestList.dart';
+import 'package:acmc_customer/Model/ProductionPlans.dart';
+import 'package:acmc_customer/Network_Operations.dart';
+import 'package:acmc_customer/Production_Request/CreateProductionRequest.dart';
+import 'package:acmc_customer/Production_Request/RequestList.dart';
 class PlanDetail extends StatefulWidget {
  ProductionPlans planData;
  var customerId;

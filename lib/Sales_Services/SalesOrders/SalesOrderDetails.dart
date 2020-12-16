@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:salesmanagement/Sales_Services/Deliveries/SalesLinesItemsList.dart';
+import 'package:acmc_customer/Sales_Services/Deliveries/SalesLinesItemsList.dart';
 
 class salesOrdersDetails extends StatefulWidget{
   var order_data;
