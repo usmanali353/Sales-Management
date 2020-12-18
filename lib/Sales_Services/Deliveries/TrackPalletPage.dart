@@ -1,8 +1,6 @@
 
 import 'package:acmc_customer/Scanner/QRCodeScanner.dart';
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:acmc_customer/Model/DeliveryItems.dart';
 import 'package:acmc_customer/Network_Operations.dart';
@@ -28,60 +26,6 @@ class _TrackPalletPageState extends State<TrackPalletPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Track Pallet"),
-        actions: [
-          InkWell(
-            onTap: () async{
-              final result = await Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => QRCodeScanner()),
-              );
-              this.serialNo.text=result;
-              // ScanResult  barcode;
-              // try {
-              //   barcode = (await BarcodeScanner.scan());
-              //   barcode = barcode;
-              //   if(barcode.rawContent!=null){
-              //      setState(() {
-              //        this.serialNo.text=barcode.rawContent;
-              //      });
-              //   }
-              // } on PlatformException catch (e) {
-              //   if (e.code == BarcodeScanner.cameraAccessDenied) {
-              //     Flushbar(
-              //       message: "Camera Access not Granted",
-              //       backgroundColor: Colors.red,
-              //       duration: Duration(seconds: 5),
-              //     ).show(context);
-              //   } else {
-              //     Flushbar(
-              //       message: e.toString(),
-              //       backgroundColor: Colors.red,
-              //       duration: Duration(seconds: 5),
-              //     ).show(context);
-              //   }
-              // } on FormatException{
-              //   Flushbar(
-              //     message: "User returned using the back-button before scanning anything",
-              //     backgroundColor: Colors.red,
-              //     duration: Duration(seconds: 5),
-              //   ).show(context);
-              // } catch (e) {
-              //   Flushbar(
-              //     message: e,
-              //     backgroundColor: Colors.red,
-              //     duration: Duration(seconds: 5),
-              //   ).show(context);
-              // }
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                child: Text("Scan Barcode"),
-              ),
-            ),
-          )
-
-        ],
       ),
       body: ListView(
         children: [
@@ -115,21 +59,38 @@ class _TrackPalletPageState extends State<TrackPalletPage> {
                ),
              ),
            ),
-            Center(child: RaisedButton.icon(color: Color(0xFF004c4c),onPressed: (){
-              if(_fBKey.currentState.validate()){
-                Network_Operations.getPalletInfo(context,serialNo.text).then((value){
-                  setState(() {
-                    if(value!=null){
-                      this.isVisible=true;
-                      this.palletInfo=value;
-                    }else{
-                      isVisible=false;
-                    }
-                  });
-                });
-              }
-             
-            }, icon:Icon(Icons.search,color: Colors.white,), label:Text("Search",style: TextStyle(color: Colors.white),))),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                RaisedButton.icon(color: Color(0xFF004c4c),onPressed: (){
+                  if(_fBKey.currentState.validate()){
+                    Network_Operations.getPalletInfo(context,serialNo.text).then((value){
+                      setState(() {
+                        if(value!=null){
+                          this.isVisible=true;
+                          this.palletInfo=value;
+                        }else{
+                          isVisible=false;
+                        }
+                      });
+                    });
+                  }
+
+                }, icon:Icon(Icons.search,color: Colors.white,), label:Text("Search",style: TextStyle(color: Colors.white),)),
+                Padding(
+                  padding: const EdgeInsets.only(left: 16),
+                  child: RaisedButton.icon(color: Color(0xFF004c4c),onPressed: ()async{
+                    final result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => QRCodeScanner()),
+                    );
+                    this.serialNo.text=result;
+
+                  }, icon:Icon(Icons.qr_code,color: Colors.white,), label:Text("Scan",style: TextStyle(color: Colors.white),)),
+                ),
+              ],
+            ),
+
           Padding(
             padding: const EdgeInsets.all(16),
             child: Visibility(

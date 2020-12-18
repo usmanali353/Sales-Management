@@ -83,7 +83,7 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
     controller.scannedDataStream.listen((scanData) {
       setState(() {
         qrText = scanData;
-        if(qrText!="")
+        if(qrText!=""&&qrText.length>0)
           controller.pauseCamera();
           Navigator.pop(context,qrText);
       });
