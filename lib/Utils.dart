@@ -1,6 +1,5 @@
 import 'dart:convert';
-
-import 'package:barcode_scan/barcode_scan.dart';
+import 'package:acmc_customer/Scanner/QRCodeScanner.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
@@ -68,35 +67,16 @@ class Utils{
     return type;
   }
   static Future scan(BuildContext context) async {
-    ScanResult  barcode;
+    String  barcode;
     try {
-      barcode = (await BarcodeScanner.scan());
-      barcode = barcode;
-      if(barcode.rawContent!=null){
-        Network_Operations.getDeliveryByPickingId(context,barcode.rawContent).then((delivery){
-          Navigator.push(context,MaterialPageRoute(builder:(context)=>trackDeliveries(delivery)));
-        });
-      }
-    } on PlatformException catch (e) {
-      if (e.code == BarcodeScanner.cameraAccessDenied) {
-        Flushbar(
-          message: "Camera Access not Granted",
-          backgroundColor: Colors.red,
-          duration: Duration(seconds: 5),
-        ).show(context);
-      } else {
-        Flushbar(
-          message: e.toString(),
-          backgroundColor: Colors.red,
-          duration: Duration(seconds: 5),
-        ).show(context);
-      }
-    } on FormatException{
-      Flushbar(
-        message: "User returned using the back-button before scanning anything",
-        backgroundColor: Colors.red,
-        duration: Duration(seconds: 5),
-      ).show(context);
+      final result = await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => QRCodeScanner()),
+      );
+      barcode=result;
+      Network_Operations.getDeliveryByPickingId(context,result).then((value){
+        Navigator.push(context, MaterialPageRoute(builder:(context)=>trackDeliveries(value)));
+      });
     } catch (e) {
       Flushbar(
         message: e,

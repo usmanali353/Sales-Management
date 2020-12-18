@@ -1,5 +1,5 @@
 
-import 'package:barcode_scan/barcode_scan.dart';
+import 'package:acmc_customer/Scanner/QRCodeScanner.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -31,42 +31,47 @@ class _TrackPalletPageState extends State<TrackPalletPage> {
         actions: [
           InkWell(
             onTap: () async{
-              ScanResult  barcode;
-              try {
-                barcode = (await BarcodeScanner.scan());
-                barcode = barcode;
-                if(barcode.rawContent!=null){
-                   setState(() {
-                     this.serialNo.text=barcode.rawContent;
-                   });
-                }
-              } on PlatformException catch (e) {
-                if (e.code == BarcodeScanner.cameraAccessDenied) {
-                  Flushbar(
-                    message: "Camera Access not Granted",
-                    backgroundColor: Colors.red,
-                    duration: Duration(seconds: 5),
-                  ).show(context);
-                } else {
-                  Flushbar(
-                    message: e.toString(),
-                    backgroundColor: Colors.red,
-                    duration: Duration(seconds: 5),
-                  ).show(context);
-                }
-              } on FormatException{
-                Flushbar(
-                  message: "User returned using the back-button before scanning anything",
-                  backgroundColor: Colors.red,
-                  duration: Duration(seconds: 5),
-                ).show(context);
-              } catch (e) {
-                Flushbar(
-                  message: e,
-                  backgroundColor: Colors.red,
-                  duration: Duration(seconds: 5),
-                ).show(context);
-              }
+              final result = await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => QRCodeScanner()),
+              );
+              this.serialNo.text=result;
+              // ScanResult  barcode;
+              // try {
+              //   barcode = (await BarcodeScanner.scan());
+              //   barcode = barcode;
+              //   if(barcode.rawContent!=null){
+              //      setState(() {
+              //        this.serialNo.text=barcode.rawContent;
+              //      });
+              //   }
+              // } on PlatformException catch (e) {
+              //   if (e.code == BarcodeScanner.cameraAccessDenied) {
+              //     Flushbar(
+              //       message: "Camera Access not Granted",
+              //       backgroundColor: Colors.red,
+              //       duration: Duration(seconds: 5),
+              //     ).show(context);
+              //   } else {
+              //     Flushbar(
+              //       message: e.toString(),
+              //       backgroundColor: Colors.red,
+              //       duration: Duration(seconds: 5),
+              //     ).show(context);
+              //   }
+              // } on FormatException{
+              //   Flushbar(
+              //     message: "User returned using the back-button before scanning anything",
+              //     backgroundColor: Colors.red,
+              //     duration: Duration(seconds: 5),
+              //   ).show(context);
+              // } catch (e) {
+              //   Flushbar(
+              //     message: e,
+              //     backgroundColor: Colors.red,
+              //     duration: Duration(seconds: 5),
+              //   ).show(context);
+              // }
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -75,6 +80,7 @@ class _TrackPalletPageState extends State<TrackPalletPage> {
               ),
             ),
           )
+
         ],
       ),
       body: ListView(
