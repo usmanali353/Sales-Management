@@ -34,13 +34,11 @@ class _RequestDetails extends State<RequestDetails>{
                 child: Center(child: Text("View Schedule")),
                 onTap: () {
                   try {
-                    Network_Operations.GetProductionScheduleByRequest(context,requestData['ProductionRequestId']).then((response) {
-                          if(response!=null){
-                            var schedulebyRequest = jsonDecode(response);
-                            if (schedulebyRequest != null) {
+                    Network_Operations.GetProductionScheduleByRequest(context,requestData['ProductionRequestId']).then((scheduleByRequest) {
+                            if (scheduleByRequest != null) {
                               Navigator.push(context, MaterialPageRoute(
                                   builder: (context) =>
-                                      ScheduleDetails(schedulebyRequest)));
+                                      ScheduleDetails(scheduleByRequest)));
                           }else{
                               Flushbar(
                                 message: "Not Found",
@@ -50,14 +48,7 @@ class _RequestDetails extends State<RequestDetails>{
                                 ..show(context);
                             }
 
-                      } else {
-                        Flushbar(
-                          message: "Not Found",
-                          backgroundColor: Colors.red,
-                          duration: Duration(seconds: 5),
-                        )
-                          ..show(context);
-                      }
+
                     });
                   } catch (e) {
                     Flushbar(

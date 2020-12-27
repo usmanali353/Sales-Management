@@ -20,7 +20,6 @@ class _trackDeliveriesState extends State<trackDeliveries> {
    double sum=0.0;
   @override
   void initState() {
-
     Utils.check_connectivity().then((isConnected){
       if(isConnected){
         if(widget.delivery!=null&&widget.delivery.pickingIdField!=null){
@@ -54,15 +53,16 @@ class _trackDeliveriesState extends State<trackDeliveries> {
       appBar: AppBar(
         title: Text("Track Deliveries"),
         actions: [
-          InkWell(
+         delivery!=null?InkWell(
             onTap: (){
+
               Navigator.push(context,MaterialPageRoute(builder:(context)=>DeliveryLines(delivery)));
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Center(child: Text("View Lines")),
             ),
-          )
+          ):Container()
         ],
       ),
       body: Visibility(

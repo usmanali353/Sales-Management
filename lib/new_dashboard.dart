@@ -3,7 +3,6 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:need_resume/need_resume.dart';
@@ -41,18 +40,6 @@ class _newdashboard extends ResumableState<newdashboard>{
   _newdashboard(this.customerId);
   var caseNumbers,caseCardsVisible=false,productionRequestCardVisible=false,productionRequestNumbers,deliveryCardVisible=false,deliveryNumber,weeklyDelivery,financeCardVisible=false,finance,totalOnhandStock=0.0,onhandVisible=false;
   List<double> onHandValues=[];
-  @override
-  void onResume() {
-    print('Data '+resume.data);
-    if(resume.data.toString()=='Refresh'){
-      SharedPreferences.getInstance().then((prefs){
-        setState(() {
-          if(prefs.getBool("DarkMode")!=null)
-          this.currentTheme=prefs.getBool("DarkMode");
-        });
-      });
-    }
-  }
 
   @override
   void initState() {
@@ -268,7 +255,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                     child: InkWell(
                       onTap:(){
                         //DateFormat("yyyy-MM-dd").format(DateTime.now()
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>DeliveryList("2019-09-15",customerId)));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>DeliveryList(DateFormat("yyyy-MM-dd").format(DateTime.now()),customerId)));
                       },
                       child: Card(
                         elevation: 10,

@@ -43,7 +43,7 @@ class DeliveryItems {
   bool salesQtyBoxFieldSpecified;
   double salesQtyField;
   bool salesQtyFieldSpecified;
-  int salesQtyPalletField;
+  dynamic salesQtyPalletField;
   bool salesQtyPalletFieldSpecified;
   double salesQtySqmField;
   bool salesQtySqmFieldSpecified;

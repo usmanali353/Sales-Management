@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'package:acmc_customer/Scanner/QRCodeScanner.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:quick_actions/quick_actions.dart';
 import 'package:acmc_customer/Network_Operations.dart';
 import 'package:acmc_customer/Sales_Services/Deliveries/TrackPalletPage.dart';
@@ -23,7 +23,11 @@ class Utils{
     return item;
   }
   static String getBaseUrl(){
-    return "http://sales.arabianceramics.com/AcmcMobileServices/";
+     /*
+     Live Server
+     http://mobileapi.arabian-ceramics.com/ACMCMobileServicesLive/
+     */
+    return "http://mobileapi.arabian-ceramics.com/ACMCMobileServices/"; //"http://sales.arabianceramics.com/AcmcMobileServices/";
   }
   static String apiAuthentication(){
      String username = 'AcmcUser';
@@ -69,14 +73,21 @@ class Utils{
   static Future scan(BuildContext context) async {
     String  barcode;
     try {
-      final result = await Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => QRCodeScanner()),
-      );
+      String result = await FlutterBarcodeScanner.scanBarcode(
+          "#ff6666",
+          "Cancel",
+          true,
+          ScanMode.DEFAULT);
       barcode=result;
-      Network_Operations.getDeliveryByPickingId(context,result).then((value){
-        Navigator.push(context, MaterialPageRoute(builder:(context)=>trackDeliveries(value)));
-      });
+      if(result!=null&&result!=""&&result.contains("PKL")) {
+        Network_Operations.getDeliveryByPickingId(context, result).then((
+            value) {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => trackDeliveries(value)));
+        });
+      }else{
+        Utils.showError(context,"Invalid Picking Id");
+      }
     } catch (e) {
       Flushbar(
         message: e,

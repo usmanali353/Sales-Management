@@ -1,10 +1,9 @@
-
-import 'package:acmc_customer/Scanner/QRCodeScanner.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:acmc_customer/Model/DeliveryItems.dart';
 import 'package:acmc_customer/Network_Operations.dart';
-
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../Utils.dart';
 class TrackPalletPage extends StatefulWidget {
   @override
@@ -80,13 +79,14 @@ class _TrackPalletPageState extends State<TrackPalletPage> {
                 Padding(
                   padding: const EdgeInsets.only(left: 16),
                   child: RaisedButton.icon(color: Color(0xFF004c4c),onPressed: ()async{
-                    final result = await Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => QRCodeScanner()),
-                    );
+                    String result = await FlutterBarcodeScanner.scanBarcode(
+                        "#ff6666",
+                        "Cancel",
+                        true,
+                        ScanMode.DEFAULT);
                     this.serialNo.text=result;
 
-                  }, icon:Icon(Icons.qr_code,color: Colors.white,), label:Text("Scan",style: TextStyle(color: Colors.white),)),
+                  }, icon:Icon(FontAwesomeIcons.barcode,color: Colors.white,), label:Text("Scan",style: TextStyle(color: Colors.white),)),
                 ),
               ],
             ),
@@ -137,7 +137,6 @@ class _TrackPalletPageState extends State<TrackPalletPage> {
                       trailing: Text(palletInfo!=null&&palletInfo.salesQtyField!=null?palletInfo.salesQtyField.toString():''),
                     ),
                     Divider(),
-
                   ],
                 ),
               ),

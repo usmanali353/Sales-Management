@@ -823,14 +823,14 @@ class Network_Operations {
     }
 
   }
-  static Future<String> GetProductionScheduleByRequest(BuildContext context,String requestId) async {
+  static Future<ProductionSchedule> GetProductionScheduleByRequest(BuildContext context,String requestId) async {
     ProgressDialog pd=ProgressDialog(context);
     try{
       pd.show();
       final response = await http.get(Utils.getBaseUrl()+'ProdRequestService.svc/GetProdScheduleByRequest/' + requestId, headers: {'authorization': Utils.apiAuthentication()});
       //debugPrint(response.statusCode.toString());
       if (response.statusCode == 200) {
-        return response.body;
+        return ProductionSchedule.productionScheduleObjectFromJson(response.body);
       } else
         Utils.showError(context,response.statusCode.toString());
       return null;
