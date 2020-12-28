@@ -10,8 +10,10 @@ import 'package:acmc_customer/Sales_Services/Deliveries/TrackPalletPage.dart';
 import 'package:acmc_customer/Sales_Services/Deliveries/trackDeliveries.dart';
 import 'package:acmc_customer/Sales_Services/Deliveries/trackDeliveryList.dart';
 import 'package:acmc_customer/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Utils{
+  static String url;
   static Future<bool> check_connectivity () async{
     bool result = await DataConnectionChecker().hasConnection;
     return result;
@@ -23,11 +25,22 @@ class Utils{
     return item;
   }
   static String getBaseUrl(){
+    SharedPreferences.getInstance().then((prefs){
+      String mode=prefs.getString("mode");
+      if(mode==null){
+        url="http://mobileapi.arabian-ceramics.com/ACMCMobileServices/";
+      }else if(mode=="Testing") {
+        url="http://mobileapi.arabian-ceramics.com/ACMCMobileServices/";
+      }else if(mode=="Live") {
+        url = "http://mobileapi.arabian-ceramics.com/ACMCMobileServicesLive/";
+      }
+    });
+    print(url);
      /*
      Live Server
      http://mobileapi.arabian-ceramics.com/ACMCMobileServicesLive/
      */
-    return "http://mobileapi.arabian-ceramics.com/ACMCMobileServices/"; //"http://sales.arabianceramics.com/AcmcMobileServices/";
+     return url;
   }
   static String apiAuthentication(){
      String username = 'AcmcUser';

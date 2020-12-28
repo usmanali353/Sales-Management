@@ -68,7 +68,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                     title: Text("Track Deliveries"),
                     leading: Icon(FontAwesomeIcons.truckLoading),
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>trackDeliveryList("2019-09-15", customerId)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>trackDeliveryList(DateFormat("yyyy-MM-dd").format(DateTime.now()), customerId)));
                     },
                   ),
                   ListTile(
@@ -255,7 +255,7 @@ class _newdashboard extends ResumableState<newdashboard>{
                     child: InkWell(
                       onTap:(){
                         //DateFormat("yyyy-MM-dd").format(DateTime.now()
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>DeliveryList(DateFormat("yyyy-MM-dd").format(DateTime.now()),customerId)));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>trackDeliveryList(DateFormat("yyyy-MM-dd").format(DateTime.now()),customerId)));
                       },
                       child: Card(
                         elevation: 10,

@@ -5,6 +5,7 @@ import 'package:acmc_customer/Network_Operations.dart';
 import 'package:acmc_customer/Sales_Services/Deliveries/trackDeliveryList.dart';
 import 'package:acmc_customer/Utils.dart';
 import 'package:acmc_customer/new_dashboard.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -12,6 +13,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController username,password;
+  var selectedPreference;
   @override
   void initState() {
     username=TextEditingController();
@@ -119,16 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     minWidth: MediaQuery.of(context).size.width,
                     onPressed: (){
                       if(username.text!=null&&password.text!=null&&password.text.length>3){
-                        Network_Operations.login(context, username.text, password.text).then((isLogin){
-                          if(isLogin=="true"){
-                            Network_Operations.getUserInfo(context, username.text, password.text).then((userInfo){
-                              print(userInfo);
-                              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>newdashboard("LC0001")), (route) => false);
-                            });
-                          }else{
-                            Utils.showError(context,"Invalid Username or Password");
-                          }
-                        });
+                        showAlertDialog(context);
                       }else{
                         Utils.showError(context,"Provide Required Information");
                       }
@@ -149,6 +142,89 @@ class _LoginScreenState extends State<LoginScreen> {
           ],
         ) /* add child content here */,
       ),
+    );
+  }
+  showAlertDialog(BuildContext context) {
+    // set up the buttons
+    Widget btn = FlatButton(
+      child: Text("Set"),
+      onPressed: () {
+        if(selectedPreference=="Testing"){
+          Navigator.pop(context);
+          SharedPreferences.getInstance().then((prefs){
+            prefs.setString("mode", "Testing");
+            Network_Operations.login(context, username.text, password.text).then((isLogin){
+              if(isLogin=="true"){
+                Network_Operations.getUserInfo(context, username.text, password.text).then((userInfo){
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>newdashboard("LC0001")), (route) => false);
+                });
+              }else{
+                Utils.showError(context,"Invalid Username or Password");
+              }
+            });
+          });
+        }else if(selectedPreference=="Live"){
+          Navigator.pop(context);
+          SharedPreferences.getInstance().then((prefs){
+            prefs.setString("mode", "Live");
+            Network_Operations.login(context, username.text, password.text).then((isLogin){
+              if(isLogin=="true"){
+                Network_Operations.getUserInfo(context, username.text, password.text).then((userInfo){
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>newdashboard("LC0001")), (route) => false);
+                });
+              }else{
+                Utils.showError(context,"Invalid Username or Password");
+              }
+            });
+          });
+        }
+
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Select Enviroment to Use the App"),
+      content: StatefulBuilder(
+        builder: (context, setState) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              RadioListTile(
+                title: Text("Testing"),
+                value: 'Testing',
+                groupValue: selectedPreference,
+                onChanged: (choice) {
+                  setState(() {
+                    this.selectedPreference = choice;
+                  });
+                },
+              ),
+              RadioListTile(
+                title: Text("Live"),
+                value: 'Live',
+                groupValue: selectedPreference,
+                onChanged: (choice) {
+                  setState(() {
+                    this.selectedPreference = choice;
+                  });
+                },
+              ),
+            ],
+          );
+        },
+      ),
+      actions: [
+        btn
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }
