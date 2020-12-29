@@ -81,7 +81,7 @@ class _trackDeliveriesState extends State<trackDeliveries> {
                     Container(
                         alignment: Alignment.topLeft,
                         padding: EdgeInsets.only(left: 16),
-                        child: Text(delivery!=null&&delivery.packingSlipGenerateField!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(delivery.packingSlipGenerateField.replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString():'',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),)
+                        child: Text(delivery!=null&&delivery.packingSlipGenerateField!=null&&delivery.packingSlipGenerateField!="/Date(-2208988800000)/"?DateTime.fromMillisecondsSinceEpoch(int.parse(delivery.packingSlipGenerateField.replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString():'',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),)
                     ),
                     SizedBox(
                       height: 8,
@@ -101,7 +101,7 @@ class _trackDeliveriesState extends State<trackDeliveries> {
                             Expanded(
                               child: ListTile(
                                 title: Text("Generation Date"),
-                                subtitle: Text(delivery!=null&&delivery.packingSlipGenerateField!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(delivery.packingSlipGenerateField.replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString():''),
+                                subtitle: Text(delivery!=null&&delivery.packingSlipGenerateField!=null&&delivery.packingSlipGenerateField!="/Date(-2208988800000)/"?DateTime.fromMillisecondsSinceEpoch(int.parse(delivery.packingSlipGenerateField.replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString():''),
                               ),
                             ),
                           ],
@@ -185,7 +185,7 @@ class _trackDeliveriesState extends State<trackDeliveries> {
                     Container(
                         alignment: Alignment.topLeft,
                         padding: EdgeInsets.only(left: 16),
-                        child: Text(delivery!=null&&delivery.startLoadTruckField!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(delivery.startLoadTruckField.replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString():'',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),)
+                        child: Text(delivery!=null&&delivery.startLoadTruckField!=null&&delivery.startLoadTruckField!="/Date(-2208988800000)/"?DateTime.fromMillisecondsSinceEpoch(int.parse(delivery.startLoadTruckField.replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString():'',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),)
                     ),
                     SizedBox(
                       height: 8,
@@ -220,13 +220,13 @@ class _trackDeliveriesState extends State<trackDeliveries> {
                                 Expanded(
                                   child: ListTile(
                                     title: Text("Start Loading"),
-                                    subtitle: Text(delivery!=null&&delivery.startLoadTruckField!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(delivery.startLoadTruckField.replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString():''),
+                                    subtitle: Text(delivery!=null&&delivery.startLoadTruckField!=null&&delivery.startLoadTruckField!="/Date(-2208988800000)/"?DateTime.fromMillisecondsSinceEpoch(int.parse(delivery.startLoadTruckField.replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString():''),
                                   ),
                                 ),
                                 Expanded(
                                   child: ListTile(
                                     title: Text("End Loading"),
-                                    subtitle: Text(delivery!=null&&delivery.stopLoadTruckField!=null?DateTime.fromMillisecondsSinceEpoch(int.parse(delivery.stopLoadTruckField.replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString():''),
+                                    subtitle: Text(delivery!=null&&delivery.stopLoadTruckField!=null&&delivery.stopLoadTruckField!="/Date(-2208988800000)/"?DateTime.fromMillisecondsSinceEpoch(int.parse(delivery.stopLoadTruckField.replaceAll('/Date(','').replaceAll(')/','').replaceAll('+0300',''))).toString():''),
                                   ),
                                 ),
                               ],

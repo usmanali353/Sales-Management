@@ -120,11 +120,18 @@ class _LoginScreenState extends State<LoginScreen> {
                      padding: EdgeInsets.all(16),
                     minWidth: MediaQuery.of(context).size.width,
                     onPressed: (){
-                      if(username.text!=null&&password.text!=null&&password.text.length>3){
-                        showAlertDialog(context);
-                      }else{
-                        Utils.showError(context,"Provide Required Information");
-                      }
+                       Utils.check_connectivity().then((isConnected){
+                          if(isConnected){
+                            if(username.text!=null&&password.text!=null&&password.text.length>3){
+                              showAlertDialog(context);
+                            }else{
+                              Utils.showError(context,"Provide Required Information");
+                            }
+                          }else{
+                            Utils.showError(context, "Network not Available");
+                          }
+                       });
+
                     },
                     color: Colors.white,
                     child: Text("SIGN IN",style: TextStyle(
@@ -153,7 +160,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Navigator.pop(context);
           SharedPreferences.getInstance().then((prefs){
             prefs.setString("mode", "Testing");
-            Network_Operations.login(context, username.text, password.text).then((isLogin){
+            Network_Operations.login("Testing",context, username.text, password.text).then((isLogin){
               if(isLogin=="true"){
                 Network_Operations.getUserInfo(context, username.text, password.text).then((userInfo){
                   Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>newdashboard("LC0001")), (route) => false);
@@ -167,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Navigator.pop(context);
           SharedPreferences.getInstance().then((prefs){
             prefs.setString("mode", "Live");
-            Network_Operations.login(context, username.text, password.text).then((isLogin){
+            Network_Operations.login("Live",context, username.text, password.text).then((isLogin){
               if(isLogin=="true"){
                 Network_Operations.getUserInfo(context, username.text, password.text).then((userInfo){
                   Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>newdashboard("LC0001")), (route) => false);

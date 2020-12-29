@@ -100,7 +100,7 @@ class _DeliveryLinesState extends State<DeliveryLines> {
                     child: Center(
                       child: FAProgressBar(
                         direction: Axis.horizontal,
-                        currentValue: widget.delivery.deliveryItemsField[index].reservedPercentField!=null?widget.delivery.deliveryItemsField[index].reservedPercentField:0,
+                        currentValue:widget.delivery!=null&&widget.delivery.deliveryItemsField[index].reservedPercentField.toString()!=null?int.parse(widget.delivery.deliveryItemsField[index].reservedPercentField.toStringAsFixed(0)):0,
                         size: 20,
                         border: Border.all(width: 1,color: Colors.grey),
                         progressColor: Color(0xFF004c4c),

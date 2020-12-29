@@ -14,11 +14,18 @@ import 'Model/Deliveries.dart';
 
 class Network_Operations {
   //Login
-  static Future<String> login(BuildContext context,String username,String password)async{
+  static Future<String> login(String mode,BuildContext context,String username,String password)async{
     ProgressDialog pd=ProgressDialog(context);
+    String url;
     try{
       pd.show();
-      final response = await http.get(Utils.getBaseUrl()+'userinfoservice.svc/LoginUser/'+ username+"/"+password, headers: {'authorization': Utils.apiAuthentication()});
+      if(mode=="Testing"){
+        url="http://mobileapi.arabian-ceramics.com/ACMCMobileServices/";
+      }else if(mode=="Live"){
+        url="http://mobileapi.arabian-ceramics.com/ACMCMobileServicesLive/";
+      }
+      print(url);
+      final response = await http.get(url+'userinfoservice.svc/LoginUser/'+ username+"/"+password, headers: {'authorization': Utils.apiAuthentication()});
       //debugPrint(response.body);
       if (response.statusCode == 200) {
         pd.hide();
