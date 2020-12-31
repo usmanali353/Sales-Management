@@ -33,7 +33,7 @@ class _InvoicesList extends State<InvoicesList>{
     invoiceNumber=TextEditingController();
     Utils.check_connectivity().then((connected){
       if(connected){
-        Network_Operations.GetCustomerInvoices(context,CustomerId, 1, 10).then((invoices){
+        Network_Operations.GetCustomerInvoices(context,CustomerId, 1, 100).then((invoices){
           if(invoices!=null){
             setState(() {
               this.InvoiceList=invoices;
@@ -249,6 +249,14 @@ class _InvoicesList extends State<InvoicesList>{
 
         if(_fbKey.currentState.validate()) {
           Navigator.pop(context);
+          Network_Operations.GetCustInvoicesByDate(context,selectedDate.toString(),CustomerId,1,100).then((value){
+            setState(() {
+              if(InvoiceList!=null){
+                InvoiceList.clear();
+                InvoiceList.addAll(value);
+              }
+            });
+          });
         }
       },
     );

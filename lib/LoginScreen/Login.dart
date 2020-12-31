@@ -157,6 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Text("Set"),
       onPressed: () {
         if(selectedPreference=="Testing"){
+
           Navigator.pop(context);
           SharedPreferences.getInstance().then((prefs){
             prefs.setString("mode", "Testing");

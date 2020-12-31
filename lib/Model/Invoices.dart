@@ -28,7 +28,7 @@ class Invoices {
   String customerName;
   String deliveryName;
   String dueDate;
-  double invoiceAmount;
+  dynamic invoiceAmount;
   String invoiceDate;
   String invoiceId;
   dynamic invoiceLines;

@@ -132,7 +132,7 @@ class _SchedulesList extends State<SchedulesList>{
         Network_Operations.GetProductionSchedulesByItem(context,customerId,items[selectedValue]['ItemNumber'], 1, 100).then((value){
           if(value!=null){
             setState(() {
-              var requestsByItem=jsonDecode(value);
+              var requestsByItem=value;
               if (selectedValue == 0) {
                 WidgetsBinding.instance
                     .addPostFrameCallback((_) =>

@@ -6,7 +6,6 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:need_resume/need_resume.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 import 'package:acmc_customer/Model/ItemSizes.dart';
 import 'package:acmc_customer/Model/Products.dart';
 import 'package:acmc_customer/Model/sqlite_helper.dart';

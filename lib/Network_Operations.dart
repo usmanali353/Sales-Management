@@ -255,6 +255,24 @@ class Network_Operations {
     }
 
   }
+  static Future<List<Invoices>> GetCustInvoicesByDate(BuildContext context,String date,String CustomerId, int PageNo, int PageSize) async {
+    ProgressDialog pd=ProgressDialog(context);
+    try{
+      pd.show();
+      final response = await http.get(Utils.getBaseUrl()+'SalesService.svc/GetCustInvoicesByDate/'+CustomerId + '/'+date.replaceAll("00:00:00.000","")+'/'+ PageNo.toString() +'/'+PageSize.toString(), headers: {'authorization': Utils.apiAuthentication()});
+      if (response.statusCode == 200) {
+        pd.hide();
+        return Invoices.invoicesFromJson(response.body);
+      } else
+        pd.hide();
+      Utils.showError(context,response.statusCode.toString());
+      return null;
+    }catch(e){
+      pd.hide();
+      Utils.showError(context,e.toString());
+    }
+
+  }
   static Future<String> GetProductInfo(BuildContext context,String itemNumber) async {
     ProgressDialog pd=ProgressDialog(context);
     try{
@@ -421,6 +439,7 @@ class Network_Operations {
     }
 
   }
+
   static Future<String> CreateCustomerCase(BuildContext context, String customerId, String description, int statusField, int categoryTypeField, customerName, int resolutionType, String caseMemo) async {
     ProgressDialog pd=ProgressDialog(context);
     try{
@@ -812,14 +831,14 @@ class Network_Operations {
     }
 
   }
-  static Future<String> GetProductionSchedulesByItem(BuildContext context,String CustomerId, String itemNumber, int PageNo, int PageSize) async {
+  static Future<List<ProductionSchedule>> GetProductionSchedulesByItem(BuildContext context,String CustomerId, String itemNumber, int PageNo, int PageSize) async {
     ProgressDialog pd=ProgressDialog(context);
     try{
       pd.show();
       final response = await http.get(Utils.getBaseUrl()+'ProdRequestService.svc/GetProductionSchedulesByItem/' + CustomerId + '/' + itemNumber + '/' + PageNo.toString() + '/' + PageSize.toString(), headers: {'authorization': Utils.apiAuthentication()});
       //print(response.body);
       if (response.statusCode == 200) {
-        return response.body;
+        return ProductionSchedule.productionScheduleFromJson(response.body);
       } else
         Utils.showError(context,response.statusCode.toString());
         return null;
